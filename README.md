@@ -1,4 +1,31 @@
-yii2-platform-basic
-===================
+Grom Platform
+=============
+Платформа для разработки веб приложений, на основе Yii2 Basic application template
 
-Grom Platform на базе Yii2 Basic application template
+Installation
+------------
+
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+
+Either run
+
+```
+php composer.phar require --prefer-dist gromver/yii2-platform-basic "*"
+```
+
+or add
+
+```
+"gromver/yii2-platform-basic": "*"
+```
+
+to the require section of your `composer.json` file.
+
+
+Usage
+-----
+
+Once the extension is installed, simply use it in your code by  :
+
+```php
+<?= \gromver\plarform\basic\AutoloadExample::widget(); ?>```
