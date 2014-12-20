@@ -1,0 +1,30 @@
+.widget-wrapper {
+    position: relative;
+}
+.widget-wrapper .widget-description {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    z-index: 5;
+    padding: 10px;
+    text-align: center;
+    color: #ffffff;
+}
+.widget-controls {
+    position: absolute!important;
+    right: 0;
+    top: 0;
+    z-index: 10;
+}
+.widget-wrapper.edit-mode {
+    min-height: 80px;
+}
+.widget-wrapper .widget-controls:hover ~ .widget-description {
+    display: block;
+    vertical-align: middle;
+    background-color: #000000;
+    opacity: 0.6;
+}

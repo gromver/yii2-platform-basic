@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-4": {
-            "gromver\\plarform\\basic\\": ""
+            "gromver\\platform\\basic\\": ""
         }
     }
 }
