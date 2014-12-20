@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\page\models\PageSearch */
+/* @var $searchModel gromver\platform\basic\modules\page\models\PageSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Pages');
@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'language',
                 'width' => '80px',
                 'value' => function($model) {
-                        /** @var $model \gromver\platform\basic\page\models\Page */
+                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return \gromver\platform\basic\widgets\Translator::widget(['model' => $model]);
                     },
                 'format' => 'raw',
@@ -49,22 +49,22 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
-                        /** @var $model \gromver\platform\basic\page\models\Page */
-                        return $model->status === \gromver\platform\basic\page\models\Page::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
+                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
+                        return $model->status === \gromver\platform\basic\modules\page\models\Page::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
-                'filter' => \gromver\platform\basic\news\models\Post::statusLabels(),
+                'filter' => \gromver\platform\basic\modules\news\models\Post::statusLabels(),
                 'format' => 'raw',
                 'width'=>'80px'
             ],
             [
                 'attribute' => 'tags',
                 'value' => function($model){
-                        /** @var $model \gromver\platform\basic\page\models\Page */
+                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],

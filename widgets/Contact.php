@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\widgets;
 
 use kartik\widgets\Alert;
-use gromver\platform\basic\common\models\ContactForm;
+use gromver\platform\basic\modules\main\models\ContactForm;
 use Yii;
 
 /**
@@ -32,6 +32,7 @@ class Contact extends Widget {
      * @translation gromver.platform
      */
     public $successLayout = 'contact/success';
+    // todo параметр емейла на который отсылать письма
 
     protected function launch()
     {
@@ -41,7 +42,7 @@ class Contact extends Widget {
         }
 
         if (!Yii::$app->user->isGuest) {
-            /** @var \gromver\platform\basic\user\models\User $user */
+            /** @var \gromver\platform\basic\modules\user\models\User $user */
             $user = Yii::$app->user->identity;
             $userParams = $user->getParamsArray();
             $model->name = $userParams['name'] ? $userParams['name'] : $user->username;

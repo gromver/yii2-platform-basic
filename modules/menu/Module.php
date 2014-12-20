@@ -20,7 +20,7 @@ use Yii;
 class Module extends \yii\base\Module implements DesktopInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\menu\controllers';
-    public $defaultRoute = 'item';
+    public $defaultRoute = 'backend/item';
     public $desktopOrder = 4;
 
     /**
@@ -30,9 +30,9 @@ class Module extends \yii\base\Module implements DesktopInterface
     {
         return [
             'label' => Yii::t('gromver.platform', 'Menu'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Menu Types'), 'url' => ['/grom/menu/type']],
-                ['label' => Yii::t('gromver.platform', 'Menu Items'), 'url' => ['/grom/menu/item']],
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Menu Types'), 'url' => ['/' . $this->getUniqueId() . '/backend/type/index']],
+                ['label' => Yii::t('gromver.platform', 'Menu Items'), 'url' => ['/' . $this->getUniqueId() . '/backend/item/index']],
             ]
         ];
     }

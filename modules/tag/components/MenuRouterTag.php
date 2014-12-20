@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\tag\components;
+namespace gromver\platform\basic\modules\tag\components;
 
 use gromver\platform\basic\components\MenuRouter;
-use gromver\platform\basic\menu\models\MenuItem;
-use gromver\platform\basic\tag\models\Tag;
+use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\modules\tag\models\Tag;
 
 /**
  * Class MenuRouterTag

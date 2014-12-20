@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\news\controllers;
+namespace gromver\platform\basic\modules\news\controllers\frontend;
 
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\news\models\Post;
-use gromver\platform\basic\main\models\Table;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\modules\main\models\Table;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
@@ -84,27 +84,27 @@ class PostController extends Controller
             ],
             'items' => [
                 'title' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->title;
                     },
                 'description' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->preview_text ? $model->preview_text : StringHelper::truncateWords(strip_tags($model->detail_text), 40);
                     },
                 'link' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return Url::toRoute($model->getFrontendViewLink(), true);
                     },
                 'author' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->user->email . ' (' . $model->user->username . ')';
                     },
                 'guid' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return Url::toRoute($model->getFrontendViewLink(), true) . ' ' . Yii::$app->formatter->asDatetime($model->updated_at, 'php:'.DATE_RSS);
                     },
                 'pubDate' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return Yii::$app->formatter->asDatetime($model->published_at, 'php:'.DATE_RSS);
                     }
             ]

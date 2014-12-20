@@ -2,10 +2,10 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\user\models\UserSearch */
+/* @var $searchModel gromver\platform\basic\modules\user\models\UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Users');

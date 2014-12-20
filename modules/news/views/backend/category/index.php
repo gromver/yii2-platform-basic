@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\news\models\CategorySearch */
+/* @var $searchModel gromver\platform\basic\modules\news\models\CategorySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Категории');
@@ -41,7 +41,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'language',
                 'width' => '80px',
                 'value' => function($model) {
-                        /** @var \gromver\platform\basic\news\models\Category $model */
+                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return \gromver\platform\basic\widgets\Translator::widget(['model' => $model]);
                     },
                 'format' => 'raw',
@@ -50,7 +50,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'value' => function($model){
-                        /** @var \gromver\platform\basic\news\models\Category $model */
+                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
                     },
                 'format' => 'html'
@@ -60,12 +60,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tags',
                 'value' => function($model){
-                        /** @var \gromver\platform\basic\news\models\Category $model */
+                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'header' => Yii::t('gromver.platform', 'Posts'),
                 'value' => function($model) {
-                        /** @var \gromver\platform\basic\news\models\Category $model */
+                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return Html::a('('.$model->getPosts()->count().')', ['post/index', 'PostSearch[category_id]' => $model->id], ['data-pjax' => 0]);
                     },
                 'format'=>'raw'
@@ -95,17 +95,17 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model, $index, $widget) {
-                        /** @var $model \gromver\platform\basic\news\models\Category */
-                        return $model->status === \gromver\platform\basic\news\models\Category::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
+                        /** @var $model \gromver\platform\basic\modules\news\models\Category */
+                        return $model->status === \gromver\platform\basic\modules\news\models\Category::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
-                'filter' => \gromver\platform\basic\news\models\Category::statusLabels(),
+                'filter' => \gromver\platform\basic\modules\news\models\Category::statusLabels(),
                 'format' => 'raw',
                 'width' => '80px'
             ],
             [
                 'attribute' => 'ordering',
                 'value' => function($model, $index) {
-                        /** @var \gromver\platform\basic\news\models\Category $model */
+                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);
                     },
                 'format' => 'raw',

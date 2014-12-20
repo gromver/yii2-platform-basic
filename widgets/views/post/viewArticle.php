@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model \gromver\platform\basic\news\models\Post
+ * @var $model \gromver\platform\basic\modules\news\models\Post
  */
 
 use yii\helpers\Html;

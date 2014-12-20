@@ -7,12 +7,12 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\user\controllers;
+namespace gromver\platform\basic\modules\user\controllers\backend;
 
 use kartik\widgets\Alert;
 use gromver\models\ObjectModel;
-use gromver\platform\basic\user\models\User;
-use gromver\platform\basic\user\models\UserSearch;
+use gromver\platform\basic\modules\user\models\User;
+use gromver\platform\basic\modules\user\models\UserSearch;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -27,10 +27,12 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
- * @property \gromver\platform\basic\backend\modules\user\Module $module
+ * @property \gromver\platform\basic\modules\user\Module $module
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [

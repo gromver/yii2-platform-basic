@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\user\models\User */
+/* @var $model gromver\platform\basic\modules\user\models\User */
 
 $this->title = Yii::t('gromver.platform', 'Add User');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['index']];

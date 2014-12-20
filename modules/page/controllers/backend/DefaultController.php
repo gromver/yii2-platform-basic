@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\page\controllers;
+namespace gromver\platform\basic\modules\page\controllers\backend;
 
 use Yii;
-use gromver\platform\basic\page\models\Page;
-use gromver\platform\basic\page\models\PageSearch;
+use gromver\platform\basic\modules\page\models\Page;
+use gromver\platform\basic\modules\page\models\PageSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -25,6 +25,8 @@ use yii\filters\VerbFilter;
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [
@@ -81,11 +83,12 @@ class DefaultController extends Controller
      * @param string $route
      * @return string
      */
-    public function actionSelect($route = 'grom/page/default/view')
+    public function actionSelect($route = 'grom/page/frontend/default/view')
     {
         $searchModel = new PageSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('select', [

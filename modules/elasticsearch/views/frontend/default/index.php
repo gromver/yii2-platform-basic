@@ -3,7 +3,7 @@
 /* @var $this yii\web\View */
 /* @var $query string */
 
-/** @var \gromver\platform\basic\menu\models\MenuItem $menu */
+/** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
 $menu = Yii::$app->menuManager->getActiveMenu();
 if ($menu) {
     $this->title = $menu->isProperContext() ? $menu->title : Yii::t('gromver.platform', 'Search');

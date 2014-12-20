@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\user;
+namespace gromver\platform\basic\modules\user;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
@@ -20,10 +20,10 @@ use Yii;
  */
 class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface
 {
-    public $controllerNamespace = 'gromver\platform\basic\backend\modules\user\controllers';
+    public $controllerNamespace = 'gromver\platform\basic\modules\user\controllers';
     public $defaultRoute = 'frontend/default';
     public $allowDelete = true;   //позволяет удалять пользователей из БД, при условии что они уже имеют статус User::STATUS_DELETED
-    public $userParamsClass = 'gromver\platform\basic\user\models\UserParams';
+    public $userParamsClass = 'gromver\platform\basic\modules\user\models\UserParams';
     public $desktopOrder = 8;
 
     /**
@@ -33,8 +33,8 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     {
         return [
             'label' => Yii::t('gromver.platform', 'Users'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['/grom/user/default/index']]
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
             ]
         ];
     }
@@ -46,8 +46,8 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     {
         return [
             'label' => Yii::t('gromver.platform', 'Users'),
-            'routers' => [
-                ['label' => Yii::t('gromver.platform', 'User Profile'), 'route' => 'grom/user/default/update'],
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'User Profile'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/update'],
             ]
         ];
     }

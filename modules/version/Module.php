@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\version;
+namespace gromver\platform\basic\modules\version;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use Yii;
@@ -30,8 +30,8 @@ class Module extends \yii\base\Module implements DesktopInterface
     {
         return [
             'label' => Yii::t('gromver.platform', 'Versions'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Versions'), 'url' => ['/grom/version/default/index']]
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Versions'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
             ]
         ];
     }

@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\news\models\Post */
-/* @var $sourceModel gromver\platform\basic\news\models\Post */
+/* @var $model gromver\platform\basic\modules\news\models\Post */
+/* @var $sourceModel gromver\platform\basic\modules\news\models\Post */
 /* @var $form yii\bootstrap\ActiveForm */
 ?>
 

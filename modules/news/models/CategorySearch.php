@@ -7,13 +7,13 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\news\models;
+namespace gromver\platform\basic\modules\news\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class CategorySearch represents the model behind the search form about `gromver\platform\basic\news\models\Category`.
+ * Class CategorySearch represents the model behind the search form about `gromver\platform\basic\modules\news\models\Category`.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

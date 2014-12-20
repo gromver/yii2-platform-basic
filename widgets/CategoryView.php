@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\news\models\Category;
+use gromver\platform\basic\modules\news\models\Category;
 use yii\base\InvalidConfigException;
 use Yii;
 
@@ -23,7 +23,7 @@ class CategoryView extends Widget {
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
      * @type modal
-     * @url /grom/default/select-category
+     * @url /grom/frontend/default/select-category
      * @translation gromver.platform
      */
     public $category;
@@ -54,7 +54,7 @@ class CategoryView extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/category/update', 'id' => $this->category->id, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/news/backend/category/update', 'id' => $this->category->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Category')]
             ],

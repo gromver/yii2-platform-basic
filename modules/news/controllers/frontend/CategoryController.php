@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\news\controllers;
+namespace gromver\platform\basic\modules\news\controllers\frontend;
 
-use gromver\platform\basic\news\models\Category;
+use gromver\platform\basic\modules\news\models\Category;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;

@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\user\controllers;
+namespace gromver\platform\basic\modules\user\controllers\frontend;
 
 use kartik\widgets\Alert;
 use gromver\models\ObjectModel;
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -48,7 +48,7 @@ class DefaultController extends Controller
 
     public function actionUpdate()
     {
-        /** @var \gromver\platform\basic\user\models\User $user */
+        /** @var \gromver\platform\basic\modules\user\models\User $user */
         $user = Yii::$app->user->getIdentity();
 
         $model = $this->extractParamsModel($user);

@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\modules\elasticsearch\backend\controllers;
+namespace gromver\platform\basic\modules\elasticsearch\controllers\backend;
 
 use yii\elasticsearch\ActiveRecord;
 use yii\elasticsearch\Exception;
@@ -22,6 +22,8 @@ use yii\web\Controller;
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [
@@ -57,7 +59,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @param $documentClass \gromver\platform\basic\elasticsearch\models\ActiveDocument
+     * @param $documentClass \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument
      * @return int
      * @throws \yii\elasticsearch\Exception
      */
@@ -66,7 +68,7 @@ class DefaultController extends Controller
         $bulk = '';
         /** @var \yii\db\ActiveRecord|string $modelClass */
         $modelClass = $documentClass::model();
-        /** @var \gromver\platform\basic\elasticsearch\models\ActiveDocument $document */
+        /** @var \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument $document */
         $document = new $documentClass;
         $uploaded = 0;
         foreach ($modelClass::find()->each() as $model) {

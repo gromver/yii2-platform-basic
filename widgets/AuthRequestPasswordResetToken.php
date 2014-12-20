@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 
 /**
  * Class AuthRequestPasswordResetToken

@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\page;
+namespace gromver\platform\basic\modules\page;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
@@ -31,8 +31,8 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     {
         return [
             'label' => Yii::t('gromver.platform', 'Pages'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Pages'), 'url' => ['/grom/page/default/index']]
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Pages'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
             ]
         ];
     }
@@ -44,8 +44,8 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     {
         return [
             'label' => Yii::t('gromver.platform', 'Pages'),
-            'routers' => [
-                ['label' => Yii::t('gromver.platform', 'Page View'), 'url' => ['/grom/page/default/select']],
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Page View'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/select']],
             ]
         ];
     }

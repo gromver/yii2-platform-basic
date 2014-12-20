@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\version\assets;
+namespace gromver\platform\basic\modules\version\assets;
 use yii\web\AssetBundle;
 
 /**

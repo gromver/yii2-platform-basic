@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model \gromver\platform\basic\news\models\Post
+ * @var $model \gromver\platform\basic\modules\news\models\Post
  * @var $key string
  * @var $index integer
  * @var $widget \yii\widgets\ListView
@@ -13,7 +13,7 @@ use backend\modules\news\models\Post;
 
 $urlManager = Yii::$app->urlManager;
 
-echo '<h4>' . Html::a(Html::encode($model->title), $urlManager->createUrl($model->getViewLink())) . '</h4>';
+echo '<h4>' . Html::a(Html::encode($model->title), $urlManager->createUrl($model->getFrontendViewLink())) . '</h4>';
 
 if($model->preview_image) echo Html::img($model->getFileUrl('preview_image'), [
     'class' => 'pull-left',

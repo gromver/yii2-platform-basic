@@ -11,7 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 use gromver\models\ObjectModel;
 use gromver\models\SpecificationInterface;
-use gromver\platform\basic\widget\models\WidgetConfig;
+use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -285,7 +285,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             ],
         ]);
 
-        echo Html::beginForm(['/grom/widget/default/configure', 'modal' => 1], 'post', ['id' => $formId]);
+        echo Html::beginForm(['/grom/widget/backend/default/configure', 'modal' => 1], 'post', ['id' => $formId]);
 
         echo Html::hiddenInput('url', Yii::$app->request->getAbsoluteUrl());
 

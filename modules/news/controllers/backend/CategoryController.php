@@ -7,12 +7,12 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\news\controllers;
+namespace gromver\platform\basic\modules\news\controllers\backend;
 
 use kartik\widgets\Alert;
 use Yii;
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\news\models\CategorySearch;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\CategorySearch;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -28,6 +28,8 @@ use yii\filters\VerbFilter;
  */
 class CategoryController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [
@@ -85,12 +87,13 @@ class CategoryController extends Controller
      * @param string $route
      * @return string
      */
-    public function actionSelect($route = 'grom/news/category/view')
+    public function actionSelect($route = 'grom/news/frontend/category/view')
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
         $dataProvider->query->noRoots();
 
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('select', [

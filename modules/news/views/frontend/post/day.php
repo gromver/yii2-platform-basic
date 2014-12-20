@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model gromver\platform\basic\news\models\Category
+ * @var $model gromver\platform\basic\modules\news\models\Category
  * @var $year integer
  * @var $month integer
  * @var $day integer
@@ -9,7 +9,7 @@
 
 use yii\helpers\Html;
 
-/** @var \gromver\platform\basic\menu\models\MenuItem $menu */
+/** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
 $menu = Yii::$app->menuManager->getActiveMenu();
 if ($menu) {
     $this->title = $menu->isProperContext() ? $menu->title : Yii::$app->formatter->asDate(mktime(0,0,0,$month, $day, $year), 'dd MMMM Y');

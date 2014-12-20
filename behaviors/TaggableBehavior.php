@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\behaviors;
 
-use gromver\platform\basic\tag\models\Tag;
+use gromver\platform\basic\modules\tag\models\Tag;
 use yii\base\Behavior;
 use yii\db\ActiveQuery;
 use yii\db\BaseActiveRecord;
@@ -60,7 +60,7 @@ class TaggableBehavior extends Behavior
      */
     public function afterSave($event)
     {
-        $this->owner->getDb()->transaction(function($db) use ($event){
+        $this->owner->getDb()->transaction(function() use ($event){
             if(isset($this->_tags) && is_array($this->_tags)) {
                 $oldTags = ArrayHelper::map($this->owner->tags, 'id', 'id');
                 $this->owner->setIsNewRecord(false);

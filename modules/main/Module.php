@@ -12,9 +12,9 @@ namespace gromver\platform\basic\modules\main;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
-use gromver\platform\basic\main\models\Table;
+use gromver\platform\basic\modules\main\models\Table;
 use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\menu\models\MenuItem;
+use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\caching\ExpressionDependency;
@@ -37,8 +37,9 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
 
     public $controllerNamespace = '\gromver\platform\basic\modules\main\controllers';
     public $paramsPath = '@app/config/grom';
+    public $defaultRoute = 'frontend/default';
     // todo fixthis
-    public $blockModules = ['news', 'page', 'tag', 'user'];   //список модулей к которым нельзя попасть на прямую(grom/post/..., grom/page/...)
+    public $blockModules = [];//['news', 'page', 'tag', 'user'];   //список модулей к которым нельзя попасть на прямую(grom/post/..., grom/page/...)
     public $desktopOrder = 1;
 
     private $_mode;
@@ -113,7 +114,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         Yii::$app->i18n->translations['gromver.*'] = [
             'class' => 'yii\i18n\PhpMessageSource',
-            'basePath' => '@gromver/platform/backend/messages',
+            'basePath' => '@gromver/platform/basic/messages',
         ];
     }
 
@@ -124,10 +125,10 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         return [
             'label' => Yii::t('gromver.platform', 'System'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/grom/default/index']],
-                ['label' => Yii::t('gromver.platform', 'System Configuration'), 'url' => ['/grom/default/params']],
-                ['label' => Yii::t('gromver.platform', 'Flush Cache'), 'url' => ['/grom/default/flush-cache']],
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
+                ['label' => Yii::t('gromver.platform', 'System Configuration'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/params']],
+                ['label' => Yii::t('gromver.platform', 'Flush Cache'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/flush-cache']],
             ]
         ];
     }
@@ -141,7 +142,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
                 //['label' => Yii::t('gromver.platform', 'Sitemap'), 'route' => 'grom/default/sitemap'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/],
-                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => 'grom/default/contact'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/]
+                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/contact'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/]
             ]
         ];
     }

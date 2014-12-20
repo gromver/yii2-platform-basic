@@ -20,7 +20,7 @@ class Application extends \yii\web\Application {
     public $language = 'en';
     public $languages = ['en', 'ru'];
     public $sourceLanguage = 'en';
-    public $defaultRoute = 'grom/default/index';
+    public $defaultRoute = 'grom/frontend/default/index';
     public $layout = '@gromver/platform/basic/views/layouts/frontend/main';
 
     private $_modulesHash;

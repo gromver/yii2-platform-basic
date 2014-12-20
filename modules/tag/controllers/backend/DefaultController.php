@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\tag\controllers;
+namespace gromver\platform\basic\modules\tag\controllers\backend;
 
 use Yii;
-use gromver\platform\basic\tag\models\Tag;
-use gromver\platform\basic\tag\models\TagSearch;
+use gromver\platform\basic\modules\tag\models\Tag;
+use gromver\platform\basic\modules\tag\models\TagSearch;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
@@ -26,6 +26,8 @@ use yii\filters\VerbFilter;
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [

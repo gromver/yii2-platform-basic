@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\main\models;
+namespace gromver\platform\basic\modules\main\models;
 
 use Yii;
 use yii\base\Event;

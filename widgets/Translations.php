@@ -45,7 +45,7 @@ class Translations extends Widget {
             } else {
                 $items .=  strtr($this->linkTemplate, [
                     '{label}' => $language,
-                    '{url}' => Yii::$app->urlManager->createUrl($item->getViewLink(), $language)
+                    '{url}' => Yii::$app->urlManager->createUrl($item->getFrontendViewLink(), $language)
                 ]);
             }
         }

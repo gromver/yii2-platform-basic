@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\news\models;
+namespace gromver\platform\basic\modules\news\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetBehavior;
@@ -56,10 +56,10 @@ use yii\helpers\Inflector;
  * @property integer $lock
  *
  * @property Post[] $posts
- * @property \gromver\platform\basic\user\models\User $user
+ * @property \gromver\platform\basic\modules\user\models\User $user
  * @property Category $parent
  * @property Category[] $translations
- * @property \gromver\platform\basic\tag\models\Tag[] $tags
+ * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
 class Category extends ActiveRecord implements TranslatableInterface, ViewableInterface
 {

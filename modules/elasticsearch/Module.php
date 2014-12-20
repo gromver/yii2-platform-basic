@@ -7,15 +7,15 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\elasticsearch;
+namespace gromver\platform\basic\modules\elasticsearch;
 
 use gromver\modulequery\ModuleQuery;
-use gromver\platform\basic\elasticsearch\models\ActiveDocument;
+use gromver\platform\basic\modules\elasticsearch\models\ActiveDocument;
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
 use gromver\platform\basic\interfaces\MenuRouterInterface;
 use gromver\platform\basic\interfaces\BootstrapInterface;
-use gromver\platform\frontend\modules\elasticsearch\components\MenuRouterSearch;
+use gromver\platform\basic\modules\elasticsearch\components\MenuRouterSearch;
 use Yii;
 
 /**
@@ -61,7 +61,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         return [
             'label' => Yii::t('gromver.platform', 'Search'),
-            'links' => [
+            'items' => [
                 ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
             ]
         ];
@@ -74,7 +74,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         return [
             'label' => Yii::t('gromver.platform', 'Search'),
-            'routers' => [
+            'items' => [
                 ['label' => Yii::t('gromver.platform', 'Search'), 'route' =>  $this->getUniqueId() . '/frontend/default/index'],
             ]
         ];

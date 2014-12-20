@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\page\models;
+namespace gromver\platform\basic\modules\page\models;
 
-use gromver\platform\basic\elasticsearch\models\ActiveDocument;
+use gromver\platform\basic\modules\elasticsearch\models\ActiveDocument;
 
 /**
  * Class Page

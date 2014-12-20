@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\news\models\Post */
+/* @var $model gromver\platform\basic\modules\news\models\Post */
 
 $this->title = Yii::t('gromver.platform', 'Update Post: {title}', [
     'title' => $model->title

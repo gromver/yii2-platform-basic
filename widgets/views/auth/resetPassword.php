@@ -6,7 +6,7 @@ use yii\bootstrap\ActiveForm;
 /**
  * @var yii\web\View $this
  * @var yii\bootstrap\ActiveForm $form
- * @var gromver\platform\basic\user\models\User $model
+ * @var gromver\platform\basic\modules\user\models\User $model
  */
 ?>
 

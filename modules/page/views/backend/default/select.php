@@ -6,7 +6,7 @@ use kartik\grid\GridView;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var gromver\platform\basic\page\models\PageSearch $searchModel
+ * @var gromver\platform\basic\modules\page\models\PageSearch $searchModel
  * @var string $route
  */
 
@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'value' => function ($model) {
-                        /** @var $model \gromver\platform\basic\page\models\Page */
+                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
                     },
                 'format' => 'html'
@@ -49,20 +49,20 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
                 'attribute' => 'status',
                 'value' => function ($model) {
-                    /** @var $model \gromver\platform\basic\page\models\Page */
+                    /** @var $model \gromver\platform\basic\modules\page\models\Page */
                     return $model->getStatusLabel();
                 },
-                'filter' => \gromver\platform\basic\page\models\Page::statusLabels()
+                'filter' => \gromver\platform\basic\modules\page\models\Page::statusLabels()
             ],
             [
                 'attribute' => 'tags',
                 'value' => function ($model){
-                        /** @var $model \gromver\platform\basic\page\models\Page */
+                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
                                     'id' => $model->id,
                                     'description' => Yii::t('gromver.platform', 'Page: {title}', ['title' => $model->title]),
-                                    'link' => \gromver\platform\basic\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
+                                    'link' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
                                     'value' => $model->id . ':' . $model->alias
                                 ]),
                         ]);

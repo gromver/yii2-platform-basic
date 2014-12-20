@@ -13,7 +13,7 @@ use yii\web\User as BaseUser;
 
 /**
  * Class User
- * @property \gromver\platform\basic\user\models\User $identity The identity object associated with the currently logged user. Null
+ * @property \gromver\platform\basic\modules\user\models\User $identity The identity object associated with the currently logged user. Null
  * is returned if the user is not logged in (not authenticated).
  *
  * @package yii2-platform-basic
@@ -25,7 +25,7 @@ class User extends BaseUser
     /**
 	 * @inheritdoc
 	 */
-	public $identityClass = 'gromver\platform\basic\user\models\User';
+	public $identityClass = 'gromver\platform\basic\modules\user\models\User';
 
 	/**
 	 * @inheritdoc

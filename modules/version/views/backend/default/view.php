@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\version\models\Version */
+/* @var $model gromver\platform\basic\modules\version\models\Version */
 
 $this->title = Yii::t('gromver.platform', 'ID: {id}', [
     'id' => $model->id

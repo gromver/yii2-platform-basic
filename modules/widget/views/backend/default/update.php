@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\widget\models\WidgetConfig */
+/* @var $model gromver\platform\basic\modules\widget\models\WidgetConfig */
 
 $this->title = Yii::t('gromver.platform', 'Update Settings for Widget: {id}', [
     'id' => $model->widget_id

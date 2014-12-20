@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\auth\models;
+namespace gromver\platform\basic\modules\auth\models;
 
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 

@@ -6,7 +6,7 @@ use kartik\grid\GridView;
 /**
  * @var yii\web\View $this
  * @var yii\data\ActiveDataProvider $dataProvider
- * @var gromver\platform\basic\news\models\PostSearch $searchModel
+ * @var gromver\platform\basic\modules\news\models\PostSearch $searchModel
  * @var string $route
  */
 
@@ -36,7 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model){
                         return @$model->category->title;
                     },
-                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\news\models\Category::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
+                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\news\models\Category::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title;
                     })
             ],
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'value' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
                     },
                 'format' => 'html'
@@ -57,10 +57,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->getStatusLabel();
                     },
-                'filter' => \gromver\platform\basic\news\models\Post::statusLabels()
+                'filter' => \gromver\platform\basic\modules\news\models\Post::statusLabels()
             ],
             [
                 'attribute' => 'published_at',
@@ -77,12 +77,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tags',
                 'value' => function ($model){
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
@@ -96,7 +96,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
                                     'id' => $model->id,
                                     'description' => Yii::t('gromver.platform', 'Post: {title}', ['title' => $model->title]),
-                                    'link' => \gromver\platform\basic\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
+                                    'link' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
                                     'value' => $model->id . ':' . $model->alias
                                 ]),
                         ]);

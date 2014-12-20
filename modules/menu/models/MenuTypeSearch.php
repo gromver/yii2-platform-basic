@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\menu\models;
+namespace gromver\platform\basic\modules\menu\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;

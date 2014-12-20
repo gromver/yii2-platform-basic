@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\page\controllers;
+namespace gromver\platform\basic\modules\page\controllers\frontend;
 
-use gromver\platform\basic\page\models\Page;
+use gromver\platform\basic\modules\page\models\Page;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;

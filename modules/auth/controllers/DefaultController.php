@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\auth\controllers;
 
+use gromver\widgets\ModalIFrame;
 use kartik\widgets\Alert;
 use Yii;
 use yii\di\Instance;
@@ -16,15 +17,15 @@ use yii\filters\AccessControl;
 use yii\mail\BaseMailer;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use gromver\platform\basic\auth\models\LoginForm;
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\auth\models\LoginForm;
+use gromver\platform\basic\modules\user\models\User;
 
 /**
  * Class DefaultController
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
- * @property \gromver\platform\basic\backend\modules\auth\Module Module
+ * @property \gromver\platform\basic\modules\auth\Module Module
  */
 class DefaultController extends Controller
 {
@@ -67,7 +68,7 @@ class DefaultController extends Controller
         ];
     }
 
-    public function actionLogin()
+    public function actionLogin($modal = null)
     {
         if (!\Yii::$app->user->isGuest) {
             $this->goHome();
@@ -83,14 +84,22 @@ class DefaultController extends Controller
         if ($model->load($_POST)) {
             if($model->login()) {
                 $this->setLoginAttempts(0); //if login is successful, reset the attempts
+                if ($modal) {
+                    ModalIFrame::refreshPage();
+                }
                 return $this->goBack();
             } else {
                 //if login is not successful, increase the attempts
                 $this->setLoginAttempts($this->getLoginAttempts() + 1);
+                Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', 'Authorization is failed.'));
             }
         }
 
-        $this->module->layout = $this->module->loginLayout;
+        if ($modal) {
+            Yii::$app->grom->layout = 'modal';
+        } else {
+            $this->module->layout = $this->module->loginLayout;
+        }
 
         return $this->render('login', [
             'model' => $model,

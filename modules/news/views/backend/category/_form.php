@@ -5,8 +5,8 @@ use yii\bootstrap\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var gromver\platform\basic\news\models\Category $model
- * @var gromver\platform\basic\news\models\Category $sourceModel
+ * @var gromver\platform\basic\modules\news\models\Category $model
+ * @var gromver\platform\basic\modules\news\models\Category $sourceModel
  * @var yii\bootstrap\ActiveForm $form
  */
 ?>

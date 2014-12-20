@@ -5,8 +5,8 @@ use yii\bootstrap\ActiveForm;
 
 /**
  * @var yii\web\View $this
- * @var gromver\platform\basic\tag\models\Tag $model
- * @var gromver\platform\basic\tag\models\Tag $sourceModel
+ * @var gromver\platform\basic\modules\tag\models\Tag $model
+ * @var gromver\platform\basic\modules\tag\models\Tag $sourceModel
  * @var yii\bootstrap\ActiveForm $form
  */
 ?>

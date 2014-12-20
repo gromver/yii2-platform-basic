@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\version\models\Version */
+/* @var $model gromver\platform\basic\modules\version\models\Version */
 
 $this->title = Yii::t('gromver.platform', 'Update Version: {id}', [
     'id' => $model->id

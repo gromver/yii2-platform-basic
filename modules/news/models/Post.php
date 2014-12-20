@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\news\models;
+namespace gromver\platform\basic\modules\news\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\TaggableBehavior;
@@ -17,7 +17,7 @@ use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\TranslatableInterface;
 use gromver\platform\basic\interfaces\ViewableInterface;
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -52,9 +52,9 @@ use yii\helpers\Inflector;
  * @property integer $lock
  *
  * @property Category $category
- * @property \gromver\platform\basic\user\models\User[] $viewers
- * @property \gromver\platform\basic\user\models\User $user
- * @property \gromver\platform\basic\tag\models\Tag[] $tags
+ * @property \gromver\platform\basic\modules\user\models\User[] $viewers
+ * @property \gromver\platform\basic\modules\user\models\User $user
+ * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  * @property Post[] $translations
  */
 class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface
@@ -89,7 +89,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
                 }],
             [['published_at'], 'integer', 'enableClientValidation' => false],
             [['category_id'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'filter' => function($query) {
-                /** @var $query \gromver\platform\basic\news\models\CategoryQuery */
+                /** @var $query \gromver\platform\basic\modules\news\models\CategoryQuery */
                 $query->noRoots();
             }],
             [['alias'], 'filter', 'filter' => 'trim'],

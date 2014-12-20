@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\news\controllers;
+namespace gromver\platform\basic\modules\news\controllers\backend;
 
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\news\models\Post;
-use gromver\platform\basic\news\models\PostSearch;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\modules\news\models\PostSearch;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -27,6 +27,8 @@ use yii\filters\VerbFilter;
  */
 class PostController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [
@@ -84,11 +86,12 @@ class PostController extends Controller
      * @param string $route
      * @return mixed
      */
-    public function actionSelect($route = 'grom/news/post/view')
+    public function actionSelect($route = 'grom/news/frontend/post/view')
     {
         $searchModel = new PostSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('select', [

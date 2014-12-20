@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\elasticsearch\controllers\frontend;
+namespace gromver\platform\basic\modules\elasticsearch\controllers\frontend;
 
 use yii\web\Controller;
 

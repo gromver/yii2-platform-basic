@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\user\models;
+namespace gromver\platform\basic\modules\user\models;
 
 /**
  * Class UserParams

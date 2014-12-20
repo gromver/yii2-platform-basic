@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\user\models;
+namespace gromver\platform\basic\modules\user\models;
 
 use Yii;
 use yii\base\ModelEvent;
@@ -36,7 +36,7 @@ use yii\web\IdentityInterface;
  * @property integer $deleted_at
  * @property integer $last_visit_at
  *
- * @property \gromver\platform\basic\news\models\Post[] $viewedPosts
+ * @property \gromver\platform\basic\modules\news\models\Post[] $viewedPosts
  * @property string[] $roles
  */
 class User extends ActiveRecord implements IdentityInterface

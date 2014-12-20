@@ -2,10 +2,10 @@
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var gromver\platform\basic\auth\models\LoginForm $model
+ * @var gromver\platform\basic\modules\auth\models\LoginForm $model
  */
 
-/** @var \gromver\platform\basic\menu\models\MenuItem $menu */
+/** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
 $menu = Yii::$app->menuManager->getActiveMenu();
 if ($menu) {
     $this->title = $menu->isProperContext() ? $menu->title : Yii::t('gromver.platform', 'Login');

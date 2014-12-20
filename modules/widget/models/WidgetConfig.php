@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\widget\models;
+namespace gromver\platform\basic\modules\widget\models;
 
 use Yii;
 use yii\behaviors\BlameableBehavior;

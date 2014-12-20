@@ -17,8 +17,8 @@ use yii\web\AssetBundle;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class WidgetAsset extends AssetBundle {
-    public $sourcePath = '@gromver/platform/common/widgets/assets';
+    public $sourcePath = '@gromver/platform/basic/widgets/assets';
     public $css = [
-        'css/style.css'
+        'widget/css/style.css'
     ];
 }

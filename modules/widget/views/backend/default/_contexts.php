@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use gromver\platform\basic\widget\models\WidgetConfig;
+use gromver\platform\basic\modules\widget\models\WidgetConfig;
 
 /**
  * @var yii\web\View $this

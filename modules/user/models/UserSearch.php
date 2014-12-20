@@ -7,14 +7,14 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\user\models;
+namespace gromver\platform\basic\modules\user\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class UserSearch represents the model behind the search form about `gromver\platform\basic\user\models\User`.
+ * Class UserSearch represents the model behind the search form about `gromver\platform\basic\modules\user\models\User`.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

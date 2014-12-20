@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\auth\models\LoginForm;
+use gromver\platform\basic\modules\auth\models\LoginForm;
 
 /**
  * Class AuthLogin

@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\behaviors;
 
-use gromver\platform\basic\version\models\Version;
+use gromver\platform\basic\modules\version\models\Version;
 use yii\base\Behavior;
 use yii\db\BaseActiveRecord;
 
@@ -48,9 +48,6 @@ class VersioningBehavior extends Behavior
         return $this->owner->hasMany(Version::className(), ['item_id'=>'id', 'item_class'=>'itemModelClass'])->orderBy(['created_at'=>SORT_DESC]);
     }
 
-    /**
-     * @param $event \Yii\base\Event
-     */
     public function afterSave()
     {
         $version = new Version();

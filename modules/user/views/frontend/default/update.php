@@ -3,10 +3,10 @@
 /**
  * @var $this yii\web\View
  * @var \gromver\models\ObjectModel $model
- * @var \gromver\platform\basic\user\models\User $user
+ * @var \gromver\platform\basic\modules\user\models\User $user
  */
 
-/** @var \gromver\platform\basic\menu\models\MenuItem $menu */
+/** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
 $menu = Yii::$app->menuManager->getActiveMenu();
 if ($menu) {
     $this->title = $menu->isProperContext() ? $menu->title : Yii::t('gromver.platform', 'My profile');
@@ -18,7 +18,7 @@ if ($menu) {
 
 echo \yii\helpers\Html::tag('h2', $this->title);
 
-echo \gromver\platform\frontend\widgets\UserProfile::widget([
+echo \gromver\platform\basic\widgets\UserProfile::widget([
     'id' => 'user-profile',
     'model' => $model
 ]);

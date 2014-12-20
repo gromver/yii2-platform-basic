@@ -1,10 +1,10 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model gromver\platform\basic\tag\models\Tag
+ * @var $model gromver\platform\basic\modules\tag\models\Tag
  */
 
-/** @var \gromver\platform\basic\menu\models\MenuItem $menu */
+/** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
 $menu = Yii::$app->menuManager->getActiveMenu();
 if ($menu) {
     $this->title = $menu->isProperContext() ? $menu->title : Yii::t('gromver.platform', 'Tag: {tag}', ['tag' => $model->title]);

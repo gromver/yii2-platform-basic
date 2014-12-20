@@ -18,7 +18,7 @@ use yii\web\AssetBundle;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class CkeditorHighlightAsset extends AssetBundle {
-    public $sourcePath = '@gromver/platform/backend/assets/ckeditor';
+    public $sourcePath = '@gromver/platform/basic/assets/ckeditor';
     public $js = ['plugins/codesnippet/lib/highlight/highlight.pack.js'];
     public $css = ['plugins/codesnippet/lib/highlight/styles/default.css'];
 

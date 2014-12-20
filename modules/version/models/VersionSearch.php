@@ -7,14 +7,14 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\version\models;
+namespace gromver\platform\basic\modules\version\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class VersionSearch represents the model behind the search form about `gromver\platform\basic\version\models\Version`.
+ * Class VersionSearch represents the model behind the search form about `gromver\platform\basic\modules\version\models\Version`.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

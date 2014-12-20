@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model string|\gromver\platform\basic\news\models\Category
+ * @var $model string|\gromver\platform\basic\modules\news\models\Category
  */
 ?>
 

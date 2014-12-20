@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\widget;
+namespace gromver\platform\basic\modules\widget;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use Yii;
@@ -30,8 +30,8 @@ class Module extends \yii\base\Module implements DesktopInterface
     {
         return [
             'label' => Yii::t('gromver.platform', 'Widgets'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Widget\'s Settings'), 'url' => ['/grom/widget/default/index']]
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Widget\'s Settings'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
             ]
         ];
     }

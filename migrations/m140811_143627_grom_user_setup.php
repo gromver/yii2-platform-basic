@@ -1,6 +1,6 @@
 <?php
 
-use gromver\platform\basic\user\models\User;
+use gromver\platform\basic\modules\user\models\User;
 use yii\db\Migration;
 
 class m140811_143627_grom_user_setup extends Migration

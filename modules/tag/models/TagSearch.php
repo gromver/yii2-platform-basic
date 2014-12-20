@@ -7,14 +7,14 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\tag\models;
+namespace gromver\platform\basic\modules\tag\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class TagSearch represents the model behind the search form about `gromver\platform\basic\tag\models\Tag`.
+ * Class TagSearch represents the model behind the search form about `gromver\platform\basic\modules\tag\models\Tag`.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

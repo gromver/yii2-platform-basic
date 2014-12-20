@@ -7,12 +7,12 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\widget\controllers;
+namespace gromver\platform\basic\modules\widget\controllers\backend;
 
 use gromver\models\ObjectModel;
 use gromver\widgets\ModalIFrame;
-use gromver\platform\basic\widget\models\WidgetConfig;
-use gromver\platform\basic\widget\models\WidgetConfigSearch;
+use gromver\platform\basic\modules\widget\models\WidgetConfig;
+use gromver\platform\basic\modules\widget\models\WidgetConfigSearch;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -29,6 +29,8 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [
@@ -157,39 +159,42 @@ class DefaultController extends Controller
 
     public function actionConfigure($modal=null)
     {
-        if (!($widget_id = Yii::$app->request->getBodyParam('widget_id')))
-            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget ID isn't specified."));
+        if(!($widget_id = Yii::$app->request->getBodyParam('widget_id')))
+            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget ID isn't specified"));
 
-        if (!($widget_class = Yii::$app->request->getBodyParam('widget_class')))
-            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Class isn't specified."));
+        if(!($widget_class = Yii::$app->request->getBodyParam('widget_class')))
+            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Class isn't specified"));
 
-        if (($widget_context = Yii::$app->request->getBodyParam('widget_context'))===null)
-            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Context isn't specified."));
+        if(($widget_context = Yii::$app->request->getBodyParam('widget_context'))===null)
+            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Context isn't specified"));
 
         $selected_context = Yii::$app->request->getBodyParam('selected_context', $widget_context);
 
         $task = Yii::$app->request->getBodyParam('task');
 
-        if (($url = Yii::$app->request->getBodyParam('url'))===null)
-            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget page url isn't specified."));
+        if(($url = Yii::$app->request->getBodyParam('url'))===null)
+            throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget page url isn't specified"));
         //$url = Yii::$app->request->getBodyParam('url', Yii::$app->request->getReferrer());
 
-        if ($task == 'delete') {
-            if(Yii::$app->request->getBodyParam('bulk-method')) {
+        if ($task=='delete') {
+            if (Yii::$app->request->getBodyParam('bulk-method')) {
                 foreach (WidgetConfig::find()->where('widget_id=:widget_id AND context>=:context AND language=:language', [
                     ':widget_id' => $widget_id,
                     ':context' => $selected_context,
                     ':language' => Yii::$app->language
                 ])->each() as $configModel) {
-                    /** @var WidgetConfig $configModel */
                     $configModel->delete();
                 }
             } elseif ($configModel = WidgetConfig::findOne([
-                'widget_id' => $widget_id,
-                'context' => $selected_context,
+                'widget_id'=>$widget_id,
+                'context'=>$selected_context,
                 'language' => Yii::$app->language
             ])) {
                 $configModel->delete();
+            }
+
+            if ($modal) {
+                ModalIFrame::refreshPage();
             }
         }
 
@@ -201,13 +206,13 @@ class DefaultController extends Controller
 
         $model = new ObjectModel($widget);
 
-        if (($task=='save' || $task=='refresh') && $model->load(Yii::$app->request->post())) {
+        if (($task == 'save' || $task == 'refresh') && $model->load(Yii::$app->request->post())) {
             if ($model->validate() && $task=='save') {
                 $configModel = WidgetConfig::findOne([
                     'widget_id' => $widget_id,
                     'context' => $selected_context,
                     'language' => Yii::$app->language
-                ]) or $configModel = new WidgetConfig();
+                ]) or $configModel = new WidgetConfig;
 
                 $configModel->loadDefaultValues();
                 $configModel->widget_id = $widget_id;
@@ -224,7 +229,7 @@ class DefaultController extends Controller
                         ':context' => $selected_context,
                         ':language' => Yii::$app->language
                     ])->each() as $configModel) {
-                        /** @var WidgetConfig $configModel */
+                        /** @var $configModel WidgetConfig */
                         $configModel->delete();
                     }
                 }
@@ -237,7 +242,8 @@ class DefaultController extends Controller
             }
         }
 
-        if ($modal) {
+        if($modal) {
+            $this->layout = null;
             Yii::$app->grom->layout = 'modal';
         }
 

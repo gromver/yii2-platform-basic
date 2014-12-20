@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\widgets;
 
 use gromver\platform\basic\assets\CkeditorHighlightAsset;
-use gromver\platform\basic\page\models\Page;
+use gromver\platform\basic\modules\page\models\Page;
 use yii\base\InvalidConfigException;
 use Yii;
 
@@ -24,7 +24,7 @@ class PageView extends Widget {
      * Page model or PageId or PageId:PageAlias
      * @var Page|string
      * @type modal
-     * @url /grom/default/select-page
+     * @url /grom/frontend/default/select-page
      * @translation gromver.platform
      */
     public $page;
@@ -68,12 +68,12 @@ class PageView extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/page/default/update', 'id' => $this->page->id, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/page/backend/default/update', 'id' => $this->page->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Page')]
             ],
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/page/default/index']),
+                'url' => ['grom/page/backend/default/index'],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Pages list'), 'target' => '_blank']
             ],

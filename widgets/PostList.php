@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\news\models\Post;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\Post;
 use yii\data\ActiveDataProvider;
 use Yii;
 
@@ -24,7 +24,7 @@ class PostList extends Widget {
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
      * @type modal
-     * @url /grom/default/select-category
+     * @url /grom/frontend/default/select-category
      * @translation gromver.platform
      */
     public $category;
@@ -109,12 +109,12 @@ class PostList extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/post/create', 'category_id' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/news/backend/post/create', 'category_id' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Post')]
             ],
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/post/index', 'PostSearch' => ['category_id' => ($this->category ? $this->category->id : null), 'language' => $this->language]]),
+                'url' => ['grom/news/backend/post/index', 'PostSearch' => ['category_id' => ($this->category ? $this->category->id : null), 'language' => $this->language]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Posts list'), 'target' => '_blank']
             ],

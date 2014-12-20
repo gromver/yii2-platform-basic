@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\news\models\Category;
+use gromver\platform\basic\modules\news\models\Category;
 use yii\data\ActiveDataProvider;
 use Yii;
 
@@ -23,7 +23,7 @@ class CategoryList extends Widget {
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
      * @type modal
-     * @url /grom/default/select-category
+     * @url /grom/frontend/default/select-category
      * @translation gromver.platform
      */
     public $category;
@@ -89,12 +89,12 @@ class CategoryList extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/category/create', 'parentId' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/news/backend/category/create', 'parentId' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Category')]
             ],
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/category/index', 'CategorySearch' => ['parent_id' => $this->category ? $this->category->id : null]]),
+                'url' => ['grom/news/backend/category/index', 'CategorySearch' => ['parent_id' => $this->category ? $this->category->id : null]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Categories list'), 'target' => '_blank']
             ],

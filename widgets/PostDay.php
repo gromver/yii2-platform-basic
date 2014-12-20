@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\news\models\Post;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\Post;
 use yii\data\ActiveDataProvider;
 use Yii;
 
@@ -23,7 +23,7 @@ class PostDay extends Widget {
     /**
      * @var Category|string
      * @type modal
-     * @url /grom/default/select-category
+     * @url /grom/frontend/default/select-category
      * @translation gromver.platform
      */
     public $category;

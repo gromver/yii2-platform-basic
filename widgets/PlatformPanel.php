@@ -17,7 +17,7 @@ use yii\bootstrap\Widget;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class PlatformPanel extends Widget {
-    public $layout = 'platform/panelDefault';
+    public $layout = 'platform/panelFrontend';
 
     public function run()
     {

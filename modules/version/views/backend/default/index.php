@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\version\models\VersionSearch */
+/* @var $searchModel gromver\platform\basic\modules\version\models\VersionSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Version Manager');
@@ -59,14 +59,14 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'created_by',
                 'value' => function($model) {
-                        /** $model \gromver\platform\basic\version\models\Version */
+                        /** $model \gromver\platform\basic\modules\version\models\Version */
                         return $model->user ? $model->user->username : $model->created_by;
                     }
             ],
             [
                 'attribute' => 'keep_forever',
                 'value'=>function($model) {
-                        /** $model \gromver\platform\basic\version\models\Version */
+                        /** $model \gromver\platform\basic\modules\version\models\Version */
                         return Html::a($model->keep_forever ? Yii::t('gromver.platform', 'Yes') . ' <small class="glyphicon glyphicon-lock"></small>' : Yii::t('gromver.platform', 'No'), ['keep-forever', 'id' => $model->id], [
                             'class'=>'btn btn-xs btn-default active btn-keep-forever',
                             'data-method' => 'post',

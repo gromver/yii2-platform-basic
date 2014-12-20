@@ -7,13 +7,13 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\news\components;
+namespace gromver\platform\basic\modules\news\components;
 
 use gromver\platform\basic\components\MenuRouter;
-use gromver\platform\basic\news\models\Category;
-use gromver\platform\basic\menu\models\MenuItem;
-use gromver\platform\basic\news\models\Post;
-use gromver\platform\basic\tag\models\Tag;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\modules\tag\models\Tag;
 
 /**
  * Class MenuRouterNews

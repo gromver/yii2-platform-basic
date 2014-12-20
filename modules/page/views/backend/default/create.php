@@ -4,8 +4,8 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\page\models\Page */
-/* @var $sourceModel gromver\platform\basic\page\models\Page */
+/* @var $model gromver\platform\basic\modules\page\models\Page */
+/* @var $sourceModel gromver\platform\basic\modules\page\models\Page */
 
 $this->title = Yii::t('gromver.platform', 'Add Page');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Pages'), 'url' => ['index']];

@@ -7,11 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\version\controllers;
+namespace gromver\platform\basic\modules\version\controllers\backend;
 
 use gromver\widgets\ModalIFrame;
-use gromver\platform\basic\version\models\Version;
-use gromver\platform\basic\version\models\VersionSearch;
+use gromver\platform\basic\modules\version\models\Version;
+use gromver\platform\basic\modules\version\models\VersionSearch;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -28,6 +28,8 @@ use Yii;
  */
 class DefaultController extends Controller
 {
+    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
+
     public function behaviors()
     {
         return [

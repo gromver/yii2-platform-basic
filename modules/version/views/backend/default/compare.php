@@ -5,8 +5,8 @@ use yii\helpers\ArrayHelper;
 
 /**
  * @var yii\web\View $this
- * @var \gromver\platform\basic\version\models\Version $a
- * @var \gromver\platform\basic\version\models\Version $b
+ * @var \gromver\platform\basic\modules\version\models\Version $a
+ * @var \gromver\platform\basic\modules\version\models\Version $b
  */
 
 $this->title = Yii::t('gromver.platform', 'Comparison of objects');
@@ -18,7 +18,7 @@ $dummyModel = new $a->item_class;
 $aData = $a->getVersionData();
 $bData = $b->getVersionData();
 
-\gromver\platform\basic\backend\modules\version\assets\TextDiffAsset::register($this);
+\gromver\platform\basic\modules\version\assets\TextDiffAsset::register($this);
 ?>
 <div class="history-view">
 

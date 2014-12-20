@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\menu\models;
+namespace gromver\platform\basic\modules\menu\models;
 
 use yii\base\Model;
 use Yii;

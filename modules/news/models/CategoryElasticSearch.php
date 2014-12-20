@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\news\models;
+namespace gromver\platform\basic\modules\news\models;
 
-use gromver\platform\basic\elasticsearch\models\ActiveDocument;
+use gromver\platform\basic\modules\elasticsearch\models\ActiveDocument;
 
 /**
  * Class Category

@@ -20,6 +20,7 @@ use Yii;
 class Module extends \yii\base\Module implements DesktopInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\media\controllers';
+    public $defaultRoute = 'backend/default';
     /**
      * @var array elFinder manager controller config
      * @see \mihaildev\elfinder\Controller
@@ -67,8 +68,8 @@ class Module extends \yii\base\Module implements DesktopInterface
     {
         return [
             'label' => Yii::t('gromver.platform', 'Media'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Media Manager'), 'url' => ['/grom/media/default/index']]
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Media Manager'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
             ]
         ];
     }

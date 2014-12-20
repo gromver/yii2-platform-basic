@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\tag\models\TagSearch */
+/* @var $model gromver\platform\basic\modules\tag\models\TagSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

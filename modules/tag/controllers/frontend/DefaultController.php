@@ -7,9 +7,9 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\frontend\modules\tag\controllers;
+namespace gromver\platform\basic\modules\tag\controllers\frontend;
 
-use gromver\platform\basic\tag\models\Tag;
+use gromver\platform\basic\modules\tag\models\Tag;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;

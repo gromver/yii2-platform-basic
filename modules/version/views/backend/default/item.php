@@ -107,7 +107,7 @@ JS
             [
                 'attribute' => 'created_at',
                 'value' => function($model) use($itemVersionHash) {
-                        /** $model \gromver\platform\basic\version\models\Version */
+                        /** $model \gromver\platform\basic\modules\version\models\Version */
                         return date('d.m.Y H:i', $model->created_at).($itemVersionHash == $model->version_hash ? ' <small class="glyphicon glyphicon-star"></small>' : '');
                     },
                 'format' => 'raw'
@@ -116,7 +116,7 @@ JS
             [
                 'attribute' => 'keep_forever',
                 'value' => function($model) {
-                        /** $model \gromver\platform\basic\version\models\Version */
+                        /** $model \gromver\platform\basic\modules\version\models\Version */
                         return Html::a($model->keep_forever ? Yii::t('gromver.platform', 'Yes') . ' <small class="glyphicon glyphicon-lock"></small>' : Yii::t('gromver.platform', 'No'), ['keep-forever', 'id' => $model->id], ['class' => 'btn btn-xs btn-default active btn-keep-forever', 'data-method' => 'post']);
                     },
                 'format' => 'raw'
@@ -124,7 +124,7 @@ JS
 			[
                 'attribute' => 'created_by',
                 'value' => function($model) {
-                        /** $model \gromver\platform\basic\version\models\Version */
+                        /** $model \gromver\platform\basic\modules\version\models\Version */
                         return $model->user->username;
                     }
             ],
@@ -133,7 +133,7 @@ JS
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
                     'restore' => function($url, $model) {
-                            /** $model \gromver\platform\basic\version\models\Version */
+                            /** $model \gromver\platform\basic\modules\version\models\Version */
                             return Html::a('<i class="glyphicon glyphicon-open"></i>', ['restore', 'id' => $model->id, 'modal' => 1], [
                                 'title' => Yii::t('gromver.platform', 'Restore'),
                                 'data-method' => 'post',

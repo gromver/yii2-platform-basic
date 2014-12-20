@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\news\models;
+namespace gromver\platform\basic\modules\news\models;
 
 use yii\db\ActiveQuery;
 use yii\db\Query;

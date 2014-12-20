@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\version\models\VersionSearch */
+/* @var $model gromver\platform\basic\modules\version\models\VersionSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 

@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\menu\models\MenuItem;
-use gromver\platform\basic\common\models\Table;
+use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\modules\main\models\Table;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -26,7 +26,7 @@ class Menu extends Widget {
      * MenuTypeId or MenuTypeId:MenuTypeAlias
      * @var string
      * @type modal
-     * @url /grom/default/select-menu
+     * @url /grom/frontend/default/select-menu
      * @translation gromver.platform
      * @label Menu Type
      */
@@ -137,12 +137,12 @@ class Menu extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/menu/item/create', 'menu_type_id' => (int)$this->type, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/menu/backend/item/create', 'menu_type_id' => (int)$this->type, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Menu Item')]
             ],
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/menu/item/index', 'MenuItemSearch' => ['menu_type_id' => (int)$this->type, 'language' => $this->language]]),
+                'url' => ['grom/menu/backend/item/index', 'MenuItemSearch' => ['menu_type_id' => (int)$this->type, 'language' => $this->language]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Menu Items list'), 'target' => '_blank']
             ],

@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\common\models\elasticsearch\ActiveDocument;
-use gromver\platform\basic\common\models\elasticsearch\Search;
+use gromver\platform\basic\modules\elasticsearch\models\ActiveDocument;
+use gromver\platform\basic\modules\elasticsearch\models\ElasticSearch;
 use Yii;
 use yii\caching\Cache;
 use yii\data\ActiveDataProvider;
@@ -106,12 +106,12 @@ class SearchResults extends Widget {
             $this->types = ActiveDocument::registeredTypes();
         }
 
-        Search::getDb()->open();    //проверяем коннект к elasticSearch
+        ElasticSearch::getDb()->open();    //проверяем коннект к elasticSearch
     }
 
     protected function launch()
     {
-        $query = Search::find();
+        $query = ElasticSearch::find();
         $query->query = [
             'filtered' => [
                 'filter' => [

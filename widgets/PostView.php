@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\widgets;
 
 use gromver\platform\basic\assets\CkeditorHighlightAsset;
-use gromver\platform\basic\news\models\Post;
+use gromver\platform\basic\modules\news\models\Post;
 use yii\base\InvalidConfigException;
 use Yii;
 
@@ -24,7 +24,7 @@ class PostView extends Widget {
      * Post model or PostId or PostId:PageAlias
      * @var Post|string
      * @type modal
-     * @url /grom/default/select-post
+     * @url /grom/frontend/default/select-post
      * @translation gromver.platform
      */
     public $post;
@@ -69,7 +69,7 @@ class PostView extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/news/post/update', 'id' => $this->post->id, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/news/backend/post/update', 'id' => $this->post->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Post')]
             ],

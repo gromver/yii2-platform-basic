@@ -3,7 +3,7 @@
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
  * @var $itemLayout string
- * @var $category null|\gromver\platform\basic\news\models\Category
+ * @var $category null|\gromver\platform\basic\modules\news\models\Category
  * @var $listViewOptions array
  */
 use kartik\icons\Icon;

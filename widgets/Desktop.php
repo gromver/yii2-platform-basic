@@ -51,7 +51,7 @@ class Desktop extends Widget
      * - options
      * - template - itemTemplate
      * - headerTemplate
-     * - links:
+     * - items:
      *    - label
      *    - url
      *    - icon
@@ -229,7 +229,7 @@ class Desktop extends Widget
                 ]);
         }
 
-        foreach ($item['links'] as $link) {
+        foreach ($item['items'] as $link) {
             $template = ArrayHelper::getValue($link, 'template', $this->linkTemplate);
 
             $linkContent = strtr($template, [
@@ -260,7 +260,7 @@ class Desktop extends Widget
                 $item['icon'] = '';
             }
 
-            foreach ($item['links'] as &$link) {
+            foreach ($item['items'] as &$link) {
                 if (!isset($link['url'])) {
                     $link['url'] = '#';
                 }

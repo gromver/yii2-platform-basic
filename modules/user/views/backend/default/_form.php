@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\user\models\User */
+/* @var $model gromver\platform\basic\modules\user\models\User */
 /* @var $form yii\bootstrap\ActiveForm */
 ?>
 
@@ -18,7 +18,7 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => 128, 'disabled' => ($model->scenario !== 'create' ? true : false)]) ?>
 
-    <?= $form->field($model, 'status')->dropDownList(\gromver\platform\basic\user\models\User::statusLabels()) ?>
+    <?= $form->field($model, 'status')->dropDownList(\gromver\platform\basic\modules\user\models\User::statusLabels()) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['autocomplete'=>'off']) ?>
 

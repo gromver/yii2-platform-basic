@@ -4,8 +4,8 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\tag\models\Tag */
-/* @var $sourceModel gromver\platform\basic\tag\models\Tag */
+/* @var $model gromver\platform\basic\modules\tag\models\Tag */
+/* @var $sourceModel gromver\platform\basic\modules\tag\models\Tag */
 
 $this->title = Yii::t('gromver.platform', 'Add Tag');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['index']];

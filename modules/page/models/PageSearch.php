@@ -7,14 +7,14 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\page\models;
+namespace gromver\platform\basic\modules\page\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * Class PageSearch represents the model behind the search form about `gromver\platform\basic\page\models\Page`.
+ * Class PageSearch represents the model behind the search form about `gromver\platform\basic\modules\page\models\Page`.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

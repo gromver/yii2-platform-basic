@@ -7,12 +7,12 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\tag;
+namespace gromver\platform\basic\modules\tag;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
 use gromver\platform\basic\interfaces\MenuRouterInterface;
-use gromver\platform\frontend\modules\tag\components\MenuRouterTag;
+use gromver\platform\basic\modules\tag\components\MenuRouterTag;
 use Yii;
 
 /**
@@ -33,8 +33,8 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
     {
         return [
             'label' => Yii::t('gromver.platform', 'Tags'),
-            'links' => [
-                ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['/grom/tag/default/index']],
+            'items' => [
+                ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
             ]
         ];
     }
@@ -47,7 +47,7 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
         return [
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => 'grom/tag/default/index'],
+                ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/index'],
             ]
         ];
     }

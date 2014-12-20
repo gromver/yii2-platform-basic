@@ -16,7 +16,7 @@ class m140811_143606_grom_create_tables extends Migration
             'password_reset_token' => Schema::TYPE_STRING . '(32)',
             'auth_key' => Schema::TYPE_STRING . '(128)',
             'params' => Schema::TYPE_TEXT,
-            'status' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT ' . \gromver\platform\basic\user\models\User::STATUS_ACTIVE,
+            'status' => Schema::TYPE_INTEGER . ' NOT NULL DEFAULT ' . \gromver\platform\basic\modules\user\models\User::STATUS_ACTIVE,
             'created_at' => Schema::TYPE_INTEGER . ' NOT NULL',
             'updated_at' => Schema::TYPE_INTEGER,
             'deleted_at' => Schema::TYPE_INTEGER,

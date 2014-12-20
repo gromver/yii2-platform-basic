@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\menu\models\MenuItem;
+use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\bootstrap\Widget;
@@ -119,8 +119,7 @@ class MenuItemRoutes extends Widget
     }
 
     /**
-     * Recursively renders the menu items (without the container tag).
-     * @param array $items the menu items to be rendered recursively
+     * @param int $columns
      * @return string the rendering result
      */
     protected function renderItems($columns = null)
@@ -212,9 +211,6 @@ class MenuItemRoutes extends Widget
     }
 
     /**
-     * Normalizes the [[items]] property to remove invisible items and activate certain items.
-     * @param array $items the items to be normalized.
-     * @param boolean $active whether there is an active child menu item.
      * @return array the normalized menu items
      */
     protected function normalizeItems()

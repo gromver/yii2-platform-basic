@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\tag\models;
+namespace gromver\platform\basic\modules\tag\models;
 
 use yii\db\ActiveRecord;
 

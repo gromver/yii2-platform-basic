@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\backend\modules\auth;
+namespace gromver\platform\basic\modules\auth;
 
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
@@ -40,7 +40,7 @@ class Module extends \yii\base\Module implements MenuItemRoutesInterface, Deskto
     {
         return [
             'label' => Yii::t('gromver.platform', 'Auth'),
-            'links' => [
+            'items' => [
                 ['label' => Yii::t('gromver.platform', 'Login'), 'route' => 'grom/auth/default/login'],
                 ['label' => Yii::t('gromver.platform', 'Signup'), 'route' => 'grom/auth/default/signup'],
                 ['label' => Yii::t('gromver.platform', 'Request password reset token'), 'route' => 'grom/auth/default/request-password-reset-token'],
@@ -56,7 +56,7 @@ class Module extends \yii\base\Module implements MenuItemRoutesInterface, Deskto
     {
         return [
             'label' => Yii::t('gromver.platform', 'Auth'),
-            'links' => [
+            'items' => [
                 ['label' => Yii::t('gromver.platform', 'Login'), 'url' => ['/grom/auth/default/login']],
                 ['label' => Yii::t('gromver.platform', 'Password Reset'), 'url' => ['/grom/auth/default/request-password-reset']],
             ]

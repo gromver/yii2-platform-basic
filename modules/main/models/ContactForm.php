@@ -1,6 +1,6 @@
 <?php
 
-namespace gromver\platform\basic\main\models;
+namespace gromver\platform\basic\modules\main\models;
 
 use Yii;
 use yii\base\Model;

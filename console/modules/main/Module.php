@@ -25,7 +25,7 @@ use yii\helpers\ArrayHelper;
  */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public $paramsPath = '@common/config/grom';
+    public $paramsPath = '@app/config/grom';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.

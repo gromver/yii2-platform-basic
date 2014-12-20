@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $user gromver\platform\basic\user\models\User */
+/* @var $user gromver\platform\basic\modules\user\models\User */
 /* @var $model gromver\models\ObjectModel */
 
 $this->title = Yii::t('gromver.platform', 'Update User Params: {name} (ID: {id})', [

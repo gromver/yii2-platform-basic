@@ -87,7 +87,7 @@ class UploadBehavior extends Behavior {
     /**
      * @param $event \yii\base\ModelEvent
      */
-    public function afterSave($event)
+    public function afterSave()
     {
         if ($this->_ignoreUpdateEvents) return;
 

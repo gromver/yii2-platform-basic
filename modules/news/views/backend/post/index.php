@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\news\models\PostSearch */
+/* @var $searchModel gromver\platform\basic\modules\news\models\PostSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Posts');
@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'language',
                 'width' => '80px',
                 'value' => function($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return \gromver\platform\basic\widgets\Translator::widget(['model' => $model]);
                     },
                 'format' => 'raw',
@@ -52,11 +52,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'category_id',
                 'width' => '80px',
                 'value' => function($model){
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return @$model->category->title;
                     },
-                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\news\models\Category::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
-                    /** @var $model \gromver\platform\basic\news\models\Category */
+                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\news\models\Category::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
+                    /** @var $model \gromver\platform\basic\modules\news\models\Category */
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title;
                     })
             ],
@@ -65,10 +65,10 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'status',
                 'value' => function ($model, $index, $widget) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
-                        return $model->status === \gromver\platform\basic\news\models\Post::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
+                        return $model->status === \gromver\platform\basic\modules\news\models\Post::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
-                'filter' => \gromver\platform\basic\news\models\Post::statusLabels(),
+                'filter' => \gromver\platform\basic\modules\news\models\Post::statusLabels(),
                 'format' => 'raw',
                 'width'=>'80px'
             ],
@@ -87,12 +87,12 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tags',
                 'value' => function($model){
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
@@ -102,7 +102,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'ordering',
                 'value' => function($model) {
-                        /** @var $model \gromver\platform\basic\news\models\Post */
+                        /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);
                     },
                 'format' => 'raw',

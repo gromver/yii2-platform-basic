@@ -3,9 +3,9 @@
  * @var $this yii\web\View
  * @var $dataProvider yii\data\ActiveDataProvider
  * @var $itemLayout string
- * @var $prevDayPost null|\gromver\platform\basic\news\models\Post
- * @var $nextDayPost null|\gromver\platform\basic\news\models\Post
- * @var $category null|\gromver\platform\basic\news\models\Category
+ * @var $prevDayPost null|\gromver\platform\basic\modules\news\models\Post
+ * @var $nextDayPost null|\gromver\platform\basic\modules\news\models\Post
+ * @var $category null|\gromver\platform\basic\modules\news\models\Category
  * @var $year string
  * @var $month string
  * @var $day string

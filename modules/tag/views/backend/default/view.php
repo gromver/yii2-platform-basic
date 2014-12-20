@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
-/* @var $model gromver\platform\basic\tag\models\Tag */
+/* @var $model gromver\platform\basic\modules\tag\models\Tag */
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['index']];

@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
-use gromver\platform\basic\tag\models\Tag;
+use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
@@ -24,7 +24,7 @@ class TagItems extends Widget {
      * Tag model or TagId
      * @var Tag|string
      * @type modal
-     * @url /grom/default/select-tag
+     * @url /grom/frontend/default/select-tag
      * @translation gromver.platform
      */
     public $tag;
@@ -75,7 +75,7 @@ class TagItems extends Widget {
     {
         return [
             [
-                'url' => Yii::$app->urlManagerBackend->createUrl(['grom/tag/default/update', 'id' => $this->tag->id, 'backUrl' => $this->getBackUrl()]),
+                'url' => ['grom/tag/backend/default/update', 'id' => $this->tag->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Tag')]
             ],

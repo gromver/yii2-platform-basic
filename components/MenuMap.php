@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\components;
 
-use gromver\platform\basic\menu\models\MenuItem;
+use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Object;

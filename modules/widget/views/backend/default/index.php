@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel gromver\platform\basic\widget\models\WidgetConfigSearch */
+/* @var $searchModel gromver\platform\basic\modules\widget\models\WidgetConfigSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('gromver.platform', 'Widget\'s Settings');

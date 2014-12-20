@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\components;
 
 use gromver\modulequery\ModuleQuery;
-use gromver\platform\basic\menu\models\MenuItem;
+use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;

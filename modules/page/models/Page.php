@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\page\models;
+namespace gromver\platform\basic\modules\page\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\TaggableBehavior;
@@ -44,7 +44,7 @@ use yii\helpers\Inflector;
  * @property string $lock
  *
  * @property Page[] $translations
- * @property \gromver\platform\basic\tag\models\Tag[] $tags
+ * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
 class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface
 {
