@@ -29,7 +29,7 @@ Icon::map($this, Icon::EL);
         ]) ?>
     </div>
     <div class="col-sm-8">
-        <?= \yii\helpers\Html::a(Icon::show('rss', [], Icon::EL), $category ? ['/grom/news/post/rss', 'category_id' => $category->id] : ['/grom/news/post/rss'], ['class' => 'btn btn-warning btn-xs pull-right']) ?>
+        <?= \yii\helpers\Html::a(Icon::show('rss', [], Icon::EL), $category ? ['/grom/news/frontend/post/rss', 'category_id' => $category->id] : ['/grom/news/post/rss'], ['class' => 'btn btn-warning btn-xs pull-right']) ?>
 
         <?= \yii\widgets\ListView::widget(array_merge([
             'dataProvider' => $dataProvider,

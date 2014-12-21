@@ -11,7 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 use kartik\helpers\Html;
 use kartik\widgets\FileInput as KartikFileInput;
-use kartik\widgets\FileInputAsset;
+use kartik\file\FileInputAsset;
 use yii\widgets\InputWidget;
 
 /**

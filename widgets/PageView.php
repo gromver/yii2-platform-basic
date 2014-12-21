@@ -68,12 +68,12 @@ class PageView extends Widget {
     {
         return [
             [
-                'url' => ['grom/page/backend/default/update', 'id' => $this->page->id, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/page/backend/default/update', 'id' => $this->page->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Page')]
             ],
             [
-                'url' => ['grom/page/backend/default/index'],
+                'url' => ['/grom/page/backend/default/index'],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Pages list'), 'target' => '_blank']
             ],

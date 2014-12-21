@@ -126,9 +126,9 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         return [
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
-                ['label' => Yii::t('gromver.platform', 'System Configuration'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/params']],
-                ['label' => Yii::t('gromver.platform', 'Flush Cache'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/flush-cache']],
+                ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/grom/backend/default/index']],
+                ['label' => Yii::t('gromver.platform', 'System Configuration'), 'url' => ['/grom/backend/default/params']],
+                ['label' => Yii::t('gromver.platform', 'Flush Cache'), 'url' => ['/grom/backend/default/flush-cache']],
             ]
         ];
     }
@@ -141,8 +141,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         return [
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
-                //['label' => Yii::t('gromver.platform', 'Sitemap'), 'route' => 'grom/default/sitemap'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/],
-                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/contact'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/]
+                //['label' => Yii::t('gromver.platform', 'Sitemap'), 'route' => 'grom/frontend/default/sitemap'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/],
+                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => 'grom/frontend/default/contact'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/]
             ]
         ];
     }

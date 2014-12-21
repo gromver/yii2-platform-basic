@@ -169,7 +169,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
                     ]
                 ],
                 'options' => [
-                    'basePath' => '@frontend/web',
+                    'basePath' => '@app/web',
                     'baseUrl' => '',
                     'savePath'=>'upload/posts'
                 ]

@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\modules\main\models;
 
 use yii\base\Object;
+use Yii;
 
 /**
  * Class CmsParams
@@ -37,10 +38,32 @@ class PlatformParams extends  Object
      */
     public $supportEmail;
     /**
-     * @before <h3 class="col-sm-12">Elasticsearch</h3>
-     * @pattern #^\w*$#
+     * @before <h3 class="col-sm-12">Metadata</h3>
      * @translation gromver.platform
-     * @label Index
+     * @label Meta description
      */
-    public $elasticsearchIndex;
+    public $description;
+    /**
+     * @translation gromver.platform
+     * @label Meta keywords
+     */
+    public $keywords;
+    /**
+     * @type list
+     * @items robots
+     * @translation gromver.platform
+     * @label Robots
+     */
+    public $robots;
+
+    public static function robots()
+    {
+        return [
+            '' => Yii::t('gromver.platform', 'Empty'),
+            'index, follow' => 'Index, Follow',
+            'noindex, follow' => 'No index, follow',
+            'index, nofollow' => 'Index, No follow',
+            'noindex, nofollow' => 'No index, no follow'
+        ];
+    }
 }

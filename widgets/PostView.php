@@ -69,7 +69,7 @@ class PostView extends Widget {
     {
         return [
             [
-                'url' => ['grom/news/backend/post/update', 'id' => $this->post->id, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/news/backend/post/update', 'id' => $this->post->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Post')]
             ],

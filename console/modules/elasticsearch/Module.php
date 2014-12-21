@@ -7,15 +7,11 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\modules\elasticsearch;
+namespace gromver\platform\basic\console\modules\elasticsearch;
 
-use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\modules\elasticsearch\models\ActiveDocument;
-use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
-use gromver\platform\basic\interfaces\MenuRouterInterface;
 use gromver\platform\basic\interfaces\BootstrapInterface;
-use gromver\platform\basic\modules\elasticsearch\components\MenuRouterSearch;
+use gromver\modulequery\ModuleQuery;
 use Yii;
 use yii\base\InvalidConfigException;
 
@@ -25,11 +21,8 @@ use yii\base\InvalidConfigException;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements BootstrapInterface, DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface
+class Module extends \yii\base\Module implements BootstrapInterface
 {
-    public $controllerNamespace = 'gromver\platform\basic\modules\elasticsearch\controllers';
-    public $defaultRoute = 'frontend/default';
-    public $desktopOrder = 6;
     public $elasticsearchIndex;
     public $documentClasses = [
         'gromver\platform\basic\modules\page\models\PageElasticSearch',
@@ -53,39 +46,5 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         $this->documentClasses = array_merge($this->documentClasses, ModuleQuery::instance()->implement('gromver\platform\basic\interfaces\ElasticSearchInterface')->fetch('getElasticSearchDocumentClasses', [], ModuleQuery::AGGREGATE_MERGE));
         ActiveDocument::watch($this->documentClasses);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getDesktopItem()
-    {
-        return [
-            'label' => Yii::t('gromver.platform', 'Search'),
-            'items' => [
-                ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/grom/elasticsearch/backend/default/index']],
-            ]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMenuItemRoutes()
-    {
-        return [
-            'label' => Yii::t('gromver.platform', 'Search'),
-            'items' => [
-                ['label' => Yii::t('gromver.platform', 'Search'), 'route' =>  'grom/elasticsearch/frontend/default/index'],
-            ]
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getMenuRouter()
-    {
-        return MenuRouterSearch::className();
     }
 }

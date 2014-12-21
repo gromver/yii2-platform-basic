@@ -35,8 +35,8 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
         return [
             'label' => Yii::t('gromver.platform', 'News'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Categories'), 'url' => ['/' . $this->getUniqueId() . '/backend/category/index']],
-                ['label' => Yii::t('gromver.platform', 'Posts'), 'url' => ['/' . $this->getUniqueId() . '/backend/post/index']],
+                ['label' => Yii::t('gromver.platform', 'Categories'), 'url' => ['/grom/news/backend/category/index']],
+                ['label' => Yii::t('gromver.platform', 'Posts'), 'url' => ['/grom/news/backend/post/index']],
             ]
         ];
     }
@@ -49,9 +49,9 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
         return [
             'label' => Yii::t('gromver.platform', 'News'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Post View'), 'url' => ['/' . $this->getUniqueId() . '/backend/post/select']],
-                ['label' => Yii::t('gromver.platform', 'Category View'), 'url' => ['/' . $this->getUniqueId() . '/backend/category/select']],
-                ['label' => Yii::t('gromver.platform', 'All Posts'), 'route' => '/' . $this->getUniqueId() . '/frontend/post/index'],
+                ['label' => Yii::t('gromver.platform', 'Post View'), 'url' => ['/grom/news/backend/post/select']],
+                ['label' => Yii::t('gromver.platform', 'Category View'), 'url' => ['/grom/news/backend/category/select']],
+                ['label' => Yii::t('gromver.platform', 'All Posts'), 'route' => 'grom/news/frontend/post/index'],
             ]
         ];
     }

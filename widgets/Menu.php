@@ -137,12 +137,12 @@ class Menu extends Widget {
     {
         return [
             [
-                'url' => ['grom/menu/backend/item/create', 'menu_type_id' => (int)$this->type, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/menu/backend/item/create', 'menu_type_id' => (int)$this->type, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Menu Item')]
             ],
             [
-                'url' => ['grom/menu/backend/item/index', 'MenuItemSearch' => ['menu_type_id' => (int)$this->type, 'language' => $this->language]],
+                'url' => ['/grom/menu/backend/item/index', 'MenuItemSearch' => ['menu_type_id' => (int)$this->type, 'language' => $this->language]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Menu Items list'), 'target' => '_blank']
             ],

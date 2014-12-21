@@ -122,6 +122,7 @@ class DefaultController extends Controller
     {
         $model = $this->findModel($id);
         if ($modal) {
+            $this->layout = null;
             Yii::$app->grom->layout = 'modal';
         }
 
@@ -178,6 +179,7 @@ class DefaultController extends Controller
 
     public function actionPreview($id)
     {
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('preview', [
@@ -187,6 +189,7 @@ class DefaultController extends Controller
 
     public function actionCompare($id1, $id2)
     {
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('compare', [
@@ -204,6 +207,7 @@ class DefaultController extends Controller
             'pagination' => false
         ]);
 
+        $this->layout = null;
         Yii::$app->grom->layout = 'modal';
 
         return $this->render('item', [

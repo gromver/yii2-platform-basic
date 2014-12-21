@@ -23,7 +23,7 @@ class MenuRouterTag extends MenuRouter {
     {
         return [
             [
-                'menuRoute' => 'grom/tag/default/index',
+                'menuRoute' => 'grom/tag/frontend/default/index',
                 'handler' => 'parseTagCloud'
             ],
         ];
@@ -36,7 +36,7 @@ class MenuRouterTag extends MenuRouter {
     {
         return [
             [
-                'requestRoute' => 'grom/tag/default/view',
+                'requestRoute' => 'grom/tag/frontend/default/view',
                 'requestParams' => ['id'],
                 'handler' => 'createTagItems'
             ],
@@ -46,15 +46,15 @@ class MenuRouterTag extends MenuRouter {
     public function parseTagCloud($requestInfo)
     {
         if (preg_match('/^\d+$/', $requestInfo->requestRoute)) {
-            return ['grom/tag/default/view', ['id' => $requestInfo->requestRoute]];
+            return ['grom/tag/frontend/default/view', ['id' => $requestInfo->requestRoute]];
         } else {
-            return ['grom/tag/default/view', ['id' => Tag::find()->select('id')->where(['alias' => $requestInfo->requestRoute])->scalar()]];
+            return ['grom/tag/frontend/default/view', ['id' => Tag::find()->select('id')->where(['alias' => $requestInfo->requestRoute])->scalar()]];
         }
     }
 
     public function createTagItems($requestInfo)
     {
-        if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/tag/default/index')) {
+        if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/tag/frontend/default/index')) {
             $path .= '/' . (isset($requestInfo->requestParams['alias']) ? $requestInfo->requestParams['alias'] : $requestInfo->requestParams['id']);
             unset($requestInfo->requestParams['id'], $requestInfo->requestParams['alias']);
             return MenuItem::toRoute($path, $requestInfo->requestParams);

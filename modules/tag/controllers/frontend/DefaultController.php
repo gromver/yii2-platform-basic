@@ -33,10 +33,10 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionPosts($id, $category_id = null)
+    public function actionPosts($tag_id, $category_id = null)
     {
         return $this->render('posts', [
-            'model' => $this->loadModel($id),
+            'model' => $this->loadModel($tag_id),
             'categoryId' => $category_id
         ]);
     }

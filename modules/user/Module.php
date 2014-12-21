@@ -34,7 +34,7 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
         return [
             'label' => Yii::t('gromver.platform', 'Users'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
+                ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['/grom/user/backend/default/index']]
             ]
         ];
     }
@@ -47,7 +47,7 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
         return [
             'label' => Yii::t('gromver.platform', 'Users'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'User Profile'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/update'],
+                ['label' => Yii::t('gromver.platform', 'User Profile'), 'route' => 'grom/user/frontend/default/update'],
             ]
         ];
     }

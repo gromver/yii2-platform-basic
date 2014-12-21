@@ -82,12 +82,12 @@ class TagCloud extends Widget {
     {
         return [
             [
-                'url' => ['grom/tag/backend/default/create', 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/tag/backend/default/create', 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Tag')]
             ],
             [
-                'url' => ['grom/tag/backend/default/index'],
+                'url' => ['/grom/tag/backend/default/index'],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Tags list'), 'target' => '_blank']
             ],

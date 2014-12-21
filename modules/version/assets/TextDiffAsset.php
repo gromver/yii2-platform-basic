@@ -8,6 +8,7 @@
  */
 
 namespace gromver\platform\basic\modules\version\assets;
+
 use yii\web\AssetBundle;
 
 /**
@@ -17,7 +18,7 @@ use yii\web\AssetBundle;
  */
 class TextDiffAsset extends AssetBundle
 {
-    public $sourcePath = '@gromver/platform/backend/modules/version/assets/PrettyTextDiff';
+    public $sourcePath = '@gromver/platform/basic/modules/version/assets/PrettyTextDiff';
     public $js = [
         'diff_match_patch.js',
         'jquery.pretty-text-diff.min.js',

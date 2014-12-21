@@ -9,7 +9,6 @@
 
 namespace gromver\platform\basic\modules\elasticsearch\models;
 
-
 use gromver\platform\basic\interfaces\ViewableInterface;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
@@ -32,7 +31,7 @@ class ActiveDocument extends ActiveRecord implements ViewableInterface {
         ];
     }
 
-    public static $index = 'grom';
+    public static $index;
 
     public static function index()
     {

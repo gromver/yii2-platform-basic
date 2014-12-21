@@ -9,7 +9,9 @@ class m140825_160749_grom_mapping extends Migration
     {
         $connection = \yii\elasticsearch\ActiveRecord::getDb();
 
-        $index = \gromver\platform\basic\common\models\elasticsearch\ActiveDocument::index();
+        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::index()) {
+            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::className() . '::index must be set.');
+        }
 
         if ($connection->createCommand()->indexExists($index)) {
             $connection->createCommand()->deleteIndex($index);
@@ -173,9 +175,9 @@ class m140825_160749_grom_mapping extends Migration
         echo "Index $index created.\n";
 
         $documents = [
-            'gromver\platform\basic\common\models\elasticsearch\Page',
-            'gromver\platform\basic\common\models\elasticsearch\Post',
-            'gromver\platform\basic\common\models\elasticsearch\Category',
+            'gromver\platform\basic\modules\page\models\PageElasticSearch',
+            'gromver\platform\basic\modules\news\models\PostElasticSearch',
+            'gromver\platform\basic\modules\news\models\CategoryElasticSearch',
         ];
 
         foreach ($documents as $documentClass) {
@@ -186,7 +188,7 @@ class m140825_160749_grom_mapping extends Migration
     }
 
     /**
-     * @param $documentClass \gromver\platform\basic\common\models\elasticsearch\ActiveDocument
+     * @param $documentClass \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument
      * @return int
      * @throws Exception
      */
@@ -195,7 +197,7 @@ class m140825_160749_grom_mapping extends Migration
         $bulk = '';
         /** @var \yii\db\ActiveRecord $modelClass */
         $modelClass = $documentClass::model();
-        /** @var \gromver\platform\basic\common\models\elasticsearch\ActiveDocument $document */
+        /** @var \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument $document */
         $document = new $documentClass;
         $query = $modelClass::find();
         //древовидные модели, не должны индексировать рутовый элемент
@@ -242,7 +244,9 @@ class m140825_160749_grom_mapping extends Migration
 
     public function down()
     {
-        $index = \gromver\platform\basic\common\models\elasticsearch\ActiveDocument::index();
+        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::index()) {
+            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::className() . '::index must be set.');
+        }
 
         \yii\elasticsearch\ActiveRecord::getDb()->createCommand()->deleteIndex($index);//->deleteAllIndexes();//
 

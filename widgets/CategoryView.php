@@ -54,7 +54,7 @@ class CategoryView extends Widget {
     {
         return [
             [
-                'url' => ['grom/news/backend/category/update', 'id' => $this->category->id, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/news/backend/category/update', 'id' => $this->category->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Category')]
             ],

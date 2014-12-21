@@ -80,7 +80,7 @@ use yii\bootstrap\ActiveForm;
                     'clientOptions' => [
                         'maxItems' => 'NaN'
                     ],
-                    'url' => ['/grom/tag/default/tag-list']
+                    'url' => ['/grom/tag/backend/default/tag-list']
                 ]) ?>
 
                 <?= $form->field($model, 'detail_image')->widget(\gromver\platform\basic\widgets\FileInput::classname(), [

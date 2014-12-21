@@ -69,7 +69,7 @@ class Module extends \yii\base\Module implements DesktopInterface
         return [
             'label' => Yii::t('gromver.platform', 'Media'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Media Manager'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
+                ['label' => Yii::t('gromver.platform', 'Media Manager'), 'url' => ['/grom/media/backend/default/index']]
             ]
         ];
     }

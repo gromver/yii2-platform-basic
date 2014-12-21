@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = Yii::t('gromver.platform', 'Update');
                 'size' => \yii\bootstrap\Modal::SIZE_LARGE,
             ],
             'buttonContent' => Html::a('<i class="glyphicon glyphicon-hdd"></i> ' . Yii::t('gromver.platform', 'Versions'),
-                ['/grom/version/default/item', 'item_id' => $model->id, 'item_class' => $model->className()], [
+                ['/grom/version/backend/default/item', 'item_id' => $model->id, 'item_class' => $model->className()], [
                     'class'=>'btn btn-default btn-sm',
                 ]),
         ]) ?>

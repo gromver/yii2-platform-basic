@@ -109,12 +109,12 @@ class PostList extends Widget {
     {
         return [
             [
-                'url' => ['grom/news/backend/post/create', 'category_id' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/news/backend/post/create', 'category_id' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Post')]
             ],
             [
-                'url' => ['grom/news/backend/post/index', 'PostSearch' => ['category_id' => ($this->category ? $this->category->id : null), 'language' => $this->language]],
+                'url' => ['/grom/news/backend/post/index', 'PostSearch' => ['category_id' => ($this->category ? $this->category->id : null), 'language' => $this->language]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Posts list'), 'target' => '_blank']
             ],

@@ -61,7 +61,7 @@ use yii\bootstrap\ActiveForm;
                 'clientOptions' => [
                     'maxItems' => 'NaN'
                 ],
-                'url' => ['/grom/tag/default/tag-list']
+                'url' => ['/grom/tag/backend/default/tag-list']
             ]) ?>
         </div>
 

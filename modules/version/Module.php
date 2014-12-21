@@ -31,7 +31,7 @@ class Module extends \yii\base\Module implements DesktopInterface
         return [
             'label' => Yii::t('gromver.platform', 'Versions'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Versions'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']]
+                ['label' => Yii::t('gromver.platform', 'Versions'), 'url' => ['/grom/version/backend/default/index']]
             ]
         ];
     }

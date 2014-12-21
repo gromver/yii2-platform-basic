@@ -190,7 +190,7 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
                     ]
                 ],
                 'options' => [
-                    'basePath' => '@frontend/web',
+                    'basePath' => '@app/web',
                     'baseUrl' => '',
                     'savePath' => 'upload/categories'
                 ]

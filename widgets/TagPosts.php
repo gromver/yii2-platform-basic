@@ -109,7 +109,7 @@ class TagPosts extends Widget {
     {
         return [
             [
-                'url' => ['grom/tag/backend/default/update', 'id' => $this->tag->id, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/tag/backend/default/update', 'id' => $this->tag->id, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-pencil"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Update Tag')]
             ],

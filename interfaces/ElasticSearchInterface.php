@@ -10,13 +10,13 @@
 namespace gromver\platform\basic\interfaces;
 
 /**
- * Interface SearchableInterface
+ * Interface ElasticSearchInterface
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface SearchableInterface {
+interface ElasticSearchInterface {
     /**
      * @return array
      */
-    public function getDocumentClasses();
+    public function getElasticSearchDocumentClasses();
 }

@@ -34,7 +34,7 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
         return [
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
+                ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['/grom/tag/backend/default/index']],
             ]
         ];
     }
@@ -47,7 +47,7 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
         return [
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => '/' . $this->getUniqueId() . '/frontend/default/index'],
+                ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => 'grom/tag/frontend/default/index'],
             ]
         ];
     }

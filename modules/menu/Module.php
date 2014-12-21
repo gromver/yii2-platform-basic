@@ -31,8 +31,8 @@ class Module extends \yii\base\Module implements DesktopInterface
         return [
             'label' => Yii::t('gromver.platform', 'Menu'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Menu Types'), 'url' => ['/' . $this->getUniqueId() . '/backend/type/index']],
-                ['label' => Yii::t('gromver.platform', 'Menu Items'), 'url' => ['/' . $this->getUniqueId() . '/backend/item/index']],
+                ['label' => Yii::t('gromver.platform', 'Menu Types'), 'url' => ['/grom/menu/backend/type/index']],
+                ['label' => Yii::t('gromver.platform', 'Menu Items'), 'url' => ['/grom/menu/backend/item/index']],
             ]
         ];
     }

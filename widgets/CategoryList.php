@@ -89,12 +89,12 @@ class CategoryList extends Widget {
     {
         return [
             [
-                'url' => ['grom/news/backend/category/create', 'parentId' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
+                'url' => ['/grom/news/backend/category/create', 'parentId' => $this->category ? $this->category->id : null, 'backUrl' => $this->getBackUrl()],
                 'label' => '<i class="glyphicon glyphicon-plus"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Create Category')]
             ],
             [
-                'url' => ['grom/news/backend/category/index', 'CategorySearch' => ['parent_id' => $this->category ? $this->category->id : null]],
+                'url' => ['/grom/news/backend/category/index', 'CategorySearch' => ['parent_id' => $this->category ? $this->category->id : null]],
                 'label' => '<i class="glyphicon glyphicon-th-list"></i>',
                 'options' => ['title' => Yii::t('gromver.platform', 'Categories list'), 'target' => '_blank']
             ],

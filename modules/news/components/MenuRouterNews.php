@@ -27,11 +27,11 @@ class MenuRouterNews extends MenuRouter {
     {
         return [
             [
-                'menuRoute' => 'grom/news/category/view',
+                'menuRoute' => 'grom/news/frontend/category/view',
                 'handler' => 'parseCategory'
             ],
             [
-                'menuRoute' => 'grom/news/post/index',
+                'menuRoute' => 'grom/news/frontend/post/index',
                 'handler' => 'parseAllPosts'
             ],
         ];
@@ -44,30 +44,30 @@ class MenuRouterNews extends MenuRouter {
     {
         return [
             [
-                'requestRoute' => 'grom/news/post/view',
+                'requestRoute' => 'grom/news/frontend/post/view',
                 'requestParams' => ['id'],
                 'handler' => 'createPost'
             ],
             [
-                'requestRoute' => 'grom/news/category/view',
+                'requestRoute' => 'grom/news/frontend/category/view',
                 'requestParams' => ['id'],
                 'handler' => 'createCategory'
             ],
             [
-                'requestRoute' => 'grom/news/post/day',
+                'requestRoute' => 'grom/news/frontend/post/day',
                 'requestParams' => ['year', 'month', 'day'],
                 'handler' => 'createDayPosts'
             ],
             [
-                'requestRoute' => 'grom/news/post/index',
+                'requestRoute' => 'grom/news/frontend/post/index',
                 'handler' => 'createAllPosts'
             ],
             [
-                'requestRoute' => 'grom/tag/default/posts',
+                'requestRoute' => 'grom/tag/frontend/default/posts',
                 'handler' => 'createTagPosts'
             ],
             [
-                'requestRoute' => 'grom/news/post/rss',
+                'requestRoute' => 'grom/news/frontend/post/rss',
                 'handler' => 'createRss'
             ],
         ];
@@ -84,7 +84,7 @@ class MenuRouterNews extends MenuRouter {
                     'language' => $menuCategory->language
                 ]);
                 if ($category) {
-                    return ['grom/news/post/rss', ['category_id' => $category->id]];
+                    return ['grom/news/frontend/post/rss', ['category_id' => $category->id]];
                 }
             }
         } elseif (preg_match("#((.*)/)?(\d{4})/(\d{1,2})/(\d{1,2})$#", $requestInfo->requestRoute, $matches)) {
@@ -99,7 +99,7 @@ class MenuRouterNews extends MenuRouter {
                     'language' => $menuCategory->language
                 ]);
                 if ($category) {
-                    return ['grom/news/post/day', ['category_id' => $category->id, 'year' => $year, 'month' => $month, 'day' => $day]];
+                    return ['grom/news/frontend/post/day', ['category_id' => $category->id, 'year' => $year, 'month' => $month, 'day' => $day]];
                 }
             }
         } elseif (preg_match("#((.*)/)?(([^/]+)\.{$this->postSuffix})$#", $requestInfo->requestRoute, $matches)) {
@@ -112,7 +112,7 @@ class MenuRouterNews extends MenuRouter {
                     'language' => $menuCategory->language
                 ]);
                 if ($category && $postId = Post::find()->select('id')->where(['alias' => $postAlias, 'category_id' => $category->id])->scalar()) {
-                    return ['grom/news/post/view', ['id' => $postId]];
+                    return ['grom/news/frontend/post/view', ['id' => $postId]];
                 }
             }
         } elseif (preg_match("#((.*)/)?(tag/([^/]+))$#", $requestInfo->requestRoute, $matches)) {
@@ -125,7 +125,7 @@ class MenuRouterNews extends MenuRouter {
                     'language' => $menuCategory->language
                 ]);
                 if ($category && $tagId = Tag::find()->select('id')->where(['alias' => $tagAlias, 'language' => $category->language])->scalar()) {
-                    return ['grom/tag/default/posts', ['id' => $tagId, 'category_id' => $category->id]];
+                    return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId, 'category_id' => $category->id]];
                 }
             }
         } else {
@@ -135,7 +135,7 @@ class MenuRouterNews extends MenuRouter {
                     'path' => $menuCategory->path . '/' . $requestInfo->requestRoute,
                     'language' => $menuCategory->language
                 ])) {
-                    return ['grom/news/category/view', ['id' => $category->id]];
+                    return ['grom/news/frontend/category/view', ['id' => $category->id]];
                 }
             }
         }
@@ -144,10 +144,10 @@ class MenuRouterNews extends MenuRouter {
     public function parseAllPosts($requestInfo)
     {
         if ($requestInfo->requestRoute == 'rss') {
-            return ['grom/news/post/rss', []];
+            return ['grom/news/frontend/post/rss', []];
         } elseif (preg_match("#^(\d{4})/(\d{1,2})/(\d{1,2})$#", $requestInfo->requestRoute, $matches)) {
             //новости за определенную дату
-            return ['grom/news/post/day', ['year' => $matches[1], 'month' => $matches[2], 'day' => $matches[3]]];
+            return ['grom/news/frontend/post/day', ['year' => $matches[1], 'month' => $matches[2], 'day' => $matches[3]]];
         } elseif (preg_match("#^((.*)/)(([^/]+)\.{$this->postSuffix})$#", $requestInfo->requestRoute, $matches)) {
             //ищем пост
             $categoryPath = $matches[2];    //путь категории поста
@@ -157,13 +157,13 @@ class MenuRouterNews extends MenuRouter {
                 'language' => $requestInfo->menuMap->language
             ]);
             if ($category && $postId = Post::find()->select('id')->where(['alias' => $postAlias, 'category_id' => $category->id])->scalar()) {
-                return ['grom/news/post/view', ['id' => $postId]];
+                return ['grom/news/frontend/post/view', ['id' => $postId]];
             }
         } elseif (preg_match("#^(tag/([^/]+))$#", $requestInfo->requestRoute, $matches)) {
             //ищем тег
             $tagAlias = $matches[2];
-            if ($tagId = Tag::find()->select('id')->where(['alias' => $tagAlias])->scalar()) {
-                return ['grom/tag/default/posts', ['id' => $tagId]];
+            if ($tagId = Tag::find()->select('id')->where(['alias' => $tagAlias, 'language' => \Yii::$app->language])->scalar()) {
+                return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId]];
             }
         }
 
@@ -172,7 +172,7 @@ class MenuRouterNews extends MenuRouter {
     public function createPost($requestInfo)
     {
         //пытаемся найти пункт меню ссылющийся на данный пост
-        if ($path = $requestInfo->menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/news/post/view', ['id' => $requestInfo->requestParams['id']]))) {
+        if ($path = $requestInfo->menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/news/frontend/post/view', ['id' => $requestInfo->requestParams['id']]))) {
             unset($requestInfo->requestParams['id'], $requestInfo->requestParams['category_id'], $requestInfo->requestParams['alias']);
             return MenuItem::toRoute($path, $requestInfo->requestParams);
         }
@@ -186,7 +186,7 @@ class MenuRouterNews extends MenuRouter {
             }
         }
         //привязываем ко всем новостям, если пукнт меню существует
-        if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/post/index')) {
+        if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index')) {
             $path .= '/' . Post::findOne($requestInfo->requestParams['id'])->category->path . '/' . $requestInfo->requestParams['alias'] . '.' . $this->postSuffix;
             unset($requestInfo->requestParams['id'], $requestInfo->requestParams['category_id'], $requestInfo->requestParams['alias']);
             return MenuItem::toRoute($path, $requestInfo->requestParams);
@@ -206,7 +206,7 @@ class MenuRouterNews extends MenuRouter {
         if ($requestInfo->requestParams['category_id']) {
             $path = $this->findCategoryMenuPath($requestInfo->requestParams['category_id'], $requestInfo->menuMap);
         } else {
-            $path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/post/index');
+            $path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index');
         }
 
         if ($path) {
@@ -218,7 +218,7 @@ class MenuRouterNews extends MenuRouter {
 
     public function createAllPosts($requestInfo)
     {
-        if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/post/index')) {
+        if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index')) {
             return MenuItem::toRoute($path, $requestInfo->requestParams);
         }
     }
@@ -249,7 +249,7 @@ class MenuRouterNews extends MenuRouter {
                 return MenuItem::toRoute($path . '/rss', $requestInfo->requestParams);
             }
         } else {
-            if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/post/index')) {
+            if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index')) {
                 return MenuItem::toRoute($path . '/rss', $requestInfo->requestParams);
             }
         }
@@ -267,7 +267,7 @@ class MenuRouterNews extends MenuRouter {
     private function findCategoryMenuPath($categoryId, $menuMap)
     {
         if (!isset($this->_categoryPaths[$menuMap->language][$categoryId])) {
-            if ($path = $menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/news/category/view', ['id' => $categoryId]))) {
+            if ($path = $menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/news/frontend/category/view', ['id' => $categoryId]))) {
                 $this->_categoryPaths[$menuMap->language][$categoryId] = $path;
             } elseif (($category = Category::findOne($categoryId)) && !$category->isRoot() && $path = $this->findCategoryMenuPath($category->parent_id, $menuMap)) {
                 $this->_categoryPaths[$menuMap->language][$categoryId] = $path . '/' . $category->alias;
