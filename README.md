@@ -2,6 +2,17 @@ Grom Platform
 =============
 Платформа для разработки веб приложений, на основе Yii2 Basic application template
 
+## Демо сайт
+http://menst.webfactional.com
+
+## Возможности
+
+* Модули: авторизация, пользователи, меню, страницы, новости, теги, поиск, медиа менеджер и т.д.
+* Древовидные категории новостей.
+* Встроенная система контроля версий документов.
+* Поиск
+* SEO-friendly адреса страниц (ЧПУ)
+
 Installation
 ------------
 
@@ -22,10 +33,67 @@ or add
 to the require section of your `composer.json` file.
 
 
-Usage
------
+#### Настройка Grom Platform
+Заменяем веб и консольное приложения на соответсвующие из данного расширения. Для этого правим файлы:
 
-Once the extension is installed, simply use it in your code by  :
+* /web/index.php
+```
+  (new \gromver\platform\basic\Application($config))->run();  //(new yii\web\Application($config))->run();
+```
+* /yii.php
+```
+  $application = new \gromver\platform\basic\console\Application($config);  //yii\console\Application($config);
+```
 
-```php
+Нужно отредактировать конфиг приложения: /config/web.php
+
+``` 
+[
+  'components' => [
+      'user' => [
+          //'identityClass' => 'app\models\User',  //закоментировать или удалить эту строку
+          'enableAutoLogin' => true,
+      ],
+    ]
+]
+```
+#### Добавляем таблицы в БД
+
+    php yii migrate --migrationPath=@gromver/platform/basic/migrations
+
+#### Подключение поиска(опционально)
+* Установить [Elasticsearch](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_installation.html)
+* Подключаем поисковые модули еластиксерча. Настрайваем консольное приложение, правим /config/console.php
+```
+[
+    'modules' => [
+        'grom' => [
+            'modules' => [
+                'search' => [
+                    'class' => 'gromver\platform\basic\modules\elasticsearch\Module',
+                    'elasticsearchIndex' => 'myapp'	//название индекса
+                ]
+            ]
+        ]
+    ],
+]
+```
+Веб конфиг, правим /config/web.php
+```
+[
+    'modules' => [
+        'grom' => [
+            'modules' => [
+                'search' => [
+                    'class' => 'gromver\platform\basic\modules\elasticsearch\Module',
+                    'elasticsearchIndex' => 'myapp'	//название индекса
+                ]
+            ]
+        ]
+    ],
+]
+```
+* Применяем миграцию для Elasticsearch
+```
+  php yii migrate --migrationPath=@gromver/platform/basic/migrations/elasticsearch
 ```
