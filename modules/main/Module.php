@@ -38,8 +38,12 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     public $controllerNamespace = '\gromver\platform\basic\modules\main\controllers';
     public $paramsPath = '@app/config/grom';
     public $defaultRoute = 'frontend/default';
-    // todo fixthis
-    public $blockModules = [];//['news', 'page', 'tag', 'user'];   //список модулей к которым нельзя попасть на прямую(grom/post/..., grom/page/...)
+    public $blockedUrlRules = [
+        'grom/news/frontend<path:(/.*)?>',
+        'grom/page/frontend<path:(/.*)?>',
+        'grom/tag/frontend<path:(/.*)?>',
+        'grom/user/frontend<path:(/.*)?>',
+    ];   //список компонентов к которым нельзя попасть на прямую(grom/post/frontend/..., grom/page/frontend/...)
     public $desktopOrder = 1;
 
     private $_mode;
@@ -71,8 +75,10 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         /** @var MenuManager $manager */
         $manager = \Yii::createObject(MenuManager::className());
         $rules = [$manager];
-        if (is_array($this->blockModules) && count($this->blockModules)) {
-            $rules['grom/<module:(' . implode('|', $this->blockModules). ')><path:(/.*)?>'] = 'grom/default/page-not-found'; //блокируем доступ к контент модулям напрямую
+        if (is_array($this->blockedUrlRules) && count($this->blockedUrlRules)) {
+            foreach ($this->blockedUrlRules as $rule) {
+                $rules[$rule] = 'grom/default/page-not-found'; //блокируем доступ напрямую
+            }
         }
 
         $app->urlManager->addRules($rules, false); //вставляем в начало списка
@@ -108,6 +114,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         if (!empty($this->params['robots'])) {
             $view->registerMetaTag(['name' => 'robots', 'content' => $this->params['robots']], 'robots');
         }
+        $view->registerMetaTag(['name' => 'generator', 'content' => 'Grom Platform - Open Source Yii2 Development Platform.'], 'generator');
     }
 
     public function initI18N()
