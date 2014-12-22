@@ -57,6 +57,12 @@ to the require section of your `composer.json` file.
     ]
 ]
 ```
+#### Создаем папки
+ * /web/upload  - для хранения изображений прикрепляемых к статьям и категориям
+ * /web/files   - для хранения файлов медиа менеджера
+
+Не забываем установить этим папкам права на запись
+ 
 #### Добавляем таблицы в БД
 
     php yii migrate --migrationPath=@gromver/platform/basic/migrations
