@@ -40,7 +40,10 @@ use yii\bootstrap\ActiveForm;
                         <?= \mihaildev\ckeditor\CKEditor::widget([
                             'model' => $model,
                             'attribute' => 'detail_text',
-                            'editorOptions' => \mihaildev\elfinder\ElFinder::ckeditorOptions('grom/media/manager')
+                            'editorOptions' => \mihaildev\elfinder\ElFinder::ckeditorOptions('grom/media/manager', [
+                                'filebrowserBrowseUrl' => ['/grom/menu/backend/item/ckeditor-select'],
+                                'extraPlugins' => 'codesnippet'
+                            ])
                         ]) ?>
                     </div>
                 </div>

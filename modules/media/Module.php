@@ -37,16 +37,16 @@ class Module extends \yii\base\Module implements DesktopInterface
                 'access' => ['read'],
                 'roots' => [
                     [
-                        'path' => 'files/global',
                         'baseUrl' => '',
-                        'basePath' => '@frontend/web',
+                        'basePath' => '@app/web',
+                        'path' => 'files/global',
                         'name' => Yii::t('gromver.platform', 'Global'),
                         'access' => ['write' => 'update']
                     ],
                     [
                         'class' => 'mihaildev\elfinder\UserPath',
                         'baseUrl' => '',
-                        'basePath' => '@frontend/web',
+                        'basePath' => '@app/web',
                         'path' => 'files/user_{id}',
                         'name' => Yii::t('gromver.platform', 'My Documents'),
                         'access' => ['read' => 'read', 'write' => 'update']

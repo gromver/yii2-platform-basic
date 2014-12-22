@@ -75,7 +75,7 @@ use yii\bootstrap\ActiveForm;
                                 ],
                                 'buttonContent' => Html::a('<span class="glyphicon glyphicon-folder-open"></span>', ['routers'], ['class'=>'btn btn-default']),
                                 'iframeHandler' => "function(data){
-                                    $('#{$linkInputId}').val(data.link)
+                                    $('#{$linkInputId}').val(data.route)
                                 }",
                             ])
                     ]

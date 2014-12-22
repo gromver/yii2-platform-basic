@@ -180,22 +180,23 @@ class MenuItemRoutes extends Widget
             $template = ArrayHelper::getValue($item, 'headerTemplate', $this->headerTemplate);
 
             $header = strtr($template, [
-                    '{icon}' => $item['icon'],
-                    '{label}' => $item['label']
-                ]);
+                '{icon}' => $item['icon'],
+                '{label}' => $item['label']
+            ]);
         }
 
         foreach ($item['items'] as $router) {
             $template = ArrayHelper::getValue($router, 'template', $this->routerTemplate);
 
             $routerContent = strtr($template, [
-                    '{icon}' => $router['icon'],
-                    '{link}' => isset($router['url']) ? Html::a($router['label'], $router['url']) : Html::a($router['label'], '#', [
-                                'onclick' => ModalIFrame::emitDataJs([
-                                            'link' => MenuItem::toRoute($router['route'])
-                                        ])
-                            ])
-                ]);
+                '{icon}' => $router['icon'],
+                '{link}' => isset($router['url']) ? Html::a($router['label'], $router['url']) : Html::a($router['label'], '#', [
+                    'onclick' => ModalIFrame::emitDataJs([
+                        'route' => MenuItem::toRoute($router['route']),
+                        'link' => Yii::$app->urlManager->createUrl($router['route'])
+                    ])
+                ])
+            ]);
 
             $routerOptions = array_merge($this->routerOptions, $router['options']);
 
@@ -205,9 +206,9 @@ class MenuItemRoutes extends Widget
         $template = ArrayHelper::getValue($item, 'template', $this->itemTemplate);
 
         return strtr($template, [
-                '{header}' => $header,
-                '{routers}' => $routers
-            ]);
+            '{header}' => $header,
+            '{routers}' => $routers
+        ]);
     }
 
     /**

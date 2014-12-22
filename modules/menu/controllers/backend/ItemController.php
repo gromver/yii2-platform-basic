@@ -51,7 +51,7 @@ class ItemController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'ordering', 'publish', 'unpublish', 'status', 'routers'],
+                        'actions' => ['create', 'update', 'ordering', 'publish', 'unpublish', 'status'],
                         'roles' => ['update'],
                     ],
                     [
@@ -61,7 +61,7 @@ class ItemController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'type-items', 'select'],
+                        'actions' => ['index', 'view', 'type-items', 'routers', 'select', 'ckeditor-select', 'ckeditor-select-component', 'ckeditor-select-menu'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -118,6 +118,61 @@ class ItemController extends Controller
         return $this->render('routers', [
                 'items' => $items
             ]);
+    }
+
+    /**
+     * Используется CkEditor для выбора типа ссылки.
+     * @param string $CKEditor
+     * @param string $CKEditorFuncNum
+     * @param string $langCode
+     * @return mixed
+     */
+    public function actionCkeditorSelect($CKEditor, $CKEditorFuncNum, $langCode)
+    {
+        $this->layout = null;
+        Yii::$app->grom->layout = 'modal';
+
+        return $this->render('ckeditor-select', [
+            'CKEditor' => $CKEditor,
+            'CKEditorFuncNum' => $CKEditorFuncNum,
+            'langCode' => $langCode
+        ]);
+    }
+    /**
+     * Используется CkEditor для выбора ссылки на компонент.
+     * @param string $CKEditor
+     * @param string $CKEditorFuncNum
+     * @param string $langCode
+     * @return mixed
+     */
+    public function actionCkeditorSelectComponent($CKEditor, $CKEditorFuncNum, $langCode)
+    {
+        $this->layout = null;
+        Yii::$app->grom->layout = 'modal';
+
+        return $this->render('ckeditor-select-component', [
+            'CKEditor' => $CKEditor,
+            'CKEditorFuncNum' => $CKEditorFuncNum,
+            'langCode' => $langCode
+        ]);
+    }
+    /**
+     * Используется CkEditor для выбора ссылки пункт меню.
+     * @param string $CKEditor
+     * @param string $CKEditorFuncNum
+     * @param string $langCode
+     * @return mixed
+     */
+    public function actionCkeditorSelectMenu($CKEditor, $CKEditorFuncNum, $langCode)
+    {
+        $this->layout = null;
+        Yii::$app->grom->layout = 'modal';
+
+        return $this->render('ckeditor-select-menu', [
+            'CKEditor' => $CKEditor,
+            'CKEditorFuncNum' => $CKEditorFuncNum,
+            'langCode' => $langCode
+        ]);
     }
 
     /**

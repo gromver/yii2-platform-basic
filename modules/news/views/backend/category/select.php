@@ -38,9 +38,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'value' => function ($model) {
-                        /** @var $model \gromver\platform\basic\modules\news\models\Category */
-                        return str_repeat(" • ", max($model->level-1, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
-                    },
+                    /** @var $model \gromver\platform\basic\modules\news\models\Category */
+                    return str_repeat(" • ", max($model->level-1, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
+                },
                 'format' => 'html'
 
             ],
@@ -67,9 +67,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tags',
                 'value' => function ($model){
-                        /** @var $model \gromver\platform\basic\modules\news\models\Category */
-                        return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
-                    },
+                    /** @var $model \gromver\platform\basic\modules\news\models\Category */
+                    return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
+                },
                 'filterType' => \dosamigos\selectize\Selectize::className(),
                 'filterWidgetOptions' => [
                     'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
@@ -81,16 +81,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'value' => function ($model) use ($route) {
-                        return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
-                            'class' => 'btn btn-primary btn-xs',
-                            'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
-                                    'id' => $model->id,
-                                    'description' => Yii::t('gromver.platform', 'Category: {title}', ['title' => $model->title]),
-                                    'link' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
-                                    'value' => $model->id . ':' . $model->alias
-                                ]),
-                        ]);
-                    },
+                    /** @var $model \gromver\platform\basic\modules\news\models\Category */
+                    return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
+                        'class' => 'btn btn-primary btn-xs',
+                        'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
+                            'id' => $model->id,
+                            'description' => Yii::t('gromver.platform', 'Category: {title}', ['title' => $model->title]),
+                            'route' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
+                            'link' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),
+                            'value' => $model->id . ':' . $model->alias
+                        ]),
+                    ]);
+                },
                 'format'=>'raw'
             ]
         ],

@@ -38,6 +38,7 @@ use yii\bootstrap\ActiveForm;
                         'model' => $model,
                         'attribute' => 'detail_text',
                         'editorOptions' => \mihaildev\elfinder\ElFinder::ckeditorOptions('grom/media/manager', [
+                            'filebrowserBrowseUrl' => ['/grom/menu/backend/item/ckeditor-select'],
                             'extraPlugins' => 'codesnippet'
                         ])
                     ]) ?>
