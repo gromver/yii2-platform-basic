@@ -13,6 +13,7 @@ use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetBehavior;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -284,11 +285,15 @@ class MenuItem extends ActiveRecord implements ViewableInterface
             }
         }
 
+        $oldPath = $this->getOldAttribute('path');
+
         if ($moved) {
             $this->refresh();
             $this->normalizePath();
+            $this->normalizeWidgets($oldPath);
         } elseif (array_key_exists('alias', $changedAttributes)) {
             $this->normalizePath();
+            $this->normalizeWidgets($oldPath);
         }
 
         //Если изменен тип меню или язык, смена языка возможна только для корневых пунктов меню
@@ -337,11 +342,22 @@ class MenuItem extends ActiveRecord implements ViewableInterface
         $ids = $this->descendants()->select('id')->column();
         self::updateAll(['menu_type_id' => $this->menu_type_id, 'language' => $this->language], ['id' => $ids]);
     }
+
     //для каждого языка возможен только один пукнт меню со статусом главной страницы
     public function normalizeStatus()
     {
         if ($this->status == self::STATUS_MAIN_PAGE) {
             self::updateAll(['status' => self::STATUS_PUBLISHED], 'status=:status AND language=:language AND id!=:id', [':status' => self::STATUS_MAIN_PAGE, ':id' => $this->id, ':language' => $this->language]);
+        }
+    }
+
+    public function normalizeWidgets($oldPath)
+    {
+        if ($oldPath) {
+            foreach(WidgetConfig::find()->where(['like', 'context', $oldPath.'%', false])->each() as $config) {
+                $config->context = preg_replace("#^{$oldPath}#", $this->path, $config->context);
+                $config->save();
+            }
         }
     }
 
