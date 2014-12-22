@@ -58,7 +58,11 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         Table::bootstrap();
 
         Yii::$container->set('gromver\models\fields\EditorField', [
-            'controller' => 'grom/media/manager'
+            'controller' => 'grom/media/manager',
+            'editorOptions' => [
+                'filebrowserBrowseUrl' => ['/grom/menu/backend/item/ckeditor-select'],
+                'extraPlugins' => 'codesnippet'
+            ]
         ]);
         Yii::$container->set('gromver\models\fields\MediaField', [
             'controller' => 'grom/media/manager'
