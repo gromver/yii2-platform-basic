@@ -48,6 +48,7 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => 'grom/tag/frontend/default/index'],
+                ['label' => Yii::t('gromver.platform', 'Tag View'), 'url' => ['/grom/tag/backend/default/select']],
             ]
         ];
     }

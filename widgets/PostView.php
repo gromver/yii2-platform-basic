@@ -24,7 +24,7 @@ class PostView extends Widget {
      * Post model or PostId or PostId:PageAlias
      * @var Post|string
      * @type modal
-     * @url /grom/frontend/default/select-post
+     * @url /grom/news/backend/post/select
      * @translation gromver.platform
      */
     public $post;

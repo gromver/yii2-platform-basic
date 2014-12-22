@@ -38,6 +38,7 @@ return [
     'Root' => 'Корневая категория',
     'Published' => 'Опубликовано',
     'Unpublished' => 'Не опубликовано',
+    'Select' => 'Выбрать',
     'Select ...' => 'Выбрать ...',
     'Search ...' => 'Поиск ...',
     'Find' => 'Найти',
@@ -60,6 +61,7 @@ return [
     'Category View' => 'Категория',
     'All Posts' => 'Все статьи',
     'Tag Cloud' => 'Облако тегов',
+    'Tag View' => 'Тег',
     'User Profile' => 'Профиль пользователя',
     'Contact Form' => 'Форма обратной связи',
     'Signup' => 'Регистрация',
@@ -123,7 +125,6 @@ return [
     'Email' => 'Email',
     'Work Email' => 'Рабочий Email',
     'Address' => 'Адрес',
-    '' => '',
     //page manager
     'Add Page' => 'Добавить страницу',
     'Update Page: {title}' => 'Редактировать страницу: {title}',
@@ -137,6 +138,7 @@ return [
     'Update Post: {title}' => 'Редактировать статью: {title}',
     'Select Post' => 'Выберите статью',
     //tag manager
+    'Select Tag' => 'Выберите тег',
     'Add Tag' => 'Добавить тег',
     'Update Tag: {title}' => 'Редактировать тег: {title}',
     //menu manager

@@ -55,13 +55,8 @@ class DefaultController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index', 'view', 'select', 'tag-list'],
                         'roles' => ['read'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['tag-list'],
-                        'roles' => ['read', 'update'],
                     ],
                 ]
             ]
@@ -80,6 +75,25 @@ class DefaultController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * @param string $route
+     * @return string
+     */
+    public function actionSelect($route = 'grom/tag/frontend/default/view')
+    {
+        $searchModel = new TagSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        $this->layout = null;
+        Yii::$app->grom->layout = 'modal';
+
+        return $this->render('select', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'route' => $route
         ]);
     }
 

@@ -25,7 +25,7 @@ class TagPosts extends Widget {
      * Tag or TagId or TagId:TagAlias
      * @var Tag|string
      * @type modal
-     * @url /grom/frontend/default/select-tag
+     * @url /grom/tag/backend/default/select
      * @translation gromver.platform
      */
     public $tag;
@@ -33,7 +33,7 @@ class TagPosts extends Widget {
      * CategoryId
      * @var string
      * @type modal
-     * @url /grom/frontend/default/select-category
+     * @url /grom/news/backend/category/select
      * @translation gromver.platform
      */
     public $categoryId;

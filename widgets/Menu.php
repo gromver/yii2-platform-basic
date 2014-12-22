@@ -26,7 +26,7 @@ class Menu extends Widget {
      * MenuTypeId or MenuTypeId:MenuTypeAlias
      * @var string
      * @type modal
-     * @url /grom/frontend/default/select-menu
+     * @url /grom/menu/backend/item/select
      * @translation gromver.platform
      * @label Menu Type
      */

@@ -24,7 +24,7 @@ class PageView extends Widget {
      * Page model or PageId or PageId:PageAlias
      * @var Page|string
      * @type modal
-     * @url /grom/frontend/default/select-page
+     * @url /grom/page/backend/default/select
      * @translation gromver.platform
      */
     public $page;
