@@ -21,7 +21,6 @@ class m140820_085041_grom_site_setup extends Migration
         $this->readStdinUser('Site Name (My Site)', $model, 'siteName', 'My Site');
         $this->readStdinUser('Admin Email (admin@email.com)', $model, 'adminEmail', 'admin@email.com');
         $this->readStdinUser('Support Email (support@email.com)', $model, 'supportEmail', 'support@email.com');
-        $this->readStdinUser('Elasticsearch Index', $model, 'elasticsearchIndex');
 
         if ($model->validate()) {
 
