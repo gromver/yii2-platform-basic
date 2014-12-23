@@ -9,4 +9,5 @@
 <?= \gromver\platform\basic\widgets\CategoryList::widget([
     'id' => 'cat-cats',
     'category' => $model,
+    'context' => $this->context->context
 ]) ?>

@@ -9,5 +9,6 @@
 <?= \gromver\platform\basic\widgets\PostList::widget([
     'id' => 'cat-posts',
     'category' => $model,
-    'layout' => 'post/listDefault'
+    'layout' => 'post/listDefault',
+    'context' => $this->context->context
 ]) ?>

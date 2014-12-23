@@ -12,10 +12,12 @@
     'category' => $model,
     'listViewOptions' => [
         'emptyTextOptions' => ['class' => 'hidden']
-    ]
+    ],
+    'context' => $this->context->context
 ]);
 
 echo \gromver\platform\basic\widgets\PostList::widget([
     'id' => 'cat-posts',
     'category' => $model,
+    'context' => $this->context->context
 ]);

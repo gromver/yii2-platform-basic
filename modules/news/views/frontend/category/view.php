@@ -35,4 +35,5 @@ if ($model->metadesc) {
 echo \gromver\platform\basic\widgets\CategoryView::widget([
     'id' => 'cat-view',
     'category' => $model,
+    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
 ]);

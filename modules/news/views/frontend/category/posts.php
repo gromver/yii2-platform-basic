@@ -35,5 +35,6 @@ if ($model->metadesc) {
 
 echo \gromver\platform\basic\widgets\PostList::widget([
     'id' => 'cat-posts',
-    'category' => $model
+    'category' => $model,
+    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
 ]);

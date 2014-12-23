@@ -28,7 +28,8 @@ use yii\helpers\Html; ?>
 
         <?= \gromver\platform\basic\widgets\TagPostCloud::widget([
             'id' => 'posts-tags',
-            'categoryId' => $category ? $category->id : null
+            'categoryId' => $category ? $category->id : null,
+            'context' => $this->context->context
         ]) ?>
     </div>
     <div class="col-sm-8">

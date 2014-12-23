@@ -33,7 +33,6 @@ if ($model->metadesc) {
     $this->registerMetaTag(['name' => 'description', 'content' => $model->metadesc], 'description');
 }
 
-//todo fix context determination
 echo \gromver\platform\basic\widgets\PostView::widget([
     'id' => 'post-view',
     'post' => $model,

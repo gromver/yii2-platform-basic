@@ -16,6 +16,7 @@
 <?= \gromver\platform\basic\widgets\CategoryList::widget([
     'id' => 'cat-cats',
     'category' => $model,
+    'context' => $this->context->context
 ]) ?>
 
 <h2><?= Yii::t('gromver.platform', 'Статьи') ?></h2>
@@ -23,4 +24,5 @@
 <?= \gromver\platform\basic\widgets\PostList::widget([
     'id' => 'cat-posts',
     'category' => $model,
+    'context' => $this->context->context
 ]) ?>
