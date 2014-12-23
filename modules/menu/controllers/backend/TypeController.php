@@ -53,7 +53,7 @@ class TypeController extends Controller
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index', 'view', 'select'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -73,6 +73,20 @@ class TypeController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionSelect()
+    {
+        $searchModel = new MenuTypeSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
+
+        $this->layout = null;
+        Yii::$app->grom->layout = 'modal';
+
+        return $this->render('select', [
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
         ]);
     }
 
