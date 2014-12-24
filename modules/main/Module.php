@@ -153,7 +153,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
                 //['label' => Yii::t('gromver.platform', 'Sitemap'), 'route' => 'grom/frontend/default/sitemap'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/],
-                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => 'grom/frontend/default/contact'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/]
+                ['label' => Yii::t('gromver.platform', 'Contact Form'), 'route' => 'grom/frontend/default/contact'],
+                ['label' => Yii::t('gromver.platform', 'Dummy Page'), 'route' => 'grom/frontend/default/dummy-page'],
             ]
         ];
     }

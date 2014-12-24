@@ -9,14 +9,8 @@
 
 namespace gromver\platform\basic\modules\main\controllers\frontend;
 
-use gromver\platform\basic\modules\menu\models\MenuTypeSearch;
-use gromver\platform\basic\modules\news\models\CategorySearch;
-use gromver\platform\basic\modules\news\models\PostSearch;
-use gromver\platform\basic\modules\page\models\PageSearch;
-use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
 use yii\filters\AccessControl;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -35,7 +29,7 @@ class DefaultController extends Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'error', 'contact', 'captcha', 'page-not-found'],
+                        'actions' => ['index', 'error', 'contact', 'captcha', 'page-not-found', 'dummy-page'],
                     ],
                 ]
             ]
@@ -52,18 +46,38 @@ class DefaultController extends Controller
         ];
     }
 
+    /**
+     * Приветсвенная страница
+     * @return string
+     */
     public function actionIndex()
     {
         return $this->render('index');
     }
 
+    /**
+     * @throws NotFoundHttpException
+     */
     public function actionPageNotFound()
     {
         throw new NotFoundHttpException(Yii::t('yii', 'Page not found.'));
     }
 
+    /**
+     * Форма контактов
+     * @return string
+     */
     public function actionContact()
     {
         return $this->render('contact');
+    }
+
+    /**
+     * Временная страница, используется в качестве заглушки при создании пунктов меню
+     * @return string
+     */
+    public function actionDummyPage()
+    {
+        return $this->render('dummyPage');
     }
 }

@@ -38,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                         return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
                     },
                 'format' => 'html'
-
             ],
             [
                 'value' => function($model) {

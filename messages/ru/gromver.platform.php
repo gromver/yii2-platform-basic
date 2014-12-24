@@ -250,4 +250,6 @@ return [
     'The requested post does not exist.' => 'Запрашиваемая статья не найдена.',
     'The requested tag does not exist.' => 'Запрашиваемая тег не найден.',
     'Profile saved.' => 'Профиль сохранен.',
+    'Dummy Page' => 'Временная страница',
+    'This page is under construction.' => 'Раздел в процессе наполнения.',
 ];

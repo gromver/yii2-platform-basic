@@ -72,6 +72,10 @@ if (Yii::$app->user->isGuest) { ?>
     $items = [];
     if(Yii::$app->user->can('administrate')) {
         $items[] = ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Admin Panel'), 'url' => ['/grom/backend/default/index']];
+        /** @var \gromver\platform\basic\modules\menu\models\MenuItem $activeMenu */
+        if ($activeMenu = Yii::$app->menuManager->activeMenu) {
+            $items[] = ['label' => '<i class="glyphicon glyphicon-pencil"></i> ' . $activeMenu->getLinkTitle(), 'url' => ['/grom/menu/backend/item/update', 'id' => $activeMenu->id, 'backUrl' => Yii::$app->urlManager->createUrl($activeMenu->getFrontendViewLink())]];
+        }
         $items[] = '<li class="divider"></li>';
     }
     $items[] = ['label' => '<i class="glyphicon glyphicon-log-out"></i> ' . Yii::t('gromver.platform', 'Logout'), 'url' => ['/grom/auth/default/logout']]; ?>
