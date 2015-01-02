@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
 
 /**
+ * Макет использутся для бэкенда
  * @var \yii\web\View $this
  * @var string $content
  */

@@ -36,15 +36,29 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     const MODE_VIEW = 'view';
 
     public $controllerNamespace = '\gromver\platform\basic\modules\main\controllers';
-    public $paramsPath = '@app/config/grom';
     public $defaultRoute = 'frontend/default';
+    /**
+     * @var string место хранения настроек сайта
+     */
+    public $paramsPath = '@app/config/grom';
+    /**
+     * @var array список компонентов к которым нельзя попасть на прямую(grom/post/frontend/..., grom/page/frontend/...)
+     * эта блокировка нужна для того чтобы управлять структурой сайта только через меню
+     * во время разработки проекта ету блокировку можно снять указав в конфиге приложения
+     * [
+     *      'blockedUrlRules' => []
+     * ]
+     */
     public $blockedUrlRules = [
         'grom/news/frontend<path:(/.*)?>',
         'grom/page/frontend<path:(/.*)?>',
         'grom/tag/frontend<path:(/.*)?>',
         'grom/user/frontend<path:(/.*)?>',
-    ];   //список компонентов к которым нельзя попасть на прямую(grom/post/frontend/..., grom/page/frontend/...)
+    ];
     public $desktopOrder = 1;
+    public $errorLayout = '@gromver/platform/basic/modules/main/views/layouts/error';
+    public $modalLayout = '@gromver/platform/basic/modules/main/views/layouts/modal';
+    public $backendLayout = '@gromver/platform/basic/modules/main/views/layouts/main';
 
     private $_mode;
 
@@ -190,5 +204,20 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     public function getSiteName()
     {
         return !empty($this->params['siteName']) ? $this->params['siteName'] : Yii::$app->name;
+    }
+
+    public function applyBackendLayout()
+    {
+        Yii::$app->layout = $this->backendLayout;
+    }
+
+    public function applyErrorLayout()
+    {
+        Yii::$app->layout = $this->errorLayout;
+    }
+
+    public function applyModalLayout()
+    {
+        Yii::$app->layout = $this->modalLayout;
     }
 }

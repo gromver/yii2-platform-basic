@@ -21,7 +21,7 @@ class Application extends \yii\web\Application {
     public $languages = ['en', 'ru'];
     public $sourceLanguage = 'en';
     public $defaultRoute = 'grom/frontend/default/index';
-    public $layout = '@gromver/platform/basic/views/layouts/frontend/main';
+    public $layout = '@gromver/platform/basic/views/layouts/main';
 
     private $_modulesHash;
     
@@ -45,7 +45,7 @@ class Application extends \yii\web\Application {
                 ],
                 'errorHandler' => [
                     'class' => 'yii\web\ErrorHandler',
-                    'errorAction' => 'grom/default/error'
+                    'errorAction' => '/grom/common/default/error'
                 ],
                 'authManager' => [
                     'class' => 'yii\rbac\DbManager',

@@ -3,6 +3,7 @@ use yii\helpers\Html;
 use app\assets\AppAsset;
 
 /**
+ * Макет используется приложением по умолчанию
  * @var \yii\web\View $this
  * @var string $content
  */

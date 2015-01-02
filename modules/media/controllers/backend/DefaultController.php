@@ -9,18 +9,16 @@
 
 namespace gromver\platform\basic\modules\media\controllers\backend;
 
+use gromver\platform\basic\components\BackendController;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 
 /**
  * Class DefaultController
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [

@@ -9,25 +9,23 @@
 
 namespace gromver\platform\basic\modules\tag\controllers\backend;
 
-use Yii;
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\tag\models\Tag;
 use gromver\platform\basic\modules\tag\models\TagSearch;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class DefaultController implements the CRUD actions for Tag model.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -87,8 +85,7 @@ class DefaultController extends Controller
         $searchModel = new TagSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
             'dataProvider' => $dataProvider,

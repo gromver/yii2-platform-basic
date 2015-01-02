@@ -9,27 +9,25 @@
 
 namespace gromver\platform\basic\modules\news\controllers\backend;
 
-use kartik\widgets\Alert;
-use Yii;
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\CategorySearch;
+use kartik\widgets\Alert;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class CategoryController implements the CRUD actions for Category model.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class CategoryController extends Controller
+class CategoryController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -93,8 +91,7 @@ class CategoryController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
         $dataProvider->query->noRoots();
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
                 'dataProvider' => $dataProvider,

@@ -9,15 +9,15 @@
 
 namespace gromver\platform\basic\modules\menu\controllers\backend;
 
-use kartik\widgets\Alert;
-use Yii;
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\menu\models\MenuType;
 use gromver\platform\basic\modules\menu\models\MenuTypeSearch;
+use kartik\widgets\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class TypeController implements the CRUD actions for Menu model.
@@ -25,10 +25,8 @@ use yii\filters\VerbFilter;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 
-class TypeController extends Controller
+class TypeController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -81,8 +79,7 @@ class TypeController extends Controller
         $searchModel = new MenuTypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
             'dataProvider' => $dataProvider,

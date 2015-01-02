@@ -9,18 +9,18 @@
 
 namespace gromver\platform\basic\modules\menu\controllers\backend;
 
-use kartik\widgets\Alert;
+use gromver\platform\basic\components\BackendController;
 use gromver\modulequery\ModuleQuery;
-use Yii;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\menu\models\MenuItemSearch;
+use kartik\widgets\Alert;
 use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class ItemController implements the CRUD actions for Menu model.
@@ -28,10 +28,8 @@ use yii\filters\VerbFilter;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 
-class ItemController extends Controller
+class ItemController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -95,8 +93,7 @@ class ItemController extends Controller
         $params['MenuItemSearch']['link_type'] = MenuItem::LINK_ROUTE;
         $dataProvider = $searchModel->search($params);
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
             'dataProvider' => $dataProvider,
@@ -110,8 +107,7 @@ class ItemController extends Controller
      */
     public function actionRouters()
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         $items = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\MenuItemRoutesInterface')->orderBy('desktopOrder')->fetch('getMenuItemRoutes');
 
@@ -129,8 +125,7 @@ class ItemController extends Controller
      */
     public function actionCkeditorSelect($CKEditor, $CKEditorFuncNum, $langCode)
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('ckeditor-select', [
             'CKEditor' => $CKEditor,
@@ -147,8 +142,7 @@ class ItemController extends Controller
      */
     public function actionCkeditorSelectComponent($CKEditor, $CKEditorFuncNum, $langCode)
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('ckeditor-select-component', [
             'CKEditor' => $CKEditor,
@@ -165,8 +159,7 @@ class ItemController extends Controller
      */
     public function actionCkeditorSelectMenu($CKEditor, $CKEditorFuncNum, $langCode)
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('ckeditor-select-menu', [
             'CKEditor' => $CKEditor,

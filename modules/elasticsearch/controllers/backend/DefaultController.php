@@ -9,21 +9,20 @@
 
 namespace gromver\platform\basic\modules\elasticsearch\controllers\backend;
 
+use gromver\platform\basic\components\BackendController;
 use yii\elasticsearch\ActiveRecord;
 use yii\elasticsearch\Exception;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
-use yii\web\Controller;
+use Yii;
 
 /**
  * Class DefaultController
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [

@@ -23,7 +23,6 @@ use yii\web\Request;
 use yii\web\UrlRuleInterface;
 use yii\web\View;
 
-
 /**
  * Class MenuManager
  * @package yii2-platform-basic

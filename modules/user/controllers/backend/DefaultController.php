@@ -9,14 +9,14 @@
 
 namespace gromver\platform\basic\modules\user\controllers\backend;
 
-use kartik\widgets\Alert;
+use gromver\platform\basic\components\BackendController;
 use gromver\models\ObjectModel;
 use gromver\platform\basic\modules\user\models\User;
 use gromver\platform\basic\modules\user\models\UserSearch;
+use kartik\widgets\Alert;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -29,10 +29,8 @@ use Yii;
  *
  * @property \gromver\platform\basic\modules\user\Module $module
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [

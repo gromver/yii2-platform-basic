@@ -9,26 +9,24 @@
 
 namespace gromver\platform\basic\modules\news\controllers\backend;
 
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\news\models\PostSearch;
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class PostController implements the CRUD actions for Post model.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostController extends Controller
+class PostController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -91,8 +89,7 @@ class PostController extends Controller
         $searchModel = new PostSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
                 'dataProvider' => $dataProvider,

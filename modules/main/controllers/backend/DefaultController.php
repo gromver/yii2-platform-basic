@@ -3,13 +3,14 @@
  * @link https://github.com/gromver/yii2-cmf.git#readme
  * @copyright Copyright (c) Gayazov Roman, 2014
  * @license https://github.com/gromver/yii2-grom/blob/master/LICENSE
- * @package yii2-cmf
+ * @package yii2-platform-basic
  * @version 1.0.0
  */
 
 namespace gromver\platform\basic\modules\main\controllers\backend;
 
 use gromver\modulequery\ModuleQuery;
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\main\models\PlatformParams;
 use gromver\models\ObjectModel;
 use gromver\widgets\ModalIFrame;
@@ -18,18 +19,15 @@ use yii\caching\Cache;
 use yii\di\Instance;
 use yii\filters\AccessControl;
 use yii\helpers\FileHelper;
-use yii\web\Controller;
 use Yii;
 
 /**
  * Class DefaultController
- * @package yii2-cmf
+ * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -54,9 +52,6 @@ class DefaultController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
             'captcha' => 'yii\captcha\CaptchaAction'
         ];
     }
@@ -100,7 +95,7 @@ class DefaultController extends Controller
         }
 
         if ($modal) {
-            $this->layout = 'modal';
+            Yii::$app->grom->applyModalLayout();
         }
 
         return $this->render('params', [

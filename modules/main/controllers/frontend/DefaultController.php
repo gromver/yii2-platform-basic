@@ -39,9 +39,6 @@ class DefaultController extends Controller
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
             'captcha' => 'yii\captcha\CaptchaAction'
         ];
     }

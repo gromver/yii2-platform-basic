@@ -9,24 +9,22 @@
 
 namespace gromver\platform\basic\modules\page\controllers\backend;
 
-use Yii;
+use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\modules\page\models\PageSearch;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Yii;
 
 /**
  * Class DefaultController implements the CRUD actions for Page model.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -88,8 +86,7 @@ class DefaultController extends Controller
         $searchModel = new PageSearch;
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
             'dataProvider' => $dataProvider,

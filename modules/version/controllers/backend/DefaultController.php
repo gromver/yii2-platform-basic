@@ -9,13 +9,13 @@
 
 namespace gromver\platform\basic\modules\version\controllers\backend;
 
+use gromver\platform\basic\components\BackendController;
 use gromver\widgets\ModalIFrame;
 use gromver\platform\basic\modules\version\models\Version;
 use gromver\platform\basic\modules\version\models\VersionSearch;
 use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -26,10 +26,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends BackendController
 {
-    public $layout = '@gromver/platform/basic/views/layouts/backend/main';
-
     public function behaviors()
     {
         return [
@@ -122,8 +120,7 @@ class DefaultController extends Controller
     {
         $model = $this->findModel($id);
         if ($modal) {
-            $this->layout = null;
-            Yii::$app->grom->layout = 'modal';
+            Yii::$app->grom->applyModalLayout();
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -179,8 +176,7 @@ class DefaultController extends Controller
 
     public function actionPreview($id)
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('preview', [
             'model' => $this->findModel($id),
@@ -189,8 +185,7 @@ class DefaultController extends Controller
 
     public function actionCompare($id1, $id2)
     {
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('compare', [
             'a' => $this->findModel($id1),
@@ -207,8 +202,7 @@ class DefaultController extends Controller
             'pagination' => false
         ]);
 
-        $this->layout = null;
-        Yii::$app->grom->layout = 'modal';
+        Yii::$app->grom->applyModalLayout();
 
         return $this->render('item', [
             'item' => $item,

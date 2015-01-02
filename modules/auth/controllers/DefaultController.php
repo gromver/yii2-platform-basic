@@ -9,6 +9,8 @@
 
 namespace gromver\platform\basic\modules\auth\controllers;
 
+use gromver\platform\basic\modules\auth\models\LoginForm;
+use gromver\platform\basic\modules\user\models\User;
 use gromver\widgets\ModalIFrame;
 use kartik\widgets\Alert;
 use Yii;
@@ -17,8 +19,6 @@ use yii\filters\AccessControl;
 use yii\mail\BaseMailer;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
-use gromver\platform\basic\modules\auth\models\LoginForm;
-use gromver\platform\basic\modules\user\models\User;
 
 /**
  * Class DefaultController
@@ -96,7 +96,7 @@ class DefaultController extends Controller
         }
 
         if ($modal) {
-            Yii::$app->grom->layout = 'modal';
+            Yii::$app->grom->applyModalLayout();
         } else {
             $this->module->layout = $this->module->loginLayout;
         }
