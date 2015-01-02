@@ -227,7 +227,7 @@ class ItemController extends BackendController
 
         if ($model->load(Yii::$app->request->post()) && $linkParamsModel->load(Yii::$app->request->post()) && $model->validate() && $linkParamsModel->validate()) {
             $model->setLinkParams($linkParamsModel->toArray());
-            $model->save(false);
+            $model->saveNode(false);
 
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
@@ -253,7 +253,7 @@ class ItemController extends BackendController
 
         if ($model->load(Yii::$app->request->post()) && $linkParamsModel->load(Yii::$app->request->post()) && $model->validate() && $linkParamsModel->validate()) {
             $model->setLinkParams($linkParamsModel->toArray());
-            $model->save(false);
+            $model->saveNode(false);
 
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
@@ -277,7 +277,7 @@ class ItemController extends BackendController
         if ($model->descendants()->count()) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove menu item ID:{id} so far it contains descendants.", ['id' => $model->id]));
          } else {
-            $model->deleteNode();
+            $model->delete();
         }
 
         if (Yii::$app->request->getIsDelete()) {
@@ -297,7 +297,7 @@ class ItemController extends BackendController
             /** @var MenuItem $model */
             if ($model->descendants()->count()) continue;
 
-            if(!$model->getIsDeletedRecord()) $model->deleteNode();
+            if(!$model->getIsDeletedRecord()) $model->delete();
         }
 
         if (!Yii::$app->request->getIsAjax())

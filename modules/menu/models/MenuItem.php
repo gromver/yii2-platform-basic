@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\modules\menu\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
-use gromver\platform\basic\behaviors\NestedSetBehavior;
+use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\ViewableInterface;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
@@ -103,6 +103,8 @@ class MenuItem extends ActiveRecord implements ViewableInterface
             [['metadesc'], 'string', 'max' => 2048],
             [['access_rule', 'robots'], 'string', 'max' => 50],
 
+            [['parent_id'], 'integer'],
+            [['parent_id'], 'filter', 'filter' => 'intval'],
             [['parent_id'], 'exist', 'targetAttribute' => 'id'],
             [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator' => '!='],
             [['parent_id'], function($attribute) {
@@ -190,7 +192,7 @@ class MenuItem extends ActiveRecord implements ViewableInterface
         return [
             TimestampBehavior::className(),
             BlameableBehavior::className(),
-            NestedSetBehavior::className()
+            NestedSetsBehavior::className()
         ];
     }
 
@@ -221,7 +223,7 @@ class MenuItem extends ActiveRecord implements ViewableInterface
     public function transactions()
     {
         return [
-            self::SCENARIO_DEFAULT => self::OP_UPDATE,
+            self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
@@ -256,12 +258,20 @@ class MenuItem extends ActiveRecord implements ViewableInterface
         return 'lock';
     }
 
-    public function save($runValidation = true, $attributes = null) {
-        if ($this->getIsNewRecord() && $this->parent_id) {
-            return $this->appendTo(self::findOne($this->parent_id), $runValidation, $attributes);
+    public function saveNode($runValidation = true, $attributes = null) {
+        if ($this->getIsNewRecord()) {
+            if($parent = self::findOne($this->parent_id)) {
+                return $this->appendTo($parent, $runValidation, $attributes);
+            } else {
+                return $this->makeRoot($parent, $runValidation, $attributes);
+            }
         }
-
-        return $this->saveNode($runValidation,$attributes);
+        // меню перемещено в другой пункт меню
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
+            return $this->appendTo($parent, $runValidation, $attributes);
+        }
+        // просто апдейт
+        return $this->save($runValidation, $attributes);
     }
 
     /**
@@ -269,31 +279,13 @@ class MenuItem extends ActiveRecord implements ViewableInterface
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $newParent = self::findOne($this->parent_id);
-        $moved = false;
-        if (isset($newParent)) {
-            if (!($parent = $this->parent()->one()) or !$parent->equals($newParent)) {
-                //предок изменился
-                $this->moveAsLast($newParent);
-                $newParent->refresh();
-                $newParent->reorderNode('lft');
-                $moved = true;
-            } else {
-                if (array_key_exists('ordering', $changedAttributes)) {
-                    $this->ordering ? $newParent->reorderNode('ordering') : $newParent->reorderNode('lft');
-                }
-            }
-        }
+        parent::afterSave($insert, $changedAttributes);
 
-        $oldPath = $this->getOldAttribute('path');
-
-        if ($moved) {
-            $this->refresh();
-            $this->normalizePath();
-            $this->normalizeWidgets($oldPath);
-        } elseif (array_key_exists('alias', $changedAttributes)) {
-            $this->normalizePath();
-            $this->normalizeWidgets($oldPath);
+        // устанавливаем translation_id по умолчанию
+        if ($insert && $this->translation_id === null) {
+            $this->updateAttributes([
+                'translation_id' => $this->id
+            ]);
         }
 
         //Если изменен тип меню или язык, смена языка возможна только для корневых пунктов меню
@@ -305,13 +297,18 @@ class MenuItem extends ActiveRecord implements ViewableInterface
             $this->normalizeStatus();
         }
 
-        if ($insert && $this->translation_id === null) {
-            $this->updateAttributes([
-                'translation_id' => $this->id
-            ]);
+        $oldPath = $this->getOldAttribute('path');
+        // нормализуем контексты виджетов и пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
+            $this->refresh();
+            $this->normalizePath();
+            $this->normalizeWidgets($oldPath);
         }
 
-        parent::afterSave($insert, $changedAttributes);
+        // ранжируем категории ели нужно
+        if (array_key_exists('ordering', $changedAttributes)) {
+            $this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+        }
     }
 
     private function calculatePath()

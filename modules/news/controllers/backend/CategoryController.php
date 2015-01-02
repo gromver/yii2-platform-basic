@@ -157,7 +157,7 @@ class CategoryController extends BackendController
             $sourceModel = null;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -178,7 +178,7 @@ class CategoryController extends BackendController
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -202,7 +202,7 @@ class CategoryController extends BackendController
         } elseif ($model->getPosts()->count() > 0) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it posts so far.", ['id' => $model->id]));
         } else {
-            $model->deleteNode();
+            $model->delete();
         }
 
         if (Yii::$app->request->getIsDelete()) {
@@ -222,7 +222,7 @@ class CategoryController extends BackendController
             /** @var Category $model */
             if ($model->getPosts()->count() > 0 || $model->descendants()->count()) continue;
 
-            $model->deleteNode();
+            $model->delete();
         }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));

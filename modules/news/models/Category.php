@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\modules\news\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
-use gromver\platform\basic\behaviors\NestedSetBehavior;
+use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\upload\ThumbnailProcessor;
 use gromver\platform\basic\behaviors\UploadBehavior;
@@ -97,6 +97,8 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
                     $this->addError($attribute, Yii::t('gromver.platform', 'Language has to match with the parental.'));
                 }
             }],*/
+            [['parent_id'], 'integer'],
+            [['parent_id'], 'filter', 'filter' => 'intval'],
             [['parent_id'], 'exist', 'targetAttribute' => 'id'],
             [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator'=>'!='],
 
@@ -173,7 +175,7 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
             TimestampBehavior::className(),
             BlameableBehavior::className(),
             TaggableBehavior::className(),
-            NestedSetBehavior::className(),
+            NestedSetsBehavior::className(),
             [
                 'class' => VersioningBehavior::className(),
                 'attributes' => ['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
@@ -197,6 +199,14 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
             ]
         ];
     }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
 
     /**
      * @inheritdoc
@@ -227,7 +237,7 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
             }, self::$_statuses);
     }
 
-    public function getStatusLabel($status=null)
+    public function getStatusLabel($status = null)
     {
         if ($status === null) {
             return Yii::t('gromver.platform', self::$_statuses[$this->status]);
@@ -242,15 +252,24 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
 
     public function hit()
     {
-        return $this->updateAttributes(['hits'=>$this->hits + 1]);
+        return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
-    public function save($runValidation=true,$attributes=null)
+    public function saveNode($runValidation = true, $attributes = null)
     {
-        if($this->getIsNewRecord() && $parent = self::findOne($this->parent_id))
-            return $this->appendTo($parent,$runValidation,$attributes);
-
-        return $this->saveNode($runValidation,$attributes);
+        if ($this->getIsNewRecord()) {
+            if($parent = self::findOne($this->parent_id)) {
+                return $this->appendTo($parent, $runValidation, $attributes);
+            } else {
+                return $this->makeRoot($parent, $runValidation, $attributes);
+            }
+        }
+        // категория перемещена в другую категорию
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
+            return $this->appendTo($parent, $runValidation, $attributes);
+        }
+        // просто апдейт
+        return $this->save($runValidation, $attributes);
     }
 
     /**
@@ -258,40 +277,30 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
      */
     public function afterSave($insert, $changedAttributes)
     {
-        $newParent = self::findOne($this->parent_id);
-        $moved = false;
-        if (isset($newParent)) {
-            if (!($parent = $this->parent()->one()) or !$parent->equals($newParent)) {
-                $this->moveAsLast($newParent);
-                $newParent->refresh();
-                $newParent->reorderNode('lft');
-                $moved = true;
-            } else {
-                if (array_key_exists('ordering', $changedAttributes)) {
-                    $this->ordering ? $newParent->reorderNode('ordering') : $newParent->reorderNode('lft');
-                }
-            }
-        }
+        parent::afterSave($insert, $changedAttributes);
 
-        if ($moved) {
-            $this->refresh();
-            $this->normalizePath();
-        } elseif(array_key_exists('alias', $changedAttributes)) {
-            $this->normalizePath();
-        }
-
-        //Если изменен язык, смена языка возможна только для корневых пунктов меню
-        if (array_key_exists('language', $changedAttributes)) {
-            $this->normalizeDescendants();
-        }
-
+        // устанавливаем translation_id по умолчанию
         if ($insert && $this->translation_id === null) {
             $this->updateAttributes([
                 'translation_id' => $this->id
             ]);
         }
 
-        parent::afterSave($insert, $changedAttributes);
+        // нормализуем подкатегории при смене языка
+        if (array_key_exists('language', $changedAttributes)) {
+            $this->normalizeDescendants();
+        }
+
+        // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
+            $this->refresh();
+            $this->normalizePath();
+        }
+
+        // ранжируем категории ели нужно
+        if (array_key_exists('ordering', $changedAttributes)) {
+            $this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+        }
     }
 
     private function calculatePath()

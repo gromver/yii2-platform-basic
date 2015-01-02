@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\menu\models;
 
-use creocoder\behaviors\NestedSetQuery;
+use creocoder\nestedsets\NestedSetsQueryBehavior;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 
@@ -22,7 +22,7 @@ class MenuItemQuery extends ActiveQuery
 {
     public function behaviors() {
         return [
-            NestedSetQuery::className(),
+            NestedSetsQueryBehavior::className(),
         ];
     }
 

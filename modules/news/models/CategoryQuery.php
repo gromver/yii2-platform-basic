@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
-use creocoder\behaviors\NestedSetQuery;
+use creocoder\nestedsets\NestedSetsQueryBehavior;
 use yii\db\ActiveQuery;
 use yii\db\Query;
 
@@ -23,7 +23,7 @@ class CategoryQuery extends ActiveQuery
     public function behaviors() {
         return [
             [
-                'class' => NestedSetQuery::className(),
+                'class' => NestedSetsQueryBehavior::className(),
             ],
         ];
     }

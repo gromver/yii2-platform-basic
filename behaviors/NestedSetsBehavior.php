@@ -9,19 +9,19 @@
 
 namespace gromver\platform\basic\behaviors;
 
-use creocoder\behaviors\NestedSet;
 use Yii;
 use yii\db\Exception;
 use yii\db\ActiveRecord;
 
 /**
- * Class NestedSetBehavior
+ * Class NestedSetsBehavior
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class NestedSetBehavior extends NestedSet
+class NestedSetsBehavior extends \creocoder\nestedsets\NestedSetsBehavior
 {
     public $orderingAttribute = 'ordering';
+    public $depthAttribute = 'level';
 
     static private $_orderCache;
 
