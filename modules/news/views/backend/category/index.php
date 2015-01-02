@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'header' => Yii::t('gromver.platform', 'Posts'),
                 'value' => function($model) {
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
-                        return Html::a('('.$model->getPosts()->count().')', ['post/index', 'PostSearch[category_id]' => $model->id], ['data-pjax' => 0]);
+                        return Html::a('('.$model->getPosts()->count().')', ['/grom/news/backend/post/index', 'PostSearch[category_id]' => $model->id], ['data-pjax' => 0]);
                     },
                 'format'=>'raw'
             ],
