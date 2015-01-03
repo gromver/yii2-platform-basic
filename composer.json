@@ -1,6 +1,6 @@
 {
     "name": "gromver/yii2-platform-basic",
-    "description": "Платформа для разработки веб приложений, на основе Yii2 Basic application template",
+    "description": "CMF for Yii2 based on basic application template",
     "type": "yii2-extension",
     "keywords": ["yii2","extension","cms","cmf","platform","grom"],
     "license": "GPL-2.0",
