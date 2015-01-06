@@ -12,6 +12,7 @@ namespace gromver\platform\basic\widgets;
 use gromver\models\ObjectModel;
 use gromver\models\SpecificationInterface;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
+use gromver\platform\basic\widgets\assets\WidgetAsset;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\base\InvalidConfigException;

@@ -9,7 +9,7 @@
 use kartik\icons\Icon;
 
 Icon::map($this, Icon::EL);
-?>
+\gromver\platform\basic\widgets\assets\PostAsset::register($this); ?>
 
 <div class="row">
     <div class="col-sm-4 pull-right">

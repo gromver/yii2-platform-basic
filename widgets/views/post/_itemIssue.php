@@ -13,7 +13,7 @@ use gromver\platform\basic\modules\news\models\Post;
 
 $urlManager = Yii::$app->urlManager; ?>
 <div class="issue-wrapper">
-    <h4 class="issue-title"><?= Html::a(Html::encode($model->title), $urlManager->createUrl($model->getFrontendViewLink())) ?></h4>
+    <h4 class="issue-title<?= $model->postViewed ? ' viewed' : (Yii::$app->user->isGuest ? '' : ' new') ?>"><?= Html::a(Html::encode($model->title), $model->getFrontendViewLink()) ?></h4>
     <div class="issue-bar">
         <small class="issue-published"><?= Yii::$app->formatter->asDatetime($model->published_at) ?></small>
         <small class="issue-separator">|</small>
@@ -32,26 +32,3 @@ $urlManager = Yii::$app->urlManager; ?>
     <div class="issue-preview"><?= $model->preview_text ? $model->preview_text : \yii\helpers\StringHelper::truncateWords(strip_tags($model->detail_text), 50) ?></div>
     <div class="clearfix"></div>
 </div>
-
-<style>
-    .issue-wrapper {
-        margin-bottom: 2em;
-    }
-    .issue-bar {
-        border-top: 1px solid #cccccc;
-        padding: 6px;
-        margin: 0.5em 0;
-        background-color: #f5f5f5;
-        font-size: 12px;
-    }
-    .issue-separator {
-        margin: 0 8px;
-    }
-    .issue-separator:last-child {
-        display: none;
-    }
-    .issue-tag {
-        font-size: 10px;
-        margin-right: 0.8em;
-    }
-</style>

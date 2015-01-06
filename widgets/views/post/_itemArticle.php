@@ -11,15 +11,18 @@
 use yii\helpers\Html;
 use backend\modules\news\models\Post;
 
-$urlManager = Yii::$app->urlManager;
+$urlManager = Yii::$app->urlManager; ?>
 
-echo '<h4>' . Html::a(Html::encode($model->title), $urlManager->createUrl($model->getFrontendViewLink())) . '</h4>';
-
-if($model->preview_image) echo Html::img($model->getFileUrl('preview_image'), [
+<h4 class="article-title<?= $model->postViewed ? ' viewed' : (Yii::$app->user->isGuest ? '' : ' new') ?>">
+    <?= Html::a(Html::encode($model->title), $model->getFrontendViewLink()) ?>
+</h4>
+<?php if($model->preview_image) echo Html::img($model->getFileUrl('preview_image'), [
     'class' => 'pull-left',
     'style' => 'max-width: 200px; margin-right: 15px;'
-]);
+]); ?>
 
-echo Html::tag('div', $model->preview_text);
+<div class="article-preview">
+    <?= $model->preview_text ?>
+</div>
 
-echo '<div class="clearfix"></div>';
+<div class="clearfix"></div>

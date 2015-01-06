@@ -6,6 +6,8 @@
 
 use yii\helpers\Html;
 
+\gromver\platform\basic\widgets\assets\PostAsset::register($this);
+
 if ($this->context->showTranslations) {
     echo \gromver\platform\basic\widgets\Translations::widget([
         'model' => $model,
@@ -29,29 +31,7 @@ if ($this->context->showTranslations) {
 <?php if($model->detail_image) {
     echo Html::img($model->getFileUrl('detail_image'), [
         'class' => 'text-block img-responsive',
-        //'style' => 'max-width: 200px; margin-right: 15px;'
     ]);
 } ?>
 
-<div class="issue-text"><?= $model->detail_text ?></div>
-
-<style>
-    .issue-bar {
-        border-top: 1px solid #cccccc;
-        padding: 6px;
-        margin-top: 0.5em;
-        margin-bottom: 1.8em;
-        background-color: #f5f5f5;
-        font-size: 12px;
-    }
-    .issue-separator {
-        margin: 0 8px;
-    }
-    .issue-separator:last-child {
-        display: none;
-    }
-    .issue-tag {
-        font-size: 10px;
-        margin-right: 0.8em;
-    }
-</style>
+<div class="issue-detail"><?= $model->detail_text ?></div>

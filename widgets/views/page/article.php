@@ -1,7 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
- * @var $model \gromver\platform\basic\page\models\Page
+ * @var $model \gromver\platform\basic\modules\page\models\Page
  */
 
 use yii\helpers\Html;
@@ -14,7 +14,11 @@ if ($this->context->showTranslations) {
         ]
     ]);
 }
+?>
+<h1 class="page-title title-page">
+    <?= Html::encode($model->title) ?>
+</h1>'
 
-echo Html::tag('h1', Html::encode($model->title), ['class' => 'page-title title-page']);
-
-echo Html::tag('div', $model->detail_text);
+<div class="page-detail">
+    <?= $model->detail_text ?>
+</div>

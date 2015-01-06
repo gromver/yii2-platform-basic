@@ -12,7 +12,9 @@
  * @var $listViewOptions array
  */
 
-use yii\helpers\Html; ?>
+use yii\helpers\Html;
+
+\gromver\platform\basic\widgets\assets\PostAsset::register($this); ?>
 
 <div class="row">
     <div class="col-sm-4 pull-right">

@@ -221,7 +221,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
      */
     public function getPostViewed()
     {
-        return $this->hasOne(PostViewed::className(), ['post_id' => 'id'])->onCondition(['user_id' => Yii::$app->user->id]);
+        return $this->hasOne(PostViewed::className(), ['post_id' => 'id'])->onCondition(['user_id' => Yii::$app->user ? Yii::$app->user->id : null])->inverseOf('post');
     }
 
     private static $_statuses = [
@@ -266,7 +266,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
 
     public function view()
     {
-        if ($user = Yii::$app->user && !$this->postViewed) {
+        if (Yii::$app->user->id && !$this->postViewed) {
             $this->link('postViewed', new PostViewed());
         }
     }
