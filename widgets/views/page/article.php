@@ -17,7 +17,7 @@ if ($this->context->showTranslations) {
 ?>
 <h1 class="page-title title-page">
     <?= Html::encode($model->title) ?>
-</h1>'
+</h1>
 
 <div class="page-detail">
     <?= $model->detail_text ?>
