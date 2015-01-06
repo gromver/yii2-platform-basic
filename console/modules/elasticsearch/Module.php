@@ -17,7 +17,7 @@ use yii\base\InvalidConfigException;
 
 /**
  * Class Module
- * В этом модуле можно кастомизировать дополнительные кдассы ActiveDocument поддерживаемые цмской
+ * В этом модуле можно кастомизировать дополнительные классы ActiveDocument поддерживаемые платформой
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

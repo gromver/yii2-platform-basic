@@ -37,3 +37,5 @@ echo \gromver\platform\basic\widgets\CategoryView::widget([
     'category' => $model,
     'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
 ]);
+
+$model->hit();

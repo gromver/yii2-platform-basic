@@ -25,7 +25,6 @@ use yii\helpers\Json;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
- * @package gromver/cms
  * @property $context string
  * @property $realContext string
  */

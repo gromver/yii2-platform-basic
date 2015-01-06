@@ -40,8 +40,8 @@ use yii\helpers\Inflector;
  * @property integer $status
  * @property integer $created_by
  * @property integer $updated_by
- * @property string $hits
- * @property string $lock
+ * @property integer $hits
+ * @property integer $lock
  *
  * @property Page[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
@@ -173,6 +173,11 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
     public function optimisticLock()
     {
         return 'lock';
+    }
+
+    public function hit()
+    {
+        return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
     // ViewableInterface

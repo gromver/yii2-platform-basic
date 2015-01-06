@@ -56,6 +56,7 @@ use yii\helpers\Inflector;
  * @property \gromver\platform\basic\modules\user\models\User $user
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  * @property Post[] $translations
+ * @property PostViewed $postViewed
  */
 class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface
 {
@@ -215,6 +216,14 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPostViewed()
+    {
+        return $this->hasOne(PostViewed::className(), ['post_id' => 'id'])->onCondition(['user_id' => Yii::$app->user->id]);
+    }
+
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
         self::STATUS_UNPUBLISHED => 'Unpublished',
@@ -245,7 +254,6 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return new PostQuery(get_called_class());
     }
 
-
     public function optimisticLock()
     {
         return 'lock';
@@ -254,6 +262,13 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
     public function hit()
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
+    }
+
+    public function view()
+    {
+        if ($user = Yii::$app->user && !$this->postViewed) {
+            $this->link('postViewed', new PostViewed());
+        }
     }
 
     public function getDayLink()

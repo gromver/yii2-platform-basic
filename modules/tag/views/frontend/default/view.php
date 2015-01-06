@@ -27,3 +27,5 @@ echo \gromver\platform\basic\widgets\TagItems::widget([
     'id' => 'tag-items',
     'tag' => $model,
 ]);
+
+$model->hit();

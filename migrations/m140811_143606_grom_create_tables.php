@@ -168,11 +168,11 @@ class m140811_143606_grom_create_tables extends Migration
         $this->createTable('{{%grom_post_viewed}}', [
             'post_id' => Schema::TYPE_INTEGER . ' NOT NULL',
             'user_id' => Schema::TYPE_INTEGER . ' NOT NULL',
-            'view_time' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'viewed_at' => Schema::TYPE_INTEGER . ' NOT NULL',
         ]);
+        $this->addPrimaryKey('PostId_UserId_pr', '{{%grom_post_viewed}}', 'post_id, user_id');
         $this->createIndex('PostId_idx', '{{%grom_post_viewed}}', 'post_id');
         $this->createIndex('UserId_idx', '{{%grom_post_viewed}}', 'user_id');
-        $this->createIndex('PostId_UserId_idx', '{{%grom_post_viewed}}', 'post_id, user_id');
 
         $this->addForeignKey('CmsPostViewed_PostId_fk', '{{%grom_post_viewed}}', 'post_id', '{{%grom_post}}', 'id', 'CASCADE', 'CASCADE');
         $this->addForeignKey('CmsPostViewed_UserId_fk', '{{%grom_post_viewed}}', 'user_id', '{{%grom_user}}', 'id', 'CASCADE', 'CASCADE');

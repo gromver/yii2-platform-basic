@@ -67,8 +67,6 @@ class TagItems extends Widget {
             'itemLayout' => $this->itemLayout,
             'model' => $this->tag
         ]);
-
-        $this->tag->hit();
     }
 
     public function customControls()

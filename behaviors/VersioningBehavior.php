@@ -25,7 +25,7 @@ use yii\db\BaseActiveRecord;
  */
 class VersioningBehavior extends Behavior
 {
-    public $maxVersions = 3;
+    public $maxVersions = 5;
     public $attributes;
     public $versionNote;
 

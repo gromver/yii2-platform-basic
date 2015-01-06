@@ -25,6 +25,7 @@ if ($menu) {
     $this->params['breadcrumbs'] = $model->category->getBreadcrumbs(true);
 }
 //$this->params['breadcrumbs'][] = $this->title;
+
 //мета теги
 if ($model->metakey) {
     $this->registerMetaTag(['name' => 'keywords', 'content' => $model->metakey], 'keywords');
@@ -38,3 +39,6 @@ echo \gromver\platform\basic\widgets\PostView::widget([
     'post' => $model,
     'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
 ]);
+
+$model->hit();
+$model->view();

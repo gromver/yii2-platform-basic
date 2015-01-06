@@ -26,3 +26,5 @@ echo \gromver\platform\basic\widgets\PageView::widget([
     'id' => 'page-view',
     'page' => $model,
 ]);
+
+$model->hit();
