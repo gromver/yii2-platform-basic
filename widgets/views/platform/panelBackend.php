@@ -1,10 +1,13 @@
 <?php
+/**
+ * @var $this yii\web\View
+ */
 
 use yii\bootstrap\NavBar;
 use yii\bootstrap\Nav;
 use yii\helpers\Html;
 
-NavBar::begin([
+$navBar = NavBar::begin([
     'brandLabel' => Yii::$app->grom->siteName,
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
@@ -89,5 +92,7 @@ if (Yii::$app->user->isGuest) {
     </div>
 
 </div>
-
+<style>
+    <?= '#' . $navBar->id ?> .navbar-right { margin-right: 0; }
+</style>
 <?php NavBar::end() ?>

@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var $this yii\web\View
+ */
+
 
 use gromver\platform\basic\modules\main\Module;
 use gromver\widgets\ModalIFrame;
@@ -7,7 +11,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
-NavBar::begin([
+$navBar = NavBar::begin([
     'brandLabel' => Yii::$app->grom->siteName,
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
@@ -104,5 +108,7 @@ if (Yii::$app->user->isGuest) { ?>
 
     </div>
 <?php } ?>
-
+<style>
+    <?= '#' . $navBar->id ?> .navbar-right { margin-right: 0; }
+</style>
 <?php NavBar::end() ?>
