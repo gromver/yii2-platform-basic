@@ -250,7 +250,7 @@ class MenuItem extends ActiveRecord implements ViewableInterface
 
     public function getTranslations()
     {
-        return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->indexBy('language');
+        return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->andWhere(['!=', 'language', $this->language])->indexBy('language');
     }
 
     public function optimisticLock()

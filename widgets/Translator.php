@@ -43,7 +43,7 @@ class Translator extends Widget {
         $translations = $this->model->translations;
         foreach ($translations as $translationModel) {
             /** @var ActiveRecord | TranslatableInterface $translationModel */
-            if ($translationModel->equals($this->model)) continue;
+            // if ($translationModel->equals($this->model)) continue;
             $lang = $translationModel->language;
             $buttons[$lang] = Html::a($lang, ['update', 'id' => $translationModel->getPrimaryKey()], ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0']);
         }
