@@ -31,7 +31,11 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'translation_id',
-            'language',
+            [
+                'attribute' => 'language',
+                'value' => \gromver\platform\basic\widgets\Translator::widget(['model' => $model]),
+                'format' => 'raw'
+            ],
             'title',
             'alias',
             'status',

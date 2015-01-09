@@ -38,7 +38,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'menu_type_id',
             'parent_id',
             'status',
-            'language',
+            [
+                'attribute' => 'language',
+                'value' => \gromver\platform\basic\widgets\Translator::widget(['model' => $model]),
+                'format' => 'raw'
+            ],
             'title',
             'alias',
             'path',

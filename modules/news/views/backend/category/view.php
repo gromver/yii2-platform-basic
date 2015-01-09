@@ -25,6 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-th-list"></i> ' . Yii::t('gromver.platform', 'Posts'), ['/grom/news/backend/post/index', 'PostSearch' => ['category_id' => $model->id]], ['class' => 'btn btn-default']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -33,7 +34,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'translation_id',
             'parent_id',
-            'language',
+            [
+                'attribute' => 'language',
+                'value' => \gromver\platform\basic\widgets\Translator::widget(['model' => $model]),
+                'format' => 'raw'
+            ],
             'title',
             'alias',
             'path',
