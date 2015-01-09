@@ -6,6 +6,19 @@ class m140820_085041_grom_site_setup extends Migration
 {
     public function up()
     {
+        // Creates folders for media manager
+        $webroot = Yii::getAlias('@app/web');
+        foreach (['upload', 'files'] as $folder) {
+            $path = $webroot . '/' . $folder;
+            if (!file_exists($path)) {
+                echo "mkdir('$path', 0777)...";
+                if (mkdir($path, 0777, true)) {
+                    echo "done.\n";
+                } else {
+                    echo "failed.\n";
+                }
+            }
+        }
         // Creates the default platform config
         /** @var \gromver\platform\basic\console\modules\main\Module $main */
         $cmf = Yii::$app->grom;
