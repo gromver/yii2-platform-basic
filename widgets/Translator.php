@@ -13,37 +13,48 @@ use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
+use gromver\platform\basic\interfaces\TranslatableInterface;
 
 /**
  * Class Translator
- * Вывоидт список трансляций для данной модели с сылками на просмотр либо создание трансляции
+ * Translator используется в CRUD контроллерах для отображения списка локализаций указанной модели.
+ * Модель должна поддерживать gromver\platform\basic\interfaces\TranslatableInterface
+ * В список попадают все локализации, относящиеся к модели, а также те локализации,
+ * которые поддерживает приложение, но не попали в список.
+ * Список сортируется по алфавиту.
+ * Локализации поддерживаемые моделью, ведут к path/to/controller/update?id=1
+ * Локализации не поддерживаемые моделью, ведут к path/to/controller/create?language=en&sourceId=1
+ *
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class Translator extends Widget {
     /**
-     * @var ActiveRecord
+     * @var ActiveRecord | TranslatableInterface
      */
     public $model;
-    public $languageParam = 'language';
-    public $translationsParam = 'translations';
-    public $updateRoute = 'update';
-    public $createRoute = 'create';
 
     public function run()
     {
-        $languages = [];
-        $itemLanguage = $this->model->{$this->languageParam};
-        $itemTranslations = $this->model->{$this->translationsParam};
-        foreach(Yii::$app->languages as $lang)
-            if($lang==$itemLanguage)
-                $languages[] = Html::a($lang, [$this->updateRoute, 'id' => $this->model->id], ['class' => 'btn btn-primary btn-xs', 'data-pjax' => '0']);
-            else if(isset($itemTranslations[$lang]))
-                $languages[] = Html::a($lang, [$this->updateRoute, 'id' => $itemTranslations[$lang]->id], ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0']);
-            else
-                $languages[] = Html::a($lang, [$this->createRoute, 'language' => $lang, 'sourceId' => $this->model->id], ['class' => 'btn btn-danger btn-xs', 'data-pjax' => '0']);
+        $buttons = [
+            $this->model->language => Html::a($this->model->language, ['update', 'id' => $this->model->getPrimaryKey()], ['class' => 'btn btn-primary btn-xs', 'data-pjax' => '0'])
+        ];
 
+        $translations = $this->model->translations;
+        foreach ($translations as $translationModel) {
+            /** @var ActiveRecord | TranslatableInterface $translationModel */
+            if ($translationModel->equals($this->model)) continue;
+            $lang = $translationModel->language;
+            $buttons[$lang] = Html::a($lang, ['update', 'id' => $translationModel->getPrimaryKey()], ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0']);
+        }
 
-        return implode(' ', $languages);
+        $unsupportedLanguages = array_diff(Yii::$app->languages, array_keys($buttons));
+        foreach ($unsupportedLanguages as $lang) {
+            $buttons[$lang] = Html::a($lang, ['create', 'language' => $lang, 'sourceId' => $this->model->getPrimaryKey()], ['class' => 'btn btn-danger btn-xs', 'data-pjax' => '0']);
+        }
+
+        ksort($buttons);
+
+        return implode(' ', $buttons);
     }
 } 
