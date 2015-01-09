@@ -48,7 +48,7 @@ class Translator extends Widget {
             $buttons[$lang] = Html::a($lang, ['update', 'id' => $translationModel->getPrimaryKey()], ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0']);
         }
 
-        $unsupportedLanguages = array_diff(Yii::$app->languages, array_keys($buttons));
+        $unsupportedLanguages = array_diff(Yii::$app->acceptedLanguages, array_keys($buttons));
         foreach ($unsupportedLanguages as $lang) {
             $buttons[$lang] = Html::a($lang, ['create', 'language' => $lang, 'sourceId' => $this->model->getPrimaryKey()], ['class' => 'btn btn-danger btn-xs', 'data-pjax' => '0']);
         }

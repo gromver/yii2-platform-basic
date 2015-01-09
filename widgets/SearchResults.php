@@ -226,6 +226,6 @@ class SearchResults extends Widget {
 
     public static function languages()
     {
-        return ['' => Yii::t('gromver.platform', 'Autodetect')] + Yii::$app->getLanguagesList();
+        return ['' => Yii::t('gromver.platform', 'Autodetect')] + Yii::$app->getAcceptedLanguagesList();
     }
 }

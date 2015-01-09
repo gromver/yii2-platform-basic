@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
  */
 class Application extends \yii\web\Application {
     public $language = 'en';
-    public $languages = ['en', 'ru'];
+    public $acceptedLanguages = ['en', 'ru'];
     public $sourceLanguage = 'en';
     public $defaultRoute = 'grom/frontend/default/index';
     public $layout = '@gromver/platform/basic/views/layouts/main';
@@ -117,9 +117,9 @@ class Application extends \yii\web\Application {
     /**
      * @return array
      */
-    public function getLanguagesList()
+    public function getAcceptedLanguagesList()
     {
-        return array_combine($this->languages, $this->languages);
+        return array_combine($this->acceptedLanguages, $this->acceptedLanguages);
     }
 
     /**

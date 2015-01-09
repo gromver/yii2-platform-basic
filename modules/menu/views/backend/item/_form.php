@@ -40,7 +40,7 @@ use yii\bootstrap\ActiveForm;
                 ]
             ]) ?>
 
-            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
+            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
 
             <?//= $form->field($model, 'path')->textInput(['maxlength' => 2048]) ?>
 

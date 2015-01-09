@@ -87,7 +87,7 @@ if (Yii::$app->user->isGuest) {
         <div class="btn-group">
             <?= implode('', array_map(function($language) {
                 return Html::a($language, Yii::$app->urlManager->createUrl([Yii::$app->request->getPathInfo()] + Yii::$app->request->getQueryParams(), $language), ['class' => 'btn navbar-btn btn-xs' . ($language === Yii::$app->language ? ' btn-primary active' : ' btn-default')]);
-            }, Yii::$app->languages)) ?>
+            }, Yii::$app->acceptedLanguages)) ?>
         </div>
     </div>
 

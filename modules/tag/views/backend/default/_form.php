@@ -30,7 +30,7 @@ use yii\bootstrap\ActiveForm;
     <br/>
     <div class="tab-content">
         <div id="main-options" class="tab-pane active">
-            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
+            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
 
             <?= $form->field($model, 'status')->dropDownList(['' => Yii::t('gromver.platform', 'Select ...')] + $model->statusLabels()) ?>
 

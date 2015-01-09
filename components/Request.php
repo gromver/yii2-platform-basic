@@ -63,7 +63,7 @@ class Request extends \yii\web\Request
                     $language = $this->_pathInfo;
                 }
 
-                if(in_array($language, Yii::$app->languages)) {
+                if(in_array($language, Yii::$app->acceptedLanguages)) {
                     //язык обнаружен в начале пути - ru/site/index
                     Yii::trace("Detected language '{$language}'.");
                     //очищаем путь от языка
@@ -104,7 +104,7 @@ class Request extends \yii\web\Request
 
                 //если в сессии не обнаружен, пытаемся определить подходящий исходя из списка языков поддерживаемых браузером
                 if ($language === null && $this->detectLanguage) {
-                    $language = $this->getPreferredLanguage(Yii::$app->languages);
+                    $language = $this->getPreferredLanguage(Yii::$app->acceptedLanguages);
                 }
 
                 //если определенный язык не совпадает с языком по умолчанию - то редиректим на тотже адрес с указанием определенного языка

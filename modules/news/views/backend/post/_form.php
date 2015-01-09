@@ -45,7 +45,7 @@ use yii\bootstrap\ActiveForm;
                         ]) ?>
                     </div>
                 </div>
-                <?= $form->field($model, 'language')->dropDownList(Yii::$app->getLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
+                <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
 
                 <?= $form->field($model, 'category_id')->widget(\kartik\widgets\DepDrop::className(), [
                     'pluginOptions' => [

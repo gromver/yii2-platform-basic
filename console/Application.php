@@ -86,7 +86,7 @@ class Application extends \yii\console\Application {
     /**
      * @return array
      */
-    public function getLanguagesList()
+    public function getAcceptedLanguagesList()
     {
         return array_combine($this->languages, $this->languages);
     }
