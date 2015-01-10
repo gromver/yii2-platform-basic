@@ -23,6 +23,9 @@ use yii\helpers\Json;
 
 /**
  * Class Widget
+ * Базовый класс для фронтенд виджетов, предоставляет готовый интерфейс для настройки виджета администратором
+ * Настройка осуществляется на основе публичных полей виджета и phpdoc'ов
+ *
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
@@ -31,17 +34,58 @@ use yii\helpers\Json;
  */
 class Widget extends \yii\base\Widget implements SpecificationInterface
 {
+    /**
+     * ID виджета, обязательный параметр
+     * @var string
+     */
+    private $_id;
+    /**
+     * Используется для хранения первоначального конфига
+     * @var array
+     */
     private $_config;
     /**
+     * Исключение перехваченное во время выполнения виджета, если режим отладки включен то исключения не перехватываются
      * @var \Exception
      */
     private $_exception;
+    /**
+     * Контекст настроек виджета, если не указан то используется Yii::$app->request->getPathInfo()
+     * @var string
+     */
     private $_context;
+    /**
+     * Контекст настроек виджета найденных в БД
+     * @var string
+     */
     private $_loadedContext;
-    private $_id;
+    /**
+     * Режим отладки, когда включен исключения не перехватываются
+     * @var bool
+     */
     private $_debug = false;
-    private $_showPanel = true;
-    private $_accessRule = 'administrate';
+    /**
+     * Право доступа к кнопке настроек виджета
+     * @var string
+     */
+    private $_configureAccess = 'administrate';
+    /**
+     * Компонент настройки виджетов, доступ к которому имеют пользователи с правом 'administrate'
+     * Для настройки кастомных прав доступа к настройкам виджета нужно:
+     * 1. Создать контроллер с экшеном \gromver\platform\basic\modules\widget\actions\ConfigureAction и кастомным правом дуступа
+     * 2. Настроить кастомное право доступа к кнопке настроек
+     *      echo MyWidget::widget([
+     *          ...
+     *          'configureAccess' => 'newAccess'
+     *      ]);
+     * @var string
+     */
+    private $_configureRoute = '/grom/widget/backend/default/configure';
+    /**
+     * Право доступа к тексту пойманного исключения
+     * @var string
+     */
+    private $_exceptionAccess = 'administrate';
 
     public function __construct($config = [])
     {
@@ -56,12 +100,18 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         }
     }
 
+    /**
+     * Обрабатывает исключение, перехватывая его либо пропуская, в зависимости от режима отладки
+     * @param $e
+     * @throws
+     */
     private function processException($e)
     {
-        if($this->getDebug())
+        if ($this->getDebug()) {
             throw $e;
-        else
+        } else {
             $this->_exception = $e;
+        }
     }
 
     /**
@@ -100,9 +150,15 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         }
     }
 
+    /**
+     * Вместо данного метода использовать метод [[self::launch]]
+     * @return string|void
+     * @throws
+     */
     public function run()
     {
-        echo Html::beginTag('div', ['id' => $this->id, 'class' => 'widget-wrapper' . ($this->canEdit() && Yii::$app->grom->getIsEditMode() && $this->getShowPanel() ? ' edit-mode' : '')]);
+        echo Html::beginTag('div', ['id' => $this->id, 'class' => 'widget-wrapper' . (Yii::$app->grom->getIsEditMode() ? ' edit-mode' : '')]);
+
         if ($this->_exception === null) {
             try {
                 $this->launch();
@@ -111,14 +167,12 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             }
         }
 
-        if ($this->canEdit()) {
-            if ($this->_exception) {
-                $this->renderException();
-            }
+        if ($this->_exception && $this->hasExceptionAccess()) {
+            $this->renderException();
+        }
 
-            if ($this->_showPanel && Yii::$app->grom->getIsEditMode()) {
-                $this->renderControls();
-            }
+        if (Yii::$app->grom->getIsEditMode()) {
+            $this->renderControls();
         }
 
         echo Html::endTag('div');
@@ -139,23 +193,39 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         }
     }
 
+    /**
+     * Отображает исключение, выброшенное при работе виджета
+     */
     public function renderException()
     {
         echo Html::tag('p', Yii::t('gromver.platform', 'Widget error: {error}', ['error' => $this->_exception->getMessage()]), ['class' => 'text-danger widget-error']);
     }
 
+    /**
+     * Отображает кнопку настройки виджета и другие кастомные кнопки
+     * @throws InvalidConfigException
+     */
     public function renderControls()
     {
         echo Html::tag('div', $this->normalizeControls(array_merge($this->customControls(), [$this->widgetConfigControl()])), ['class' => 'widget-controls btn-group']);
         echo Html::tag('div', Yii::t('gromver.platform', 'Widget "{name}" (ID: {id})', ['name' => $this->className(), 'id' => $this->id]), ['class' => 'widget-description']);
     }
 
+    /**
+     * Массив с кастомными кнопками
+     * @return array
+     */
     public function customControls()
     {
         return [];
     }
 
-    public function normalizeControls($controls)
+    /**
+     * @param $controls
+     * @return string
+     * @throws InvalidConfigException
+     */
+    protected function normalizeControls($controls)
     {
         $out = '';
 
@@ -175,41 +245,57 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         return $out;
     }
 
-    public function canEdit()
-    {
-        return $this->_accessRule ? Yii::$app->user->can($this->_accessRule) : true;
-    }
-
+    /**
+     * @inheritdoc
+     */
     public function getId($autoGenerate = true)
     {
         return $this->_id;
     }
 
+    /**
+     * @param string $value
+     */
     public function setId($value)
     {
         $this->_id = $value;
     }
 
+    /**
+     * @return string
+     */
     public function getContext()
     {
         return $this->_context;
     }
 
+    /**
+     * @param $value string
+     */
     public function setContext($value)
     {
         $this->_context = $value;
     }
 
+    /**
+     * @return string
+     */
     public function getLoadedContext()
     {
         return $this->_loadedContext;
     }
 
+    /**
+     * @param $value bool
+     */
     public function setDebug($value)
     {
         $this->_debug = $value;
     }
 
+    /**
+     * @return bool
+     */
     public function getDebug()
     {
         if(!isset($this->_debug))
@@ -218,26 +304,74 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         return $this->_debug;
     }
 
-    public function setShowPanel($value)
+    /**
+     * @return string
+     */
+    public function getExceptionAccess()
     {
-        $this->_showPanel = $value;
+        return $this->_exceptionAccess;
     }
 
-    public function getShowPanel()
+    /**
+     * @param string $exceptionAccess
+     */
+    public function setExceptionAccess($exceptionAccess)
     {
-        return $this->_showPanel;
+        $this->_exceptionAccess = $exceptionAccess;
     }
 
-    public function setAccessRule($value)
+    /**
+     * @return bool
+     */
+    public function hasExceptionAccess()
     {
-        $this->_accessRule = $value;
+        return $this->_exceptionAccess ? Yii::$app->user->can($this->_exceptionAccess) : true;
     }
 
-    public function getAccessRule()
+    /**
+     * @return string
+     */
+    public function getConfigureAccess()
     {
-        return $this->_accessRule;
+        return $this->_configureAccess;
     }
 
+    /**
+     * @param string $configureAccess
+     */
+    public function setConfigureAccess($configureAccess)
+    {
+        $this->_configureAccess = $configureAccess;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasConfigureAccess()
+    {
+        return $this->_configureAccess ? Yii::$app->user->can($this->_configureAccess) : true;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfigureRoute()
+    {
+        return $this->_configureRoute;
+    }
+
+    /**
+     * @param string $configureRoute
+     */
+    public function setConfigureRoute($configureRoute)
+    {
+        $this->_configureRoute = $configureRoute;
+    }
+
+    /**
+     * Помощник, для определения возвратный ссылки на этот виджет
+     * @return string
+     */
     public function getBackUrl()
     {
         $backUrl = Yii::$app->getRequest()->getUrl();
@@ -265,8 +399,16 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         return $names;
     }
 
+    /**
+     * Возвращает html кнопки настройки виджета, или false, если у пользователя нет доступа
+     * @return string | bool
+     */
     public function widgetConfigControl()
     {
+        if (!$this->hasConfigureAccess()) {
+            return false;
+        }
+
         ob_start();
         ob_implicit_flush(false);
 
@@ -285,7 +427,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             ],
         ]);
 
-        echo Html::beginForm(['/grom/widget/backend/default/configure', 'modal' => 1], 'post', ['id' => $formId]);
+        echo Html::beginForm([$this->getConfigureRoute(), 'modal' => 1], 'post', ['id' => $formId]);
 
         echo Html::hiddenInput('url', Yii::$app->request->getAbsoluteUrl());
 

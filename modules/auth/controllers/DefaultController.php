@@ -137,7 +137,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function actionRequestPasswordReset()
+    public function actionRequestPasswordResetToken()
     {
         $model = new User();
         $model->scenario = 'requestPasswordResetToken';

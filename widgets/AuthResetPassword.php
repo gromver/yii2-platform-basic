@@ -27,7 +27,7 @@ class AuthResetPassword extends Widget {
     {
         parent::init();
 
-        $this->setShowPanel(false);
+        $this->setConfigureAccess('none');
 
         if (!isset($this->model)) {
             $this->model = new User();
