@@ -83,13 +83,17 @@ class DefaultController extends BackendController
             if ($model->validate() && Yii::$app->request->getBodyParam('task') !== 'refresh') {
 
                 FileHelper::createDirectory($paramsPath);
-                file_put_contents($paramsFile, '<?php return ' . var_export($model->toArray(), true) . ';');
-                @chmod($paramsFile, 0777);
+                try {
+                    file_put_contents($paramsFile, '<?php return ' . var_export($model->toArray(), true) . ';');
+                    @chmod($paramsFile, 0777);
 
-                Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Configuration saved.'));
+                    Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Configuration saved.'));
 
-                if ($modal) {
-                    ModalIFrame::refreshPage();
+                    if ($modal) {
+                        ModalIFrame::refreshPage();
+                    }
+                } catch (\Exception $e) {
+                    Yii::$app->session->setFlash(Alert::TYPE_DANGER, $e->getMessage());
                 }
             }
         }
