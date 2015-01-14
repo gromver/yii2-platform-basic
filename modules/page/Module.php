@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\page;
 
+use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
 use Yii;
@@ -18,7 +19,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface
+class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface, ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\page\controllers';
     public $defaultRoute = 'frontend/default';
@@ -47,6 +48,16 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Page View'), 'url' => ['/grom/page/backend/default/select']],
             ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
+        return [
+            'SqlSearchQueryConditions_gromver\platform\basic\modules\page\models\Page' => 'gromver\platform\basic\modules\page\models\Page::sqlSearchQueryConditions',
         ];
     }
 }

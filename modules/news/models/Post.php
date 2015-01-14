@@ -10,11 +10,13 @@
 namespace gromver\platform\basic\modules\news\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
+use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\upload\ThumbnailProcessor;
 use gromver\platform\basic\behaviors\UploadBehavior;
 use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
+use gromver\platform\basic\interfaces\ModelSearchableInterface;
 use gromver\platform\basic\interfaces\TranslatableInterface;
 use gromver\platform\basic\interfaces\ViewableInterface;
 use gromver\platform\basic\modules\user\models\User;
@@ -22,6 +24,7 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
 /**
@@ -58,7 +61,7 @@ use yii\helpers\Inflector;
  * @property Post[] $translations
  * @property PostViewed $postViewed
  */
-class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface
+class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface, ModelSearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -154,6 +157,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
             TimestampBehavior::className(),
             BlameableBehavior::className(),
             TaggableBehavior::className(),
+            SearchBehavior::className(),
             [
                 'class' => VersioningBehavior::className(),
                 'attributes'=>['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
@@ -317,7 +321,6 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
 
     public function getLanguage()
     {
-        //return $this->category ? $this->category->language : '';
         return $this->language;
     }
 
@@ -345,5 +348,46 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
     public function getPublished()
     {
         return $this->status == self::STATUS_PUBLISHED;
+    }
+
+    // ModelSearchableInterface
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchContent()
+    {
+        return $this->detail_text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTags()
+    {
+        return ArrayHelper::map($this->tags, 'id', 'title');
+    }
+
+    /**
+     * @param $query \yii\db\ActiveQuery
+     */
+    static public function sqlSearchQueryConditions($query)
+    {
+        $query->leftJoin('{{%grom_post}}', [
+                'AND',
+                ['=', 'model_class', self::className()],
+                'model_id={{%grom_post}}.id',
+                ['=', '{{%grom_post}}.status', self::STATUS_PUBLISHED],
+                ['IN', '{{%grom_post}}.category_id', Category::find()->published()->select('{{%grom_category}}.id')->column()]
+            ]
+        )->addSelect('{{%grom_post}}.id')
+            ->andWhere('model_class=:postClassName XOR {{%grom_post}}.id IS NULL', [':postClassName' => self::className()]);
     }
 }

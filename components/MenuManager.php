@@ -19,7 +19,6 @@ use yii\caching\Cache;
 use yii\di\Instance;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
-use yii\web\Request;
 use yii\web\UrlRuleInterface;
 use yii\web\View;
 

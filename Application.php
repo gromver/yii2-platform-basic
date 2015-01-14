@@ -84,7 +84,7 @@ class Application extends \yii\web\Application {
                         'version'   => ['class' => 'gromver\platform\basic\modules\version\Module'],
                         'widget'    => ['class' => 'gromver\platform\basic\modules\widget\Module'],
                         'media'     => ['class' => 'gromver\platform\basic\modules\media\Module'],
-                        //'search'    => ['class' => 'gromver\platform\basic\modules\elasticsearch\Module'],
+                        'search'    => ['class' => 'gromver\platform\basic\modules\sqlsearch\Module'],
                     ]
                 ],
                 'gridview' => ['class' => 'kartik\grid\Module']

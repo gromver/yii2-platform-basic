@@ -11,17 +11,20 @@ namespace gromver\platform\basic\modules\news\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetsBehavior;
+use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\upload\ThumbnailProcessor;
 use gromver\platform\basic\behaviors\UploadBehavior;
 use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
+use gromver\platform\basic\interfaces\ModelSearchableInterface;
 use gromver\platform\basic\interfaces\TranslatableInterface;
 use gromver\platform\basic\interfaces\ViewableInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
 /**
@@ -61,7 +64,7 @@ use yii\helpers\Inflector;
  * @property Category[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
-class Category extends ActiveRecord implements TranslatableInterface, ViewableInterface
+class Category extends ActiveRecord implements TranslatableInterface, ViewableInterface, ModelSearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -176,6 +179,7 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
             BlameableBehavior::className(),
             TaggableBehavior::className(),
             NestedSetsBehavior::className(),
+            SearchBehavior::className(),
             [
                 'class' => VersioningBehavior::className(),
                 'attributes' => ['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
@@ -425,5 +429,47 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
                 ];
             }, $path);
         }
+    }
+
+    // ModelSearchableInterface
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchContent()
+    {
+        return $this->detail_text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTags()
+    {
+        return ArrayHelper::map($this->tags, 'id', 'title');
+    }
+
+    // SqlSearch module integration
+    /**
+     * @param $query \yii\db\ActiveQuery
+     */
+    static public function sqlSearchQueryConditions($query)
+    {
+        $query->leftJoin('{{%grom_category}}', [
+                'AND',
+                ['=', 'model_class', self::className()],
+                'model_id={{%grom_category}}.id',
+                ['=', '{{%grom_category}}.status', self::STATUS_PUBLISHED],
+                ['NOT IN', '{{%grom_category}}.parent_id', Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
+            ]
+        )->addSelect('{{%grom_category}}.id')
+            ->andWhere('model_class=:categoryClassName XOR {{%grom_category}}.id IS NULL', [':categoryClassName' => self::className()]);
     }
 }

@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\news;
 
+use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
 use gromver\platform\basic\interfaces\MenuRouterInterface;
@@ -20,7 +21,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInterface, MenuItemRoutesInterface
+class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInterface, MenuItemRoutesInterface, ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\news\controllers';
     public $defaultRoute = 'backend/post';
@@ -62,5 +63,16 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
     public function getMenuRouter()
     {
         return MenuRouterNews::className();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
+        return [
+            'SqlSearchQueryConditions_gromver\platform\basic\modules\news\models\Post' => 'gromver\platform\basic\modules\news\models\Post::sqlSearchQueryConditions',
+            'SqlSearchQueryConditions_gromver\platform\basic\modules\news\models\Category' => 'gromver\platform\basic\modules\news\models\Category::sqlSearchQueryConditions',
+        ];
     }
 }

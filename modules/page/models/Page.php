@@ -10,15 +10,18 @@
 namespace gromver\platform\basic\modules\page\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
+use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
+use gromver\platform\basic\interfaces\ModelSearchableInterface;
 use gromver\platform\basic\interfaces\TranslatableInterface;
 use gromver\platform\basic\interfaces\ViewableInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
 /**
@@ -46,7 +49,7 @@ use yii\helpers\Inflector;
  * @property Page[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
-class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface
+class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface, ModelSearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -128,6 +131,7 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
             TimestampBehavior::className(),
             BlameableBehavior::className(),
             TaggableBehavior::className(),
+            SearchBehavior::className(),
             [
                 'class' => VersioningBehavior::className(),//todo затестить чекаут в версию с уже занятым алиасом
                 'attributes' => ['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
@@ -247,5 +251,45 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
     public function getPublished()
     {
         return $this->status == self::STATUS_PUBLISHED;
+    }
+
+    // ModelSearchableInterface
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchContent()
+    {
+        return $this->detail_text;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSearchTags()
+    {
+        return ArrayHelper::map($this->tags, 'id', 'title');
+    }
+
+    /**
+     * @param $query \yii\db\ActiveQuery
+     */
+    static public function sqlSearchQueryConditions($query)
+    {
+        $query->leftJoin('{{%grom_page}}', [
+                'AND',
+                ['=', 'model_class', self::className()],
+                'model_id={{%grom_page}}.id',
+                ['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
+            ]
+        )->addSelect('{{%grom_page}}.id')
+            ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
     }
 }

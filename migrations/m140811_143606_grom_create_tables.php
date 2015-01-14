@@ -343,6 +343,22 @@ class m140811_143606_grom_create_tables extends Migration
             'timestamp' => Schema::TYPE_INTEGER . ' NOT NULL',
             'PRIMARY KEY (`id`)'
         ]);
+
+        //SEARCH INDEX
+        $this->createTable('{{%grom_index}}', [
+            'id' => Schema::TYPE_PK,
+            'model_id' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'model_class' => Schema::TYPE_STRING . ' NOT NULL',
+            'title' => Schema::TYPE_STRING . '(1024) NOT NULL',
+            'content' => Schema::TYPE_TEXT . ' NOT NULL',
+            'tags' => Schema::TYPE_STRING . '(1024) NOT NULL',
+            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'url_frontend' => Schema::TYPE_STRING . '(1024) NOT NULL',
+            'url_backend' => Schema::TYPE_STRING . '(1024) NOT NULL',
+            'FULLTEXT (title,content)',
+            'FULLTEXT (tags)',
+            'UNIQUE INDEX IndexModelId_ModelClass (model_id, model_class)'
+        ], 'ENGINE=MyISAM;');
     }
 
     public function down()
@@ -374,6 +390,7 @@ class m140811_143606_grom_create_tables extends Migration
         $this->dropTable('{{%grom_table}}');
         //USER
         $this->dropTable('{{%grom_user}}');
-
+        //SEARCH INDEX
+        $this->dropTable('{{%grom_index}}');
     }
 }
