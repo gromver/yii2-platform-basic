@@ -1,14 +1,22 @@
 <?php
+/**
+ * @copyright Copyright (c) Gayazov Roman, 2014
+ * @license https://github.com/gromver/yii2-platform-basic/blob/master/LICENSE
+ * @link https://github.com/gromver/yii2-platform-basic.git#readme
+ * @package yii2-platform-basic
+ * @version 1.0.0
+ */
 
-namespace gromver\platform\basic\modules\sqlsearch\models;
+namespace gromver\platform\basic\modules\elasticsearch\models;
 
+use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\interfaces\ViewableInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
+use yii\elasticsearch\ActiveRecord;
 
 /**
- * This is the model class for table "{{%grom_index}}".
+ * Class Index
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
@@ -21,17 +29,9 @@ use yii\db\ActiveRecord;
  * @property integer $updated_at
  * @property string $url_frontend
  * @property string $url_backend
+ * @property mixed $params
  */
-class Index extends ActiveRecord implements ViewableInterface
-{
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%grom_index}}';
-    }
-
+class Index extends ActiveRecord implements ViewableInterface {
     /**
      * @inheritdoc
      */
@@ -52,7 +52,8 @@ class Index extends ActiveRecord implements ViewableInterface
             }],
             [['model_class'], 'string', 'max' => 255],
             [['title', 'tags', 'url_frontend', 'url_backend'], 'string', 'max' => 1024],
-            [['model_id', 'model_class'], 'unique', 'targetAttribute' => ['model_id', 'model_class'], 'message' => 'The combination of Model ID and Model Class has already been taken.']
+            [['model_id', 'model_class'], 'unique', 'targetAttribute' => ['model_id', 'model_class'], 'message' => 'The combination of Model ID and Model Class has already been taken.'],
+            [['params'], 'safe']
         ];
     }
 
@@ -75,6 +76,33 @@ class Index extends ActiveRecord implements ViewableInterface
     /**
      * @inheritdoc
      */
+    public static function index()
+    {
+        return Yii::$app->getModule(ModuleQuery::instance()->implement('\gromver\platform\basic\modules\elasticsearch\Module')->find()[0])->elasticsearchIndex;
+    }
+
+    //баг ActiveDataProvider - почемуто пытается записать свойство _id
+    public function get_Id()
+    {
+        return $this->getPrimaryKey(false);
+    }
+
+    public function set_Id($value)
+    {
+        $this->setPrimaryKey($value);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributes()
+    {
+        return ['id', 'model_class', 'model_id', 'title', 'content', 'tags', 'updated_at', 'url_frontend', 'url_backend', 'params'];
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function attributeLabels()
     {
         return [
@@ -87,7 +115,44 @@ class Index extends ActiveRecord implements ViewableInterface
             'updated_at' => Yii::t('gromver.platform', 'Updated At'),
             'url_frontend' => Yii::t('gromver.platform', 'Url Frontend'),
             'url_backend' => Yii::t('gromver.platform', 'Url Backend'),
+            'params' => Yii::t('gromver.platform', 'Params'),
         ];
+    }
+
+    /**
+     * @param $event \yii\base\Event
+     */
+    public static function indexDocument($event)
+    {
+        /** @var \yii\db\ActiveRecord $model */
+        if ($model = $event->sender) {
+            foreach (self::findDocumentsByModelClass($model->className()) as $documentClass) {
+                /** @var ActiveDocument $documentClass */
+                if (!($document = $documentClass::get($model->getPrimaryKey()))) {
+                    /** @var ActiveDocument $document */
+                    $document = new $documentClass;
+                    $document->setPrimaryKey($model->getPrimaryKey());
+                }
+                $document->loadModel($model);
+                $document->save();
+            }
+        }
+    }
+
+    /**
+     * @param $event \yii\base\Event
+     */
+    public static function deleteDocument($event)
+    {
+        /** @var \yii\db\ActiveRecord $model */
+        if ($model = $event->sender) {
+            foreach (self::findDocumentsByModelClass($model->className()) as $documentClass) {
+                /** @var ActiveDocument $documentClass */
+                if ($document = $documentClass::findOne($model->getPrimaryKey())) {
+                    $document->delete();
+                }
+            }
+        }
     }
 
     // ViewableInterface

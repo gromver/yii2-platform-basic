@@ -375,19 +375,65 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return ArrayHelper::map($this->tags, 'id', 'title');
     }
 
+    // SqlSearch integration
     /**
      * @param $query \yii\db\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsSql
      */
-    static public function sqlSearchQueryConditions($query)
+    static public function sqlBeforeSearch($query, $widget)
     {
-        $query->leftJoin('{{%grom_post}}', [
-                'AND',
-                ['=', 'model_class', self::className()],
-                'model_id={{%grom_post}}.id',
-                ['=', '{{%grom_post}}.status', self::STATUS_PUBLISHED],
-                ['IN', '{{%grom_post}}.category_id', Category::find()->published()->select('{{%grom_category}}.id')->column()]
-            ]
-        )->addSelect('{{%grom_post}}.id')
-            ->andWhere('model_class=:postClassName XOR {{%grom_post}}.id IS NULL', [':postClassName' => self::className()]);
+        if ($widget->frontendMode) {
+            $query->leftJoin('{{%grom_post}}', [
+                    'AND',
+                    ['=', 'model_class', self::className()],
+                    'model_id={{%grom_post}}.id',
+                    ['=', '{{%grom_post}}.status', self::STATUS_PUBLISHED],
+                    ['IN', '{{%grom_post}}.category_id', Category::find()->published()->select('{{%grom_category}}.id')->column()]
+                ]
+            )->addSelect('{{%grom_post}}.id')
+                ->andWhere('model_class=:postClassName XOR {{%grom_post}}.id IS NULL', [':postClassName' => self::className()]);
+        }
+    }
+
+    // ElasticSearch integration
+    /**
+     * @param $query \yii\elasticsearch\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsElasticsearch
+     */
+    static public function elasticsearchBeforeSearch($query, $widget)
+    {
+        if ($widget->frontendMode) {
+            $widget->filters[] = [
+                'not' => [
+                    'and' => [
+                        [
+                            'term' => ['model_class' => self::className()]
+                        ],
+                        [
+                            'or' => [
+                                [
+                                    'term' => ['params.published' => false]
+                                ],
+                                [
+                                    'terms' => ['params.category_id' => Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+        }
+    }
+
+    /**
+     * @param $index \gromver\platform\basic\modules\elasticsearch\models\Index
+     * @param $model static
+     */
+    static public function elasticsearchBeforeCreateIndex($index, $model)
+    {
+        $index->params = [
+            'published' => $model->status == self::STATUS_PUBLISHED,
+            'category_id' => $model->category_id
+        ];
     }
 }

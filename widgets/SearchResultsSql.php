@@ -21,6 +21,8 @@ use Yii;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class SearchResultsSql extends Widget {
+    const EVENT_BEFORE_SEARCH = 'SqlBeforeSearch_';
+
     /**
      * Модели по которым будет производится поиск
      * @ignore
@@ -37,7 +39,7 @@ class SearchResultsSql extends Widget {
      * @ignore
      * @var string
      */
-    public $frontendUrls = true;
+    public $frontendMode = true;
     /**
      * @type list
      * @items layouts
@@ -110,7 +112,7 @@ class SearchResultsSql extends Widget {
             $query->andWhere(['model_class' => $this->models]);
             // ивент на модификацию запроса сторонними модулями
             foreach ($this->models as $modelClass) {
-                ModuleEvent::trigger('SqlSearchQueryConditions_' . $modelClass, [$query]);
+                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, [$query, $this]);
             }
         }
 

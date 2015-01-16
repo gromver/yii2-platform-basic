@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     echo \gromver\platform\basic\widgets\SearchResultsSql::widget([
         'id' => 'bSearchResult',
         'query' => $query,
-        'models' => $this->context->module->getFrontendSearchableModels(),
-        'frontendUrls' => false
+        'models' => $this->context->module->getBackendSearchableModels(),
+        'frontendMode' => false
     ]); ?>
 </div>

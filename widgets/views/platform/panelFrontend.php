@@ -19,7 +19,7 @@ $navBar = NavBar::begin([
     ],
 ]); ?>
 
-<?= Html::beginForm(['/grom/search/frontend/default/index'], 'get', ['class' => 'navbar-form navbar-left',  'role' => "search"]) ?>
+<?= Html::beginForm([$this->context->searchRoute], 'get', ['class' => 'navbar-form navbar-left',  'role' => "search"]) ?>
 
 <div class="input-group">
     <?= Html::textInput('q', null, ['class' => 'form-control', 'placeholder' => Yii::t('gromver.platform', 'Search ...')]) ?>

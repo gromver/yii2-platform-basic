@@ -18,6 +18,7 @@ use yii\bootstrap\Widget;
  */
 class PlatformPanel extends Widget {
     public $layout = 'platform/panelFrontend';
+    public $searchRoute = '/grom/sqlsearch/frontend/default/index';
 
     public function run()
     {

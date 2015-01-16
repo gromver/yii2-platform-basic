@@ -26,6 +26,9 @@ use Yii;
  */
 class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface
 {
+    const EVENT_BEFORE_CREATE_INDEX = 'SqlBeforeCreateIndex_';
+    const EVENT_BEFORE_DELETE_INDEX = 'SqlBeforeDeleteIndex_';
+
     public $controllerNamespace = 'gromver\platform\basic\modules\sqlsearch\controllers';
     public $defaultRoute = 'frontend/default';
     public $desktopOrder = 6;
@@ -35,9 +38,9 @@ class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoute
     public function getDesktopItem()
     {
         return [
-            'label' => Yii::t('gromver.platform', 'Search'),
+            'label' => Yii::t('gromver.platform', 'Sql Search'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Sql Search'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
+                ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/' . $this->getUniqueId() . '/backend/default/index']],
             ]
         ];
     }
@@ -48,9 +51,9 @@ class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoute
     public function getMenuItemRoutes()
     {
         return [
-            'label' => Yii::t('gromver.platform', 'Search'),
+            'label' => Yii::t('gromver.platform', 'Sql Search'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Sql Search'), 'route' => $this->getUniqueId() . '/frontend/default/index'],
+                ['label' => Yii::t('gromver.platform', 'Search'), 'route' => $this->getUniqueId() . '/frontend/default/index'],
             ]
         ];
     }
@@ -77,7 +80,7 @@ class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoute
         $index->url_backend = $model->getBackendViewLink();
         $index->url_frontend = $model->getFrontendViewLink();
 
-        ModuleEvent::trigger('SqlModule_BeforeIndexModel_' . $model->className(), [$model, $index]);
+        ModuleEvent::trigger(self::EVENT_BEFORE_CREATE_INDEX . $model->className(), [$model, $index]);
         if (!$index->save()) {
              Yii::$app->session->setFlash(Alert::TYPE_DANGER, implode($index->getErrors(), "\n"));
              Yii::error('Unable to index model ' . $model->className() . '::' . $model->getPrimaryKey() . ', error: ' . implode($index->getErrors(), "\n"));
@@ -90,7 +93,7 @@ class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoute
     public function deletePage($model)
     {
         $index = Index::find()->where(['model_id' => $model->getPrimaryKey(), 'model_class' => $model->className()])->one();
-        ModuleEvent::trigger('SqlModule_BeforeDeleteModel_' . $model->className(), [$model, $index]);
+        ModuleEvent::trigger(self::EVENT_BEFORE_DELETE_INDEX . $model->className(), [$model, $index]);
         if ($index) {
             $index->delete();
         }

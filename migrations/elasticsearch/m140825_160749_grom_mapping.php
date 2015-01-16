@@ -9,9 +9,11 @@ class m140825_160749_grom_mapping extends Migration
     {
         $connection = \yii\elasticsearch\ActiveRecord::getDb();
 
-        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::index()) {
-            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::className() . '::index must be set.');
+        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\Index::index()) {
+            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\Index::className() . '::index must be set.');
         }
+
+        $type = \gromver\platform\basic\modules\elasticsearch\models\Index::type();
 
         if ($connection->createCommand()->indexExists($index)) {
             $connection->createCommand()->deleteIndex($index);
@@ -37,64 +39,15 @@ class m140825_160749_grom_mapping extends Migration
                 ]
             ],*/
             'mappings' => [
-                'page' => [
+                $type => [
                     //'_all' => ['analyzer' => 'grom_analyzer'],
                     'properties' => [
                         'model_class' => [
                             'type' => 'string',
-                            'index' => 'no',
-                        ],
-                        'published' => [
-                            'type' => 'boolean',
                             'index' => 'not_analyzed',
                             'include_in_all' => false
                         ],
-                        'language' => [
-                            'type' => 'string',
-                            'include_in_all' => false
-                        ],
-                        'title' => [
-                            'type' => 'string',
-                            //'analyzer' => 'grom_analyzer'
-                        ],
-                        'text' => [
-                            'type' => 'string',
-                            //'analyzer' => 'grom_analyzer',
-                            //"index_options" => "offsets",
-                            //"term_vector" => "with_positions_offsets"
-                        ],
-                        'metakey' => [
-                            'type' => 'string'
-                        ],
-                        'metadesc' => [
-                            'type' => 'string'
-                        ],
-                        'tags' => [
-                            'type' => 'string',
-                            'index_name' => 'tag'
-                        ],
-                        'date' => [
-                            "type" => "date"
-                        ]
-                    ]
-                ],
-                'post' => [
-                    //'_all' => ['analyzer' => 'grom_analyzer'],
-                    'properties' => [
-                        'model_class' => [
-                            'type' => 'string',
-                            'index' => 'no',
-                        ],
-                        'published' => [
-                            'type' => 'boolean',
-                            'index' => 'not_analyzed',
-                            'include_in_all' => false
-                        ],
-                        'language' => [
-                            'type' => 'string',
-                            'include_in_all' => false
-                        ],
-                        'category_id' => [
+                        'model_id' => [
                             'type' => 'integer',
                             'include_in_all' => false
                         ],
@@ -102,79 +55,37 @@ class m140825_160749_grom_mapping extends Migration
                             'type' => 'string',
                             //'analyzer' => 'grom_analyzer'
                         ],
-                        'text' => [
+                        'content' => [
                             'type' => 'string',
                             //'analyzer' => 'grom_analyzer',
                             //"index_options" => "offsets",
                             //"term_vector" => "with_positions_offsets"
                         ],
-                        'metakey' => [
-                            'type' => 'string'
-                        ],
-                        'metadesc' => [
-                            'type' => 'string'
-                        ],
                         'tags' => [
                             'type' => 'string',
-                            'index_name' => 'tag'
                         ],
-                        'date' => [
+                        'updated_at' => [
                             "type" => "date"
-                        ]
-                    ]
-                ],
-                'category' => [
-                    //'_all' => ['analyzer' => 'grom_analyzer'],
-                    'properties' => [
-                        'model_class' => [
-                            'type' => 'string',
-                            'index' => 'no',
                         ],
-                        'published' => [
-                            'type' => 'boolean',
+                        'url_frontend' => [
+                            'type' => 'string',
                             'index' => 'not_analyzed',
                             'include_in_all' => false
                         ],
-                        'language' => [
+                        'url_backend' => [
                             'type' => 'string',
+                            'index' => 'not_analyzed',
                             'include_in_all' => false
                         ],
-                        'parent_id' => [
-                            'type' => 'integer',
-                            'include_in_all' => false
-                        ],
-                        'title' => [
-                            'type' => 'string',
-                            //'analyzer' => 'grom_analyzer'
-                        ],
-                        'text' => [
-                            'type' => 'string',
-                            //'analyzer' => 'grom_analyzer',
-                            //"index_options" => "offsets",
-                            //"term_vector" => "with_positions_offsets"
-                        ],
-                        'metakey' => [
-                            'type' => 'string'
-                        ],
-                        'metadesc' => [
-                            'type' => 'string'
-                        ],
-                        'tags' => [
-                            'type' => 'string',
-                            'index_name' => 'tag'
-                        ],
-                        'date' => [
-                            "type" => "date"
-                        ]
                     ]
-                ]
-
+                ],
             ]
         ]);
 
-        echo "Index $index created.\n";
+        echo "Index \"$index\" created.\n";
 
-        $documents = [
+        // todo вынести индексацию в бэкенд
+        /*$documents = [
             'gromver\platform\basic\modules\page\models\PageElasticSearch',
             'gromver\platform\basic\modules\news\models\PostElasticSearch',
             'gromver\platform\basic\modules\news\models\CategoryElasticSearch',
@@ -184,7 +95,7 @@ class m140825_160749_grom_mapping extends Migration
             echo "Uploading {$documentClass} models.\n";
             $completed = $this->upload($documentClass);
             echo "{$completed} items uploaded.\n";
-        }
+        }*/
     }
 
     /**
@@ -244,8 +155,8 @@ class m140825_160749_grom_mapping extends Migration
 
     public function down()
     {
-        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::index()) {
-            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\ActiveDocument::className() . '::index must be set.');
+        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\Index::index()) {
+            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\Index::className() . '::index must be set.');
         }
 
         \yii\elasticsearch\ActiveRecord::getDb()->createCommand()->deleteIndex($index);//->deleteAllIndexes();//

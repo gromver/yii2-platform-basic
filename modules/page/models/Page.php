@@ -278,18 +278,56 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return ArrayHelper::map($this->tags, 'id', 'title');
     }
 
+    // SqlSearch integration
     /**
      * @param $query \yii\db\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsSql
      */
-    static public function sqlSearchQueryConditions($query)
+    static public function sqlBeforeSearch($query, $widget)
     {
-        $query->leftJoin('{{%grom_page}}', [
-                'AND',
-                ['=', 'model_class', self::className()],
-                'model_id={{%grom_page}}.id',
-                ['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
-            ]
-        )->addSelect('{{%grom_page}}.id')
-            ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
+        if ($widget->frontendMode) {
+            $query->leftJoin('{{%grom_page}}', [
+                    'AND',
+                    ['=', 'model_class', self::className()],
+                    'model_id={{%grom_page}}.id',
+                    ['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
+                ]
+            )->addSelect('{{%grom_page}}.id')
+                ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
+        }
+    }
+
+    // ElasticSearch integration
+    /**
+     * @param $query \yii\elasticsearch\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsElasticsearch
+     */
+    static public function elasticsearchBeforeSearch($query, $widget)
+    {
+        if ($widget->frontendMode) {
+            $widget->filters[] = [
+                'not' => [
+                    'and' => [
+                        [
+                            'term' => ['model_class' => self::className()]
+                        ],
+                        [
+                            'term' => ['params.published' => false]
+                        ]
+                    ]
+                ]
+            ];
+        }
+    }
+
+    /**
+     * @param $index \gromver\platform\basic\modules\elasticsearch\models\Index
+     * @param $model static
+     */
+    static public function elasticsearchBeforeCreateIndex($index, $model)
+    {
+        $index->params = [
+            'published' => $model->status == self::STATUS_PUBLISHED
+        ];
     }
 }

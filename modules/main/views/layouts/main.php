@@ -24,7 +24,8 @@ AppAsset::register($this);
 	<?php $this->beginBody() ?>
 	<div class="wrap">
         <?= \gromver\platform\basic\widgets\PlatformPanel::widget([
-            'layout' => 'platform/panelBackend'
+            'layout' => 'platform/panelBackend',
+            'searchRoute' => '/grom/sqlsearch/frontend/default/index'
         ]) ?>
 
         <div class="container">

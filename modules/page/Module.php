@@ -12,6 +12,10 @@ namespace gromver\platform\basic\modules\page;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
+use gromver\platform\basic\modules\page\models\Page;
+use gromver\platform\basic\widgets\SearchResultsElasticsearch;
+use gromver\platform\basic\widgets\SearchResultsSql;
+use gromver\platform\basic\modules\elasticsearch\Module as ElasticsearchModule;
 use Yii;
 
 /**
@@ -57,7 +61,9 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     public function events()
     {
         return [
-            'SqlSearchQueryConditions_gromver\platform\basic\modules\page\models\Page' => 'gromver\platform\basic\modules\page\models\Page::sqlSearchQueryConditions',
+            SearchResultsSql::EVENT_BEFORE_SEARCH . Page::className()  => [Page::className(), 'sqlBeforeSearch'],
+            ElasticsearchModule::EVENT_BEFORE_CREATE_INDEX . Page::className() => [Page::className(), 'elasticsearchBeforeCreateIndex'],
+            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Page::className() => [Page::className(), 'elasticsearchBeforeSearch'],
         ];
     }
 }

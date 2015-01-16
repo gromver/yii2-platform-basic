@@ -20,13 +20,13 @@ use yii\base\Module;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class BaseSearchModule extends Module implements ModuleEventsInterface {
-    static public $frontendSearchableModels = [
+    public $frontendSearchableModels = [
         'gromver\platform\basic\modules\page\models\Page',
         'gromver\platform\basic\modules\news\models\Post',
         'gromver\platform\basic\modules\news\models\Category',
     ];
 
-    static public $backendSearchableModels = [
+    public $backendSearchableModels = [
         'gromver\platform\basic\modules\page\models\Page',
         'gromver\platform\basic\modules\news\models\Post',
         'gromver\platform\basic\modules\news\models\Category',
@@ -34,12 +34,12 @@ class BaseSearchModule extends Module implements ModuleEventsInterface {
 
     public function getFrontendSearchableModels()
     {
-        return array_merge(self::$frontendSearchableModels, ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\SearchableModelsInterface')->fetch('getFrontendSearchableModels', [], ModuleQuery::AGGREGATE_MERGE));
+        return array_merge($this->frontendSearchableModels, ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\SearchableModelsInterface')->fetch('getFrontendSearchableModels', [], ModuleQuery::AGGREGATE_MERGE));
     }
 
     public function getBackendSearchableModels()
     {
-        return array_merge(self::$backendSearchableModels, ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\SearchableModelsInterface')->fetch('getBackendSearchableModels', [], ModuleQuery::AGGREGATE_MERGE));
+        return array_merge($this->backendSearchableModels, ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\SearchableModelsInterface')->fetch('getBackendSearchableModels', [], ModuleQuery::AGGREGATE_MERGE));
     }
 
     /**

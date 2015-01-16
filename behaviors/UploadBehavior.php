@@ -85,7 +85,7 @@ class UploadBehavior extends Behavior {
     }
 
     /**
-     * @param $event \yii\base\ModelEvent
+     * @throws InvalidConfigException
      */
     public function afterSave()
     {

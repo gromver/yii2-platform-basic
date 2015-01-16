@@ -14,6 +14,11 @@ use gromver\platform\basic\interfaces\DesktopInterface;
 use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
 use gromver\platform\basic\interfaces\MenuRouterInterface;
 use gromver\platform\basic\modules\news\components\MenuRouterNews;
+use gromver\platform\basic\modules\news\models\Category;
+use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\widgets\SearchResultsElasticsearch;
+use gromver\platform\basic\widgets\SearchResultsSql;
+use gromver\platform\basic\modules\elasticsearch\Module as ElasticsearchModule;
 use Yii;
 
 /**
@@ -71,8 +76,11 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
     public function events()
     {
         return [
-            'SqlSearchQueryConditions_gromver\platform\basic\modules\news\models\Post' => 'gromver\platform\basic\modules\news\models\Post::sqlSearchQueryConditions',
-            'SqlSearchQueryConditions_gromver\platform\basic\modules\news\models\Category' => 'gromver\platform\basic\modules\news\models\Category::sqlSearchQueryConditions',
+            SearchResultsSql::EVENT_BEFORE_SEARCH . Post::className()  => [Post::className(), 'sqlBeforeSearch'],
+            SearchResultsSql::EVENT_BEFORE_SEARCH . Category::className()  => [Category::className(), 'sqlBeforeSearch'],
+            ElasticsearchModule::EVENT_BEFORE_CREATE_INDEX . Post::className() => [Post::className(), 'elasticsearchBeforeCreateIndex'],
+            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Post::className() => [Post::className(), 'elasticsearchBeforeSearch'],
+            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Category::className() => [Category::className(), 'elasticsearchBeforeSearch'],
         ];
     }
 }

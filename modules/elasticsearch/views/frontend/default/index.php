@@ -19,12 +19,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php echo \gromver\platform\basic\widgets\SearchForm::widget([
         'id' => 'fSearchForm',
         'query' => $query,
-        'showPanel' => false
+        'configureAccess' => 'none'
     ]);
 
-    echo \gromver\platform\basic\widgets\SearchResults::widget([
+    echo \gromver\platform\basic\widgets\SearchResultsElasticsearch::widget([
         'id' => 'fSearchResult',
         'query' => $query,
-        'language' => Yii::$app->language,
+        'models' => $this->context->module->getFrontendSearchableModels(),
     ]); ?>
 </div>

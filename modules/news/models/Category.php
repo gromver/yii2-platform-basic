@@ -456,20 +456,46 @@ class Category extends ActiveRecord implements TranslatableInterface, ViewableIn
         return ArrayHelper::map($this->tags, 'id', 'title');
     }
 
-    // SqlSearch module integration
+    // SqlSearch integration
     /**
      * @param $query \yii\db\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsSql
      */
-    static public function sqlSearchQueryConditions($query)
+    static public function sqlBeforeSearch($query, $widget)
     {
-        $query->leftJoin('{{%grom_category}}', [
-                'AND',
-                ['=', 'model_class', self::className()],
-                'model_id={{%grom_category}}.id',
-                ['=', '{{%grom_category}}.status', self::STATUS_PUBLISHED],
-                ['NOT IN', '{{%grom_category}}.parent_id', Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
-            ]
-        )->addSelect('{{%grom_category}}.id')
-            ->andWhere('model_class=:categoryClassName XOR {{%grom_category}}.id IS NULL', [':categoryClassName' => self::className()]);
+        if ($widget->frontendMode) {
+            $query->leftJoin('{{%grom_category}}', [
+                    'AND',
+                    ['=', 'model_class', self::className()],
+                    'model_id={{%grom_category}}.id',
+                    ['=', '{{%grom_category}}.status', self::STATUS_PUBLISHED],
+                    ['NOT IN', '{{%grom_category}}.parent_id', Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
+                ]
+            )->addSelect('{{%grom_category}}.id')
+                ->andWhere('model_class=:categoryClassName XOR {{%grom_category}}.id IS NULL', [':categoryClassName' => self::className()]);
+        }
+    }
+
+    // ElasticSearch integration
+    /**
+     * @param $query \yii\elasticsearch\ActiveQuery
+     * @param $widget \gromver\platform\basic\widgets\SearchResultsElasticsearch
+     */
+    static public function elasticsearchBeforeSearch($query, $widget)
+    {
+        if ($widget->frontendMode) {
+            $widget->filters[] = [
+                'not' => [
+                    'and' => [
+                        [
+                            'term' => ['model_class' => self::className()]
+                        ],
+                        [
+                            'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_category}}.id')->column()]
+                        ]
+                    ]
+                ]
+            ];
+        }
     }
 }
