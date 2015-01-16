@@ -10,8 +10,8 @@
 use yii\helpers\Html;
 
 if ($item = $model->item) {
-    if($item instanceof \gromver\platform\basic\interfaces\ViewableInterface) {
-        /** @var $item \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\ViewableInterface */
+    if($item instanceof \gromver\platform\basic\interfaces\model\ViewableInterface) {
+        /** @var $item \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface */
         echo Html::tag('h4', Html::a(Html::encode($item->title), $item->getFrontendViewLink()));
 
     } else {

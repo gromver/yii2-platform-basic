@@ -40,7 +40,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
             'cacheDependency' => new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()'])
         ]);
 
-        ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\BootstrapInterface')->invoke('bootstrap', [$app]);
+        ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\module\BootstrapInterface')->invoke('bootstrap', [$app]);
     }
 
     public function init()

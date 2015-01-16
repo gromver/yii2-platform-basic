@@ -16,9 +16,9 @@ use gromver\platform\basic\behaviors\upload\ThumbnailProcessor;
 use gromver\platform\basic\behaviors\UploadBehavior;
 use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
-use gromver\platform\basic\interfaces\ModelSearchableInterface;
-use gromver\platform\basic\interfaces\TranslatableInterface;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\SearchableInterface;
+use gromver\platform\basic\interfaces\model\TranslatableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
@@ -61,7 +61,7 @@ use yii\helpers\Inflector;
  * @property Post[] $translations
  * @property PostViewed $postViewed
  */
-class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface, ModelSearchableInterface
+class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -350,7 +350,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return $this->status == self::STATUS_PUBLISHED;
     }
 
-    // ModelSearchableInterface
+    // SearchableInterface
     /**
      * @inheritdoc
      */

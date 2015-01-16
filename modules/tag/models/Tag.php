@@ -11,8 +11,8 @@ namespace gromver\platform\basic\modules\tag\models;
 
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\components\UrlManager;
-use gromver\platform\basic\interfaces\TranslatableInterface;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\TranslatableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;

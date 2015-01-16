@@ -10,8 +10,8 @@
 namespace gromver\platform\basic\behaviors;
 
 use gromver\modulequery\ModuleEvent;
-use gromver\platform\basic\interfaces\ModelSearchableInterface;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\SearchableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
@@ -46,11 +46,11 @@ class SearchBehavior extends Behavior {
         parent::attach($owner);
 
         if (!$this->owner instanceof ViewableInterface) {
-            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\ViewableInterface');
+            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\model\ViewableInterface');
         }
 
-        if (!$this->owner instanceof ModelSearchableInterface) {
-            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\ModelSearchableInterface');
+        if (!$this->owner instanceof SearchableInterface) {
+            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\model\ModelSearchableInterface');
         }
     }
 

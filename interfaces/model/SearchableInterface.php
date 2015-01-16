@@ -7,21 +7,15 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\interfaces;
+namespace gromver\platform\basic\interfaces\model;
 
 /**
- * Interface ModuleSearchableInterface
+ * Interface SearchableInterface
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface ModuleSearchableInterface {
-    /**
-     * @return array
-     */
-    public function getFrontendSearchableModels();
-
-    /**
-     * @return array
-     */
-    public function getBackendSearchableModels();
+interface SearchableInterface {
+    public function getSearchTitle();
+    public function getSearchContent();
+    public function getSearchTags();
 }

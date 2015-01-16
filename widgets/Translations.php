@@ -38,7 +38,7 @@ class Translations extends Widget {
         $items = '';
 
         foreach($this->model->translations as $language => $item) {
-            /** @var $item \gromver\platform\basic\interfaces\ViewableInterface */
+            /** @var $item \gromver\platform\basic\interfaces\model\ViewableInterface */
             if ($this->model->language === $language) {
                 $items = strtr($this->labelTemplate, [
                         '{label}' => $language

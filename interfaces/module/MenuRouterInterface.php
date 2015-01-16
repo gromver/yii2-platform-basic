@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\interfaces;
+namespace gromver\platform\basic\interfaces\module;
 
 /**
  * Interface MenuRouterInterface

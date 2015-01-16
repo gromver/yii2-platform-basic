@@ -11,9 +11,9 @@ namespace gromver\platform\basic\modules\main;
 
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use gromver\platform\basic\modules\main\models\Table;
-use gromver\platform\basic\interfaces\DesktopInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
 use yii\base\BootstrapInterface;

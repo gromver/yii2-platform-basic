@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\widget;
 
-use gromver\platform\basic\interfaces\DesktopInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
 use Yii;
 
 /**

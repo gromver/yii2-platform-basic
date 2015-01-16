@@ -109,7 +109,7 @@ class ItemController extends BackendController
     {
         Yii::$app->grom->applyModalLayout();
 
-        $items = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\MenuItemRoutesInterface')->orderBy('desktopOrder')->fetch('getMenuItemRoutes');
+        $items = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\module\MenuItemRoutesInterface')->orderBy('desktopOrder')->fetch('getMenuItemRoutes');
 
         return $this->render('routers', [
                 'items' => $items

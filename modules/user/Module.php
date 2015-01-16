@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\user;
 
-use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
+use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use Yii;
 
 /**

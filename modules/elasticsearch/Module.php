@@ -11,9 +11,9 @@ namespace gromver\platform\basic\modules\elasticsearch;
 
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\components\BaseSearchModule;
-use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
-use gromver\platform\basic\interfaces\MenuRouterInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
+use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\MenuRouterInterface;
 use gromver\platform\basic\modules\elasticsearch\components\MenuRouterSearch;
 use gromver\platform\basic\modules\elasticsearch\models\Index;
 use kartik\widgets\Alert;

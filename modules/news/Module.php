@@ -10,9 +10,9 @@
 namespace gromver\platform\basic\modules\news;
 
 use gromver\modulequery\ModuleEventsInterface;
-use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
-use gromver\platform\basic\interfaces\MenuRouterInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
+use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\MenuRouterInterface;
 use gromver\platform\basic\modules\news\components\MenuRouterNews;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;

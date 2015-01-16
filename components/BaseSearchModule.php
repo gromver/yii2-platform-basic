@@ -54,13 +54,13 @@ class BaseSearchModule extends Module implements ModuleEventsInterface {
     }
 
     /**
-     * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\ViewableInterface|\gromver\platform\basic\interfaces\ModelSearchableInterface $model
+     * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
      */
     public function indexPage($model) {}
 
     /**
-     * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\ViewableInterface|\gromver\platform\basic\interfaces\ModelSearchableInterface $model
+     * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
      */
     public function deletePage($model) {}

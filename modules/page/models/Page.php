@@ -14,9 +14,9 @@ use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\VersioningBehavior;
 use gromver\platform\basic\components\UrlManager;
-use gromver\platform\basic\interfaces\ModelSearchableInterface;
-use gromver\platform\basic\interfaces\TranslatableInterface;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\SearchableInterface;
+use gromver\platform\basic\interfaces\model\TranslatableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -49,7 +49,7 @@ use yii\helpers\Inflector;
  * @property Page[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
-class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface, ModelSearchableInterface
+class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -253,7 +253,7 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
         return $this->status == self::STATUS_PUBLISHED;
     }
 
-    // ModelSearchableInterface
+    // SearchableInterface
     /**
      * @inheritdoc
      */

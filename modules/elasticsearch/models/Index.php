@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\modules\elasticsearch\models;
 
 use gromver\modulequery\ModuleQuery;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\elasticsearch\ActiveRecord;

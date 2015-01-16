@@ -2,7 +2,7 @@
 
 namespace gromver\platform\basic\modules\sqlsearch\models;
 
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;

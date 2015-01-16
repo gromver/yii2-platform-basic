@@ -68,7 +68,7 @@ class MenuManager extends Component implements UrlRuleInterface
     protected function buildRules()
     {
         //нам нужно собрать все роутеры от модулей и вытащить из них инструкции по маршрутизации
-        $routers = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\MenuRouterInterface')->fetch('getMenuRouter');
+        $routers = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\module\MenuRouterInterface')->fetch('getMenuRouter');
         // вытаскиваем инструкции из всех роутеров
         foreach ($routers as $routerClass) {
             $router = $this->getRouter($routerClass);

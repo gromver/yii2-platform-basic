@@ -10,8 +10,8 @@
 namespace gromver\platform\basic\modules\page;
 
 use gromver\modulequery\ModuleEventsInterface;
-use gromver\platform\basic\interfaces\DesktopInterface;
-use gromver\platform\basic\interfaces\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\DesktopInterface;
+use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\widgets\SearchResultsElasticsearch;
 use gromver\platform\basic\widgets\SearchResultsSql;

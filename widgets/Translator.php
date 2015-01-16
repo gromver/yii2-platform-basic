@@ -13,12 +13,12 @@ use Yii;
 use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
-use gromver\platform\basic\interfaces\TranslatableInterface;
+use gromver\platform\basic\interfaces\model\TranslatableInterface;
 
 /**
  * Class Translator
  * Translator используется в CRUD контроллерах для отображения списка локализаций указанной модели.
- * Модель должна поддерживать gromver\platform\basic\interfaces\TranslatableInterface
+ * Модель должна поддерживать gromver\platform\basic\interfaces\model\TranslatableInterface
  * В список попадают все локализации, относящиеся к модели, а также те локализации,
  * которые поддерживает приложение, но не попали в список.
  * Список сортируется по алфавиту.

@@ -12,7 +12,7 @@ namespace gromver\platform\basic\modules\menu\models;
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\components\UrlManager;
-use gromver\platform\basic\interfaces\ViewableInterface;
+use gromver\platform\basic\interfaces\model\ViewableInterface;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use Yii;
 use yii\behaviors\BlameableBehavior;
