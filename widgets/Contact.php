@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use kartik\widgets\Alert;
 use gromver\platform\basic\modules\main\models\ContactForm;
 use Yii;
@@ -18,7 +19,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Contact extends Widget {
+class Contact extends Widget
+{
     /**
      * @type yesno
      * @translation gromver.platform

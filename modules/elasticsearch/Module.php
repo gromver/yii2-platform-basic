@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\elasticsearch;
 
+
 use gromver\modulequery\ModuleEvent;
-use gromver\platform\basic\components\BaseSearchModule;
 use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use gromver\platform\basic\interfaces\module\MenuRouterInterface;
@@ -25,7 +25,7 @@ use yii\base\InvalidConfigException;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends BaseSearchModule implements DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface
+class Module extends \gromver\platform\basic\components\BaseSearchModule implements DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface
 {
     const EVENT_BEFORE_CREATE_INDEX = 'ElasticsearchBeforeCreateIndex_';
     const EVENT_BEFORE_DELETE_INDEX = 'ElasticsearchBeforeDeleteIndex_';

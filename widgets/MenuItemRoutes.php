@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\widgets\ModalIFrame;
 use Yii;
-use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -21,7 +21,7 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuItemRoutes extends Widget
+class MenuItemRoutes extends \yii\bootstrap\Widget
 {
     /**
      * @var array list of menu items. Each menu item should be an array of the following structure:

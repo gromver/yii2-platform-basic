@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\news\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\news\models\PostSearch;
@@ -25,7 +25,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostController extends BackendController
+class PostController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

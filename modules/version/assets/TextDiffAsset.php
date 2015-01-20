@@ -9,14 +9,13 @@
 
 namespace gromver\platform\basic\modules\version\assets;
 
-use yii\web\AssetBundle;
 
 /**
  * Class TextDiffAsset
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class TextDiffAsset extends AssetBundle
+class TextDiffAsset extends \yii\web\AssetBundle
 {
     public $sourcePath = '@gromver/platform/basic/modules/version/assets/PrettyTextDiff';
     public $js = [

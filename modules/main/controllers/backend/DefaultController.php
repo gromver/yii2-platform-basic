@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\main\controllers\backend;
 
+
 use gromver\modulequery\ModuleQuery;
-use gromver\platform\basic\components\BackendController;
 use gromver\platform\basic\modules\main\models\PlatformParams;
 use gromver\models\ObjectModel;
 use gromver\widgets\ModalIFrame;
@@ -26,7 +26,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends BackendController
+class DefaultController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

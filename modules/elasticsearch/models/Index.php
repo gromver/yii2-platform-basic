@@ -9,11 +9,11 @@
 
 namespace gromver\platform\basic\modules\elasticsearch\models;
 
+
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\elasticsearch\ActiveRecord;
 
 /**
  * Class Index
@@ -31,7 +31,8 @@ use yii\elasticsearch\ActiveRecord;
  * @property string $url_backend
  * @property mixed $params
  */
-class Index extends ActiveRecord implements ViewableInterface {
+class Index extends \yii\elasticsearch\ActiveRecord implements ViewableInterface
+{
     /**
      * @inheritdoc
      */

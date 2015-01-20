@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -19,7 +20,8 @@ use yii\data\ActiveDataProvider;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class TagItems extends Widget {
+class TagItems extends Widget
+{
     /**
      * Tag model or TagId
      * @var Tag|string

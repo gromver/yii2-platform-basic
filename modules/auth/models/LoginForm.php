@@ -9,16 +9,16 @@
 
 namespace gromver\platform\basic\modules\auth\models;
 
+
 use gromver\platform\basic\modules\user\models\User;
 use Yii;
-use yii\base\Model;
 
 /**
  * Class LoginForm
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class LoginForm extends Model
+class LoginForm extends \yii\base\Model
 {
     public $username;
     public $password;

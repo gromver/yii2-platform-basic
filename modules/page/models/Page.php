@@ -9,10 +9,11 @@
 
 namespace gromver\platform\basic\modules\page\models;
 
+
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
-use gromver\platform\basic\behaviors\VersioningBehavior;
+use gromver\platform\basic\behaviors\VersionBehavior;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
@@ -20,7 +21,6 @@ use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
@@ -49,7 +49,7 @@ use yii\helpers\Inflector;
  * @property Page[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
-class Page extends ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
+class Page extends \yii\db\ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -133,7 +133,7 @@ class Page extends ActiveRecord implements TranslatableInterface, ViewableInterf
             TaggableBehavior::className(),
             SearchBehavior::className(),
             [
-                'class' => VersioningBehavior::className(),//todo затестить чекаут в версию с уже занятым алиасом
+                'class' => VersionBehavior::className(),//todo затестить чекаут в версию с уже занятым алиасом
                 'attributes' => ['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
             ],
         ];

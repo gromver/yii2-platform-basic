@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\menu\models;
 
+
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\components\UrlManager;
@@ -17,7 +18,6 @@ use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
@@ -62,7 +62,7 @@ use yii\helpers\Json;
  * @property MenuItem $parent
  * @property MenuItem[] $translations
  */
-class MenuItem extends ActiveRecord implements ViewableInterface
+class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
 {
     const STATUS_UNPUBLISHED = 0;
     const STATUS_PUBLISHED = 1;

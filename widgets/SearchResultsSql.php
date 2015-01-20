@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\sqlsearch\models\Index;
 use yii\data\ActiveDataProvider;
@@ -20,7 +21,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class SearchResultsSql extends Widget {
+class SearchResultsSql extends Widget
+{
     const EVENT_BEFORE_SEARCH = 'SqlBeforeSearch_';
 
     /**

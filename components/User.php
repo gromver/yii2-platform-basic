@@ -9,7 +9,6 @@
 
 namespace gromver\platform\basic\components;
 
-use yii\web\User as BaseUser;
 
 /**
  * Class User
@@ -20,7 +19,7 @@ use yii\web\User as BaseUser;
  * @author Ricardo Obregón <robregonm@gmail.com>
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class User extends BaseUser
+class User extends \yii\web\User
 {
     /**
 	 * @inheritdoc

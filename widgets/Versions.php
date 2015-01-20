@@ -9,11 +9,11 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\widgets\ModalIFrame;
-use yii\base\InvalidConfigException;
-use yii\base\Widget;
-use yii\bootstrap\Modal;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 /**
@@ -21,7 +21,7 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Versions extends Widget
+class Versions extends \yii\base\Widget
 {
     /**
      * @var \yii\db\ActiveRecord

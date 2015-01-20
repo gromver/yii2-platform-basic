@@ -9,7 +9,7 @@ use yii\helpers\Html;
 
 $navBar = NavBar::begin([
     'brandLabel' => Yii::$app->grom->siteName,
-    'brandUrl' => Yii::$app->homeUrl,
+    'brandUrl' => ['/grom/backend/default/index'],
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top',
     ],
@@ -58,7 +58,7 @@ $menuItems = [
     ['label' => Yii::t('gromver.platform', 'Components'), 'items' => [
         ['label' => Yii::t('gromver.platform', 'Version Manager'), 'url' => ['/grom/version/backend/default/index']],
         ['label' => Yii::t('gromver.platform', "Widget's Settings"), 'url' => ['/grom/widget/backend/default/index']],
-        ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/grom/search/backend/default/index']],
+        ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/grom/sqlsearch/backend/default/index']],
     ]],
 ];
 if (Yii::$app->user->isGuest) {

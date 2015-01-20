@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\menu\models;
 
+
 use creocoder\nestedsets\NestedSetsQueryBehavior;
-use yii\db\ActiveQuery;
 use yii\db\Query;
 
 /**
@@ -18,7 +18,7 @@ use yii\db\Query;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuItemQuery extends ActiveQuery
+class MenuItemQuery extends \yii\db\ActiveQuery
 {
     public function behaviors() {
         return [

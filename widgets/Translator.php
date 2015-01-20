@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use Yii;
-use yii\base\Widget;
 use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
@@ -28,7 +28,8 @@ use gromver\platform\basic\interfaces\model\TranslatableInterface;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Translator extends Widget {
+class Translator extends \yii\base\Widget
+{
     /**
      * @var ActiveRecord | TranslatableInterface
      */

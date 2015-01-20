@@ -9,7 +9,6 @@
 
 namespace gromver\platform\basic\modules\tag\models;
 
-use yii\db\ActiveRecord;
 
 /**
  * Class TagToItem
@@ -19,9 +18,10 @@ use yii\db\ActiveRecord;
  * @property integer $tag_id
  * @property integer $item_id
  * @property string $item_class
- * @property ActiveRecord $item
+ * @property \yii\db\ActiveRecord $item
  */
-class TagToItem extends ActiveRecord {
+class TagToItem extends \yii\db\ActiveRecord
+{
     public static function tableName()
     {
         return '{{%grom_tag_to_item}}';
@@ -34,7 +34,7 @@ class TagToItem extends ActiveRecord {
 
     public function getItem()
     {
-        /** @var ActiveRecord $itemClass */
+        /** @var \yii\db\ActiveRecord $itemClass */
         $itemClass = $this->item_class;
         return $itemClass::findOne($this->item_id);
     }

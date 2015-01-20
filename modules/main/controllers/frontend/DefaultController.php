@@ -9,9 +9,9 @@
 
 namespace gromver\platform\basic\modules\main\controllers\frontend;
 
+
 use Yii;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
 /**
@@ -19,7 +19,7 @@ use yii\web\NotFoundHttpException;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public function behaviors()
     {

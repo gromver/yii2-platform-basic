@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\components;
 
-use yii\web\Controller;
+
 use Yii;
 
 /**
@@ -17,7 +17,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class BackendController extends Controller {
+class BackendController extends \yii\web\Controller
+{
     /**
      * @inheritdoc
      */

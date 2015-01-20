@@ -14,7 +14,8 @@ namespace gromver\platform\basic\interfaces\module;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface ModuleSearchableInterface {
+interface ModuleSearchableInterface
+{
     /**
      * @return array
      */

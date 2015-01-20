@@ -9,12 +9,14 @@
 
 namespace gromver\platform\basic\components;
 
+
 /**
  * Class MenuUrlRuleCreate
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuUrlRuleCreate extends MenuUrlRule {
+class MenuUrlRuleCreate extends MenuUrlRule
+{
     /**
      * @var string
      */

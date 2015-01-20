@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\elasticsearch\models\Index;
 use Yii;
@@ -21,7 +22,8 @@ use yii\data\ActiveDataProvider;
  *
  * @property array $filters
  */
-class SearchResultsElasticsearch extends Widget {
+class SearchResultsElasticsearch extends Widget
+{
     const EVENT_BEFORE_SEARCH = 'ElasticsearchBeforeSearch_';
 
     /**

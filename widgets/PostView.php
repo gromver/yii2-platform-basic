@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\assets\CkeditorHighlightAsset;
 use gromver\platform\basic\modules\news\models\Post;
 use yii\base\InvalidConfigException;
@@ -19,7 +20,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostView extends Widget {
+class PostView extends Widget
+{
     /**
      * Post model or PostId or PostId:PageAlias
      * @var Post|string

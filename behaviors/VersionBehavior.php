@@ -9,12 +9,12 @@
 
 namespace gromver\platform\basic\behaviors;
 
+
 use gromver\platform\basic\modules\version\models\Version;
-use yii\base\Behavior;
 use yii\db\BaseActiveRecord;
 
 /**
- * Class VersioningBehavior
+ * Class VersionBehavior
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  *
@@ -23,7 +23,7 @@ use yii\db\BaseActiveRecord;
  * @property array $versionData
  * @property string $versionHash
  */
-class VersioningBehavior extends Behavior
+class VersionBehavior extends \yii\base\Behavior
 {
     public $maxVersions = 5;
     public $attributes;

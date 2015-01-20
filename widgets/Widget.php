@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\models\ObjectModel;
 use gromver\models\SpecificationInterface;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;

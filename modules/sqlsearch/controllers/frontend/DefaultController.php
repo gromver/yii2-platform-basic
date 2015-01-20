@@ -9,14 +9,13 @@
 
 namespace gromver\platform\basic\modules\sqlsearch\controllers\frontend;
 
-use yii\web\Controller;
 
 /**
  * Class DefaultController
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public function actionIndex($q = null)
     {

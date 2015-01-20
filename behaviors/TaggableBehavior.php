@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\behaviors;
 
+
 use gromver\platform\basic\modules\tag\models\Tag;
-use yii\base\Behavior;
 use yii\db\ActiveQuery;
 use yii\db\BaseActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
  *
  * @property \yii\db\ActiveRecord $owner
  */
-class TaggableBehavior extends Behavior
+class TaggableBehavior extends \yii\base\Behavior
 {
     private $_tags;
 

@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
+
 use creocoder\nestedsets\NestedSetsQueryBehavior;
-use yii\db\ActiveQuery;
 use yii\db\Query;
 
 /**
@@ -18,7 +18,7 @@ use yii\db\Query;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class CategoryQuery extends ActiveQuery
+class CategoryQuery extends \yii\db\ActiveQuery
 {
     public function behaviors() {
         return [

@@ -10,11 +10,11 @@
 namespace gromver\platform\basic\rules;
 
 
-use yii\rbac\Rule;
 use yii\rbac\Item;
 use Yii;
 
-class AuthorizedRule extends Rule {
+class AuthorizedRule extends \yii\rbac\Rule
+{
     public $name = 'isAuthorized';
 
     /**

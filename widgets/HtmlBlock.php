@@ -8,9 +8,11 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use yii\helpers\Html;
 
-class HtmlBlock extends Widget {
+class HtmlBlock extends Widget
+{
     /**
      * @translation gromver.platform
      */

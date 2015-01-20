@@ -9,21 +9,21 @@
 
 namespace gromver\platform\basic\modules\widget\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use gromver\platform\basic\modules\widget\models\WidgetConfigSearch;
+use Yii;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use Yii;
 
 /**
  * Class DefaultController implements the CRUD actions for WidgetConfig model.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends BackendController
+class DefaultController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

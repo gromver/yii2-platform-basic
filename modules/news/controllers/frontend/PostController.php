@@ -9,13 +9,13 @@
 
 namespace gromver\platform\basic\modules\news\controllers\frontend;
 
+
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\main\models\Table;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;
 use Zelenin\yii\extensions\Rss\RssView;
@@ -25,7 +25,7 @@ use Zelenin\yii\extensions\Rss\RssView;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostController extends Controller
+class PostController extends \yii\web\Controller
 {
     public $defaultAction = 'view';
 

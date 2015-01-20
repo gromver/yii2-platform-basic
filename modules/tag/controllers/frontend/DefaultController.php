@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\modules\tag\controllers\frontend;
 
+
 use gromver\platform\basic\modules\tag\models\Tag;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use Yii;
 
@@ -19,7 +19,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public function actionIndex()
     {

@@ -18,7 +18,8 @@ namespace gromver\platform\basic\interfaces\model;
  * @property \yii\db\ActiveRecord[] $translations
  * @property string $language
  */
-interface TranslatableInterface {
+interface TranslatableInterface
+{
     /**
      * Локализации текущей модели
      * @return static[]

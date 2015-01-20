@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\elasticsearch\components;
 
-use gromver\platform\basic\components\MenuRouter;
+
 use gromver\platform\basic\modules\menu\models\MenuItem;
 
 /**
@@ -17,7 +17,8 @@ use gromver\platform\basic\modules\menu\models\MenuItem;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuRouterSearch extends MenuRouter {
+class MenuRouterSearch extends \gromver\platform\basic\components\MenuRouter
+{
     /**
      * @return array
      */

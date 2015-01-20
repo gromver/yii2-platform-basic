@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\modules\widget\models;
 
+
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 
 /**
@@ -34,7 +34,7 @@ use yii\helpers\Json;
  * @property integer $updated_by
  * @property string $lock
  */
-class WidgetConfig extends ActiveRecord
+class WidgetConfig extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

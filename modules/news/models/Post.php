@@ -9,12 +9,13 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
+
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\upload\ThumbnailProcessor;
 use gromver\platform\basic\behaviors\UploadBehavior;
-use gromver\platform\basic\behaviors\VersioningBehavior;
+use gromver\platform\basic\behaviors\VersionBehavior;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
@@ -23,7 +24,6 @@ use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 
@@ -61,7 +61,7 @@ use yii\helpers\Inflector;
  * @property Post[] $translations
  * @property PostViewed $postViewed
  */
-class Post extends ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
+class Post extends \yii\db\ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;
@@ -159,7 +159,7 @@ class Post extends ActiveRecord implements TranslatableInterface, ViewableInterf
             TaggableBehavior::className(),
             SearchBehavior::className(),
             [
-                'class' => VersioningBehavior::className(),
+                'class' => VersionBehavior::className(),
                 'attributes'=>['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
             ],
             [

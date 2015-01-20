@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\news\models\Post;
 
 /**
@@ -16,7 +17,8 @@ use gromver\platform\basic\modules\news\models\Post;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class TagPostCloud extends Widget {
+class TagPostCloud extends Widget
+{
     /**
      * @label Category
      * @translation gromver.platform

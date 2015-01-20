@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use kartik\helpers\Html;
 use kartik\widgets\FileInput as KartikFileInput;
 use kartik\file\FileInputAsset;
-use yii\widgets\InputWidget;
 
 /**
  * Class FileInput
@@ -20,7 +20,8 @@ use yii\widgets\InputWidget;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class FileInput extends InputWidget {
+class FileInput extends \yii\widgets\InputWidget
+{
     public $deleteAction = 'delete-file';
     public $pluginOptions = [];
 

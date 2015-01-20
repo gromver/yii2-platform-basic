@@ -9,17 +9,18 @@
 
 namespace gromver\platform\basic\components;
 
+
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\behaviors\SearchBehavior;
-use yii\base\Module;
 
 /**
  * Class BaseSearchModule
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class BaseSearchModule extends Module implements ModuleEventsInterface {
+class BaseSearchModule extends \yii\base\Module implements ModuleEventsInterface
+{
     public $frontendSearchableModels = [
         'gromver\platform\basic\modules\page\models\Page',
         'gromver\platform\basic\modules\news\models\Post',

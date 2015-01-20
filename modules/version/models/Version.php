@@ -9,13 +9,13 @@
 
 namespace gromver\platform\basic\modules\version\models;
 
-use gromver\platform\basic\behaviors\VersioningBehavior;
+
+use gromver\platform\basic\behaviors\VersionBehavior;
 use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\AttributeBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\helpers\StringHelper;
 
@@ -35,7 +35,7 @@ use yii\helpers\StringHelper;
  * @property integer $created_at
  * @property integer $created_by
  */
-class Version extends ActiveRecord
+class Version extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
@@ -206,7 +206,7 @@ class Version extends ActiveRecord
 
         //отключаем поведения версионирования
         foreach ($model->getBehaviors() as $behavior) {
-            if ($behavior instanceof VersioningBehavior) {
+            if ($behavior instanceof VersionBehavior) {
                 $behavior->detach();
             }
         }

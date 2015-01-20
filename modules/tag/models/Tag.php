@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\tag\models;
 
+
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
@@ -17,7 +18,6 @@ use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\helpers\Inflector;
 
@@ -45,7 +45,7 @@ use yii\helpers\Inflector;
  * @property TagToItem[] $tagToItems
  * @property Tag[] $translations
  */
-class Tag extends ActiveRecord implements ViewableInterface, TranslatableInterface
+class Tag extends \yii\db\ActiveRecord implements ViewableInterface, TranslatableInterface
 {
     const STATUS_PUBLISHED = 1;
     const STATUS_UNPUBLISHED = 2;

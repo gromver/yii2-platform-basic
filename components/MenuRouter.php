@@ -9,14 +9,14 @@
 
 namespace gromver\platform\basic\components;
 
-use yii\base\Object;
 
 /**
  * Class MenuRouter
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuRouter extends Object {
+class MenuRouter extends \yii\base\Object
+{
     /**
      * @return array
      */

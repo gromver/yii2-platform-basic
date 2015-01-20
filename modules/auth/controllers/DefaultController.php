@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\auth\controllers;
 
+
 use gromver\platform\basic\modules\auth\models\LoginForm;
 use gromver\platform\basic\modules\user\models\User;
 use gromver\widgets\ModalIFrame;
@@ -18,7 +19,6 @@ use yii\di\Instance;
 use yii\filters\AccessControl;
 use yii\mail\BaseMailer;
 use yii\web\BadRequestHttpException;
-use yii\web\Controller;
 
 /**
  * Class DefaultController
@@ -27,7 +27,7 @@ use yii\web\Controller;
  *
  * @property \gromver\platform\basic\modules\auth\Module Module
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public $mailer = 'mailer';
 

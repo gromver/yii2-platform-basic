@@ -2,10 +2,10 @@
 
 namespace gromver\platform\basic\modules\sqlsearch\models;
 
+
 use gromver\platform\basic\interfaces\model\ViewableInterface;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%grom_index}}".
@@ -22,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property string $url_frontend
  * @property string $url_backend
  */
-class Index extends ActiveRecord implements ViewableInterface
+class Index extends \yii\db\ActiveRecord implements ViewableInterface
 {
     /**
      * @inheritdoc

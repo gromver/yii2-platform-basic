@@ -9,14 +9,14 @@
 
 namespace gromver\platform\basic\widgets;
 
-use yii\bootstrap\Widget;
 
 /**
  * Class PlatformPanel
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PlatformPanel extends Widget {
+class PlatformPanel extends \yii\bootstrap\Widget
+{
     public $layout = 'platform/panelFrontend';
     public $searchRoute = '/grom/sqlsearch/frontend/default/index';
 

@@ -1,8 +1,6 @@
 <?php
 
-use yii\db\Migration;
-
-class m140820_085041_grom_site_setup extends Migration
+class m140820_085041_grom_site_setup extends \yii\db\Migration
 {
     public function up()
     {

@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\news\components;
 
-use gromver\platform\basic\components\MenuRouter;
+
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\news\models\Post;
@@ -20,7 +20,8 @@ use gromver\platform\basic\modules\tag\models\Tag;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuRouterNews extends MenuRouter {
+class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
+{
     public $postSuffix = 'html';
 
     public function parseUrlRules()

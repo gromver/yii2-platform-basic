@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\main\models;
 
+
 use Yii;
 use yii\base\Event;
 use yii\behaviors\TimestampBehavior;
@@ -24,7 +25,7 @@ use yii\helpers\ArrayHelper;
  * @property string $id
  * @property integer $timestamp
  */
-class Table extends ActiveRecord
+class Table extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

@@ -1,9 +1,8 @@
 <?php
 
 use yii\db\Schema;
-use yii\db\Migration;
 
-class m140811_143606_grom_create_tables extends Migration
+class m140811_143606_grom_create_tables extends \yii\db\Migration
 {
     public function up()
     {

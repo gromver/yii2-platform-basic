@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\components;
 
+
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
-use yii\base\Component;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\caching\Cache;
@@ -27,7 +27,7 @@ use yii\web\View;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuManager extends Component implements UrlRuleInterface
+class MenuManager extends \yii\base\Component implements UrlRuleInterface
 {
     public $cache = 'cache';
 

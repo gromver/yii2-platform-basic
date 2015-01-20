@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\menu\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\menu\models\MenuItemSearch;
@@ -28,7 +28,7 @@ use Yii;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 
-class ItemController extends BackendController
+class ItemController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

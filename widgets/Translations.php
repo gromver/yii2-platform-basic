@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use Yii;
-use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -20,7 +20,8 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Translations extends Widget {
+class Translations extends \yii\bootstrap\Widget
+{
     public $model;
     public $options;
     public $linkTemplate = '<a class="btn btn-default" href="{url}">{label}</a>';

@@ -14,7 +14,8 @@ namespace gromver\platform\basic\interfaces\model;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface ViewableInterface {
+interface ViewableInterface
+{
     /**
      * Возвращает ссылку на просмотр модели во фронте
      * @return array | string route

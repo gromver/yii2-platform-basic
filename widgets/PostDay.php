@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
 use yii\data\ActiveDataProvider;
@@ -19,7 +20,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostDay extends Widget {
+class PostDay extends Widget
+{
     /**
      * @var Category|string
      * @type modal

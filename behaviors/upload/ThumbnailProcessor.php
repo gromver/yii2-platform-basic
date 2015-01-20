@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\behaviors\upload;
 
+
 use Imagine\Image\ManipulatorInterface;
 use yii\imagine\Image;
 
@@ -17,7 +18,8 @@ use yii\imagine\Image;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class ThumbnailProcessor extends BaseProcessor {
+class ThumbnailProcessor extends BaseProcessor
+{
     public $width = 140;
     public $height = 140;
     public $mode = ManipulatorInterface::THUMBNAIL_INSET;

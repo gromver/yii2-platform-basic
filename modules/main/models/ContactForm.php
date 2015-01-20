@@ -2,13 +2,13 @@
 
 namespace gromver\platform\basic\modules\main\models;
 
+
 use Yii;
-use yii\base\Model;
 
 /**
  * ContactForm is the model behind the contact form.
  */
-class ContactForm extends Model
+class ContactForm extends \yii\base\Model
 {
     public $name;
     public $email;

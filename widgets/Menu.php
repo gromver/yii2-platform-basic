@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\main\models\Table;
 use Yii;
@@ -21,7 +22,8 @@ use yii\helpers\Json;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Menu extends Widget {
+class Menu extends Widget
+{
     /**
      * MenuTypeId or MenuTypeId:MenuTypeAlias
      * @var string

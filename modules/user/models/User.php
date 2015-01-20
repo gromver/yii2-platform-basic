@@ -9,12 +9,12 @@
 
 namespace gromver\platform\basic\modules\user\models;
 
+
 use Yii;
 use yii\base\ModelEvent;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\console\Application;
-use yii\db\ActiveRecord;
 use yii\helpers\Json;
 use yii\web\IdentityInterface;
 
@@ -39,7 +39,7 @@ use yii\web\IdentityInterface;
  * @property \gromver\platform\basic\modules\news\models\Post[] $viewedPosts
  * @property string[] $roles
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 1;

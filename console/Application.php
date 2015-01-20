@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\console;
 
+
 use yii\helpers\ArrayHelper;
 
 /**
@@ -16,7 +17,8 @@ use yii\helpers\ArrayHelper;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Application extends \yii\console\Application {
+class Application extends \yii\console\Application
+{
     public $language = 'en';
     public $languages = ['en', 'ru'];
     public $sourceLanguage = 'en';

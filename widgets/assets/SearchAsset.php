@@ -9,14 +9,14 @@
 
 namespace gromver\platform\basic\widgets\assets;
 
-use yii\web\AssetBundle;
 
 /**
  * Class SearchAsset
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class SearchAsset extends AssetBundle {
+class SearchAsset extends \yii\web\AssetBundle
+{
     public $sourcePath = '@gromver/platform/basic/widgets/assets';
     public $css = [
         'search/css/style.css'

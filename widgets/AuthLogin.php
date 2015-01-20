@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\auth\models\LoginForm;
 
 /**
@@ -16,7 +17,8 @@ use gromver\platform\basic\modules\auth\models\LoginForm;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class AuthLogin extends Widget {
+class AuthLogin extends Widget
+{
     /**
      * @ignore
      * @var LoginForm

@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\assets\CkeditorHighlightAsset;
 use gromver\platform\basic\modules\page\models\Page;
 use yii\base\InvalidConfigException;
@@ -19,7 +20,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PageView extends Widget {
+class PageView extends Widget
+{
     /**
      * Page model or PageId or PageId:PageAlias
      * @var Page|string

@@ -9,12 +9,14 @@
 
 namespace gromver\platform\basic\modules\user\models;
 
+
 /**
  * Class UserParams
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class UserParams {
+class UserParams
+{
     /**
      * @translation gromver.platform
      */

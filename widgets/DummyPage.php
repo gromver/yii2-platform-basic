@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use Yii;
 use yii\helpers\Html;
 
@@ -17,7 +18,8 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DummyPage extends Widget {
+class DummyPage extends Widget
+{
     /**
      * Dummy page description
      * @var string

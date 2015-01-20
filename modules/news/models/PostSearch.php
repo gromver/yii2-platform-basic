@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
+
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;

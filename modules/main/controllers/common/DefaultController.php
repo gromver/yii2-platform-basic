@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\main\controllers\common;
 
-use yii\web\Controller;
+
 use Yii;
 
 /**
@@ -17,7 +17,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public function actions()
     {

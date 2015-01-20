@@ -9,11 +9,11 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
+
 use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%grom_post_viewed}}".
@@ -27,7 +27,7 @@ use yii\db\ActiveRecord;
  * @property Post $post
  * @property User $user
  */
-class PostViewed extends ActiveRecord
+class PostViewed extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

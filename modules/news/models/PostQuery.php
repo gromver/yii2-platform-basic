@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\news\models;
 
-use yii\db\ActiveQuery;
+
 use yii\db\Query;
 
 /**
@@ -18,7 +18,7 @@ use yii\db\Query;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 
-class PostQuery extends ActiveQuery {
+class PostQuery extends \yii\db\ActiveQuery {
     /**
      * @return static
      */

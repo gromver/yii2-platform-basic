@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\user\models\User;
 
 /**
@@ -16,7 +17,8 @@ use gromver\platform\basic\modules\user\models\User;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class AuthResetPassword extends Widget {
+class AuthResetPassword extends Widget
+{
     /**
      * @ignore
      * @var User

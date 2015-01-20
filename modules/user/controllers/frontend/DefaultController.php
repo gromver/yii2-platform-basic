@@ -9,12 +9,12 @@
 
 namespace gromver\platform\basic\modules\user\controllers\frontend;
 
+
 use kartik\widgets\Alert;
 use gromver\models\ObjectModel;
 use gromver\platform\basic\modules\user\models\User;
 use yii\base\InvalidParamException;
 use yii\filters\AccessControl;
-use yii\web\Controller;
 use Yii;
 
 /**
@@ -22,7 +22,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends Controller
+class DefaultController extends \yii\web\Controller
 {
     public function behaviors()
     {

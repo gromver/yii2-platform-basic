@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\menu\models;
 
-use yii\base\Model;
+
 use Yii;
 
 /**
@@ -17,7 +17,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuLinkParams extends Model
+class MenuLinkParams extends \yii\base\Model
 {
     public $title;
     public $class;

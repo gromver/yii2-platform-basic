@@ -9,14 +9,14 @@
 
 namespace gromver\platform\basic\widgets\assets;
 
-use yii\web\AssetBundle;
 
 /**
  * Class PostAsset
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PostAsset extends AssetBundle {
+class PostAsset extends \yii\web\AssetBundle
+{
     public $sourcePath = '@gromver/platform/basic/widgets/assets';
     public $css = [
         'post/css/style.css'

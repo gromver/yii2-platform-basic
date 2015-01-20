@@ -9,13 +9,13 @@
 
 namespace gromver\platform\basic\behaviors\upload;
 
-use yii\base\Object;
 
 /**
  * Class BaseProcessor
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-abstract class BaseProcessor extends Object {
+abstract class BaseProcessor extends \yii\base\Object
+{
     public function process($filePath) {}
 }

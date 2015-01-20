@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\modules\page;
 
+
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;

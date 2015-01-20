@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\tag\models\Tag;
 use yii\db\Query;
 use Yii;
@@ -18,7 +19,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class TagCloud extends Widget {
+class TagCloud extends Widget
+{
     /**
      * @type list
      * @items languages

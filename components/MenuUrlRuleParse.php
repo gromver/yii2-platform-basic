@@ -9,12 +9,14 @@
 
 namespace gromver\platform\basic\components;
 
+
 /**
  * Class MenuUrlRuleParse
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuUrlRuleParse extends MenuUrlRule {
+class MenuUrlRuleParse extends MenuUrlRule
+{
     /**
      * @var string
      */

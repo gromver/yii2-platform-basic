@@ -14,7 +14,8 @@ namespace gromver\platform\basic\interfaces\model;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface SearchableInterface {
+interface SearchableInterface
+{
     public function getSearchTitle();
     public function getSearchContent();
     public function getSearchTags();

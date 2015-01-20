@@ -9,15 +9,16 @@
 
 namespace gromver\platform\basic\components;
 
+
 use yii\base\InvalidConfigException;
-use yii\base\Object;
 
 /**
  * Class MenuUrlRule
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuUrlRule extends Object {
+class MenuUrlRule extends \yii\base\Object
+{
     /**
      * @var string
      */

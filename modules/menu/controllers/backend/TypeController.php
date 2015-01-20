@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\menu\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\platform\basic\modules\menu\models\MenuType;
 use gromver\platform\basic\modules\menu\models\MenuTypeSearch;
 use kartik\widgets\Alert;
@@ -25,7 +25,7 @@ use Yii;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 
-class TypeController extends BackendController
+class TypeController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

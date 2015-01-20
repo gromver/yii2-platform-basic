@@ -15,7 +15,8 @@ namespace gromver\platform\basic\interfaces\module;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface MenuRouterInterface {
+interface MenuRouterInterface
+{
     /**
      * @return string | \gromver\platform\basic\components\MenuRouter
      */

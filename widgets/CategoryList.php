@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\news\models\Category;
 use yii\data\ActiveDataProvider;
 use Yii;
@@ -18,7 +19,8 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class CategoryList extends Widget {
+class CategoryList extends Widget
+{
     /**
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string

@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\behaviors;
 
+
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
-use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 
@@ -21,7 +21,8 @@ use yii\db\ActiveRecord;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class SearchBehavior extends Behavior {
+class SearchBehavior extends \yii\base\Behavior
+{
     const EVENT_INDEX_PAGE = 'SearchBehavior_IndexPage';
     const EVENT_DELETE_PAGE = 'SearchBehavior_DeletePage';
 

@@ -9,11 +9,11 @@
 
 namespace gromver\platform\basic\modules\menu\models;
 
+
 use dosamigos\transliterator\TransliteratorHelper;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\helpers\Inflector;
 
 /**
@@ -33,7 +33,7 @@ use yii\helpers\Inflector;
  *
  * @property MenuItem[] $items
  */
-class MenuType extends ActiveRecord
+class MenuType extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc

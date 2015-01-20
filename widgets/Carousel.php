@@ -9,12 +9,14 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 /**
  * Class Carousel
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Carousel extends Widget {
+class Carousel extends Widget
+{
     /**
      * @type multiple
      * @fieldType object

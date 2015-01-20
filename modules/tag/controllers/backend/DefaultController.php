@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\tag\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\platform\basic\modules\tag\models\Tag;
 use gromver\platform\basic\modules\tag\models\TagSearch;
 use yii\helpers\ArrayHelper;
@@ -24,7 +24,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class DefaultController extends BackendController
+class DefaultController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

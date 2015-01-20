@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\main\models;
 
-use yii\base\Object;
+
 use Yii;
 
 /**
@@ -17,7 +17,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class PlatformParams extends  Object
+class PlatformParams extends  \yii\base\Object
 {
     /**
      * @translation gromver.platform

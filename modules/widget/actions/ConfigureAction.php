@@ -9,11 +9,11 @@
 
 namespace gromver\platform\basic\modules\widget\actions;
 
+
 use gromver\models\ObjectModel;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use gromver\widgets\ModalIFrame;
 use Yii;
-use yii\base\Action;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
 
@@ -23,7 +23,8 @@ use yii\web\BadRequestHttpException;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class ConfigureAction extends Action {
+class ConfigureAction extends \yii\base\Action
+{
     public $view = '@gromver/platform/basic/modules/widget/views/actions/configure/form';
 
     public function run($modal=null) {

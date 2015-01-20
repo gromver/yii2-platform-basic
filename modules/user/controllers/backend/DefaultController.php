@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\user\controllers\backend;
 
-use gromver\platform\basic\components\BackendController;
+
 use gromver\models\ObjectModel;
 use gromver\platform\basic\modules\user\models\User;
 use gromver\platform\basic\modules\user\models\UserSearch;
@@ -29,7 +29,7 @@ use Yii;
  *
  * @property \gromver\platform\basic\modules\user\Module $module
  */
-class DefaultController extends BackendController
+class DefaultController extends \gromver\platform\basic\components\BackendController
 {
     public function behaviors()
     {

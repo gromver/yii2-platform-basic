@@ -10,14 +10,13 @@
 namespace gromver\platform\basic\components;
 
 
-use yii\base\Object;
-
 /**
  * Class MenuRequest
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuRequest extends Object {
+class MenuRequest extends \yii\base\Object
+{
     public $menuMap;
     public $menuRoute;
     public $menuParams;

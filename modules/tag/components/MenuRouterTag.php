@@ -9,7 +9,7 @@
 
 namespace gromver\platform\basic\modules\tag\components;
 
-use gromver\platform\basic\components\MenuRouter;
+
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\tag\models\Tag;
 
@@ -18,7 +18,8 @@ use gromver\platform\basic\modules\tag\models\Tag;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuRouterTag extends MenuRouter {
+class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
+{
     public function parseUrlRules()
     {
         return [

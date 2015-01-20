@@ -9,8 +9,9 @@
 
 namespace gromver\platform\basic\behaviors;
 
+
+use gromver\platform\basic\behaviors\upload\BaseProcessor;
 use Yii;
-use yii\base\Behavior;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -18,14 +19,14 @@ use yii\helpers\FileHelper;
 use yii\validators\FileValidator;
 use yii\validators\Validator;
 use yii\web\UploadedFile;
-use gromver\platform\basic\behaviors\upload\BaseProcessor;
 
 /**
  * Class UploadBehavior
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class UploadBehavior extends Behavior {
+class UploadBehavior extends \yii\base\Behavior
+{
     public $attributes;
     public $options = [];
 

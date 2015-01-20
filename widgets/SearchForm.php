@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use yii\helpers\Html;
 
 /**
@@ -16,7 +17,8 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class SearchForm extends Widget {
+class SearchForm extends Widget
+{
     /**
      * @ignore
      */

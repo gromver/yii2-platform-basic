@@ -9,6 +9,7 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
@@ -20,7 +21,8 @@ use yii\data\ActiveDataProvider;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class TagPosts extends Widget {
+class TagPosts extends Widget
+{
     /**
      * Tag or TagId or TagId:TagAlias
      * @var Tag|string

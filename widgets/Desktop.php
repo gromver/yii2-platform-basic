@@ -9,8 +9,8 @@
 
 namespace gromver\platform\basic\widgets;
 
+
 use Yii;
-use yii\bootstrap\Widget;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -19,7 +19,7 @@ use yii\helpers\Html;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Desktop extends Widget
+class Desktop extends \yii\bootstrap\Widget
 {
     const CACHE_KEY = __CLASS__;
 

@@ -1,9 +1,6 @@
 <?php
 
-use yii\db\Schema;
-use yii\db\Migration;
-
-class m140820_085040_grom_rbac extends Migration
+class m140820_085040_grom_rbac extends \yii\db\Migration
 {
     public function up()
     {

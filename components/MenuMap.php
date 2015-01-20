@@ -9,10 +9,10 @@
 
 namespace gromver\platform\basic\components;
 
+
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\base\Object;
 use yii\di\Instance;
 use yii\caching\Cache;
 
@@ -21,7 +21,8 @@ use yii\caching\Cache;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuMap extends Object {
+class MenuMap extends \yii\base\Object
+{
     const CACHE_KEY = __CLASS__;
 
     public $language;

@@ -9,14 +9,13 @@
 
 namespace gromver\platform\basic\widgets;
 
-use yii\base\Event;
 
 /**
  * Class CustomActionEvent
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class CustomActionEvent extends Event
+class CustomActionEvent extends \yii\base\Event
 {
     public $module;
 

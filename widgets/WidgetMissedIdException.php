@@ -9,13 +9,12 @@
 
 namespace gromver\platform\basic\widgets;
 
-use yii\base\Exception;
 
 /**
  * Class WidgetMissedIdException
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class WidgetMissedIdException extends Exception {
-
+class WidgetMissedIdException extends \yii\base\Exception
+{
 }
