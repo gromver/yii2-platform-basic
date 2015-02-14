@@ -313,7 +313,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
 
     private function calculatePath()
     {
-        $aliases = $this->ancestors()->noRoots()->select('alias')->column();
+        $aliases = $this->parents()->noRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 
@@ -497,7 +497,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
         if ($this->isRoot()) {
             return [];
         } else {
-            $path = $this->ancestors()->noRoots()->all();
+            $path = $this->parents()->noRoots()->all();
             if ($includeSelf) {
                 $path[] = $this;
             }

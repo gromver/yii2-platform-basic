@@ -11,13 +11,14 @@ if ($menu) {
     $this->params['breadcrumbs'] = $menu->getBreadcrumbs($menu->isApplicableContext());
     //category breadcrumbs
     if ($menu->isApplicableContext()) {
-        //меню ссылается на категорию
         list($route, $params) = $menu->parseUrl();
-        if ($route == 'grom/news/category/view') {
+        if ($route == 'grom/news/frontend/category/view') { //меню ссылается на категорию
             $_breadcrumbs = $model->category->getBreadcrumbs(true);
+            $_append = [];
             while (($crumb = array_pop($_breadcrumbs)) && $crumb['url']['id'] != $params['id']) {
-                $this->params['breadcrumbs'][] = $crumb;
+                array_unshift($_append, $crumb);
             }
+            $this->params['breadcrumbs'] = array_merge($this->params['breadcrumbs'], $_append);
         }
     }
 } else {

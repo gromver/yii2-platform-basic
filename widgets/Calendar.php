@@ -38,7 +38,7 @@ class Calendar extends Widget
     private $_day;
 
     public $categoryId;
-    public $route = '/grom/news/post/day';
+    public $route = '/grom/news/frontend/post/day';
 
     private $_calendar = [];
 
@@ -50,7 +50,6 @@ class Calendar extends Widget
 
     public function init()
     {
-        //todo запилить проверку на опубликованность категорий постов
         $query = Post::find()
             ->published()
             ->category($this->categoryId)

@@ -309,7 +309,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
     private function calculatePath()
     {
-        $aliases = $this->ancestors()->noRoots()->select('alias')->column();
+        $aliases = $this->parents()->noRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 
@@ -417,7 +417,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         if ($this->isRoot()) {
             return [];
         } else {
-            $path = $this->ancestors()->noRoots()->all();
+            $path = $this->parents()->noRoots()->all();
             if ($includeSelf) {
                 $path[] = $this;
             }

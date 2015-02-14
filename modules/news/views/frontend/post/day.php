@@ -19,9 +19,11 @@ if ($menu) {
         //меню ссылается на категорию
         list($route, $params) = $menu->parseUrl();
         $_breadcrumbs = $model->getBreadcrumbs(true);
+        $_append = [];
         while (($crumb = array_pop($_breadcrumbs)) && $crumb['url']['id'] != $params['id']) {
-            $this->params['breadcrumbs'][] = $crumb;
+            array_unshift($_append, $crumb);
         }
+        $this->params['breadcrumbs'] = array_merge($this->params['breadcrumbs'], $_append);
     }
 } else {
     $this->title = Yii::$app->formatter->asDate(mktime(0,0,0,$month, $day, $year), 'dd MMMM Y');
