@@ -26,7 +26,7 @@
         "zhuravljov/yii2-datetime-widgets" : "dev-master",
         "2amigos/yii2-transliterator-helper": "dev-master",
         "2amigos/yii2-selectize-widget" : "*",
-        "creocoder/yii2-nested-set-behavior": "*",
+        "creocoder/yii2-nested-sets": "*",
         "zelenin/yii2-rss": "dev-master",
         "gromver/yii2-models": "*",
         "gromver/yii2-widgets": "*",
