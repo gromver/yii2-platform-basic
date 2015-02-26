@@ -20,7 +20,32 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-<?= \gromver\platform\basic\widgets\PlatformPanel::widget() ?>
+<?php
+\yii\bootstrap\NavBar::begin([
+    'brandLabel' => Yii::$app->grom->siteName,
+    'brandUrl' => Yii::$app->homeUrl,
+    'options' => [
+        'class' => 'navbar-inverse navbar-fixed-top',
+    ],
+]);
+$items = [
+    ['label' => '<i class="glyphicon glyphicon-home"></i> ' . Yii::t('gromver.platform', 'Home'), 'url' => Yii::$app->homeUrl]
+];
+
+if (Yii::$app->user->can('administrate')) {
+    $items[] = ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Admin Panel'), 'url' => ['/grom/backend/default/index']];
+}
+if (Yii::$app->request->referrer) {
+    $items[] = ['label' => '<i class="glyphicon glyphicon-step-backward"></i> ' . Yii::t('gromver.platform', 'Back'), 'url' => Yii::$app->request->referrer];
+}
+echo \yii\bootstrap\Nav::widget([
+    'options' => ['class' => 'navbar-nav navbar-right'],
+    'encodeLabels' => false,
+    'items' => $items
+]);
+\yii\bootstrap\NavBar::end();
+?>
+
 <div class="wrap">
     <div class="container">
         <?= \yii\widgets\Breadcrumbs::widget([
