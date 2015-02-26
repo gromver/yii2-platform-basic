@@ -10,10 +10,10 @@
 namespace gromver\platform\basic\modules\news\controllers\backend;
 
 
+use gromver\platform\basic\modules\main\models\Table;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\CategorySearch;
 use kartik\widgets\Alert;
-use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -197,7 +197,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     {
         $model = $this->findModel($id);
 
-        if ($model->descendants()->count()) {
+        if ($model->children()->count()) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it subcategories so far.", ['id' => $model->id]));
         } elseif ($model->getPosts()->count() > 0) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it posts so far.", ['id' => $model->id]));
@@ -216,11 +216,11 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     {
         $data = Yii::$app->request->getBodyParam('data', []);
 
-        $models = Category::findAll(['id'=>$data]);
+        $models = Category::find()->where(['id' => $data])->orderBy(['lft' => SORT_DESC])->all();
 
         foreach ($models as $model) {
             /** @var Category $model */
-            if ($model->getPosts()->count() > 0 || $model->descendants()->count()) continue;
+            if ($model->getPosts()->count() > 0 || $model->children()->count()) continue;
 
             $model->delete();
         }
@@ -259,7 +259,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         }
 
         Category::find()->roots()->one()->reorderNode('ordering');
-        (new Category())->trigger(ActiveRecord::EVENT_AFTER_UPDATE);    //фиксируем изменение таблицы в \gromver\platform\basic\common\models\Table
+        Table::updateState(Category::tableName());
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
@@ -281,7 +281,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                 $language = $parents[0];
                 //исключаем редактируемый пункт и его подпункты из списка
                 if (!empty($update_item_id) && $updateItem = Category::findOne($update_item_id)) {
-                    $excludeIds = array_merge([$update_item_id], $updateItem->descendants()->select('id')->column());
+                    $excludeIds = array_merge([$update_item_id], $updateItem->children()->select('id')->column());
                 } else {
                     $excludeIds = [];
                 }

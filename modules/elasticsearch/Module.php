@@ -94,7 +94,7 @@ class Module extends \gromver\platform\basic\components\BaseSearchModule impleme
 
         ModuleEvent::trigger(self::EVENT_BEFORE_CREATE_INDEX . $model->className(), [$index, $model]);
         if (!$index->save()) {
-            Yii::$app->session->setFlash(Alert::TYPE_DANGER, implode($index->getErrors(), "\n"));
+            Yii::$app->session->setFlash(Alert::TYPE_DANGER, implode("\n", $index->getFirstErrors()));
             Yii::error('Unable to index model ' . $model->className() . '::' . $model->getPrimaryKey() . ', error: ' . implode($index->getErrors(), "\n"));
         }
     }

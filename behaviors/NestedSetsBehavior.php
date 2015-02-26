@@ -75,7 +75,7 @@ class NestedSetsBehavior extends \creocoder\nestedsets\NestedSetsBehavior
      */
     public function applyNodeOrder($orderBy, $leftId, $order)
     {
-        $children = $this->children()->orderBy($orderBy)->all();
+        $children = $this->children(1)->orderBy($orderBy)->all();
 
         // The right value of this node is the left value + 1
         $rightId = $leftId + 1;

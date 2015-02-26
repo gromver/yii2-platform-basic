@@ -132,7 +132,8 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             }, 'message' => Yii::t('gromver.platform', 'Localization ({language}) for item (ID: {id}) already exists.', ['language' => $this->language, 'id' => $this->translation_id])],
 
             [['title', 'detail_text', 'status'], 'required'],
-            [['tags', 'versionNote'], 'safe']
+            [['tags', 'versionNote'], 'safe'],
+            [['ordering'], 'filter', 'filter' => 'intVal'], //for proper $changedAttributes
         ];
     }
 
@@ -292,7 +293,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
         // нормализуем подкатегории при смене языка
         if (array_key_exists('language', $changedAttributes)) {
-            $this->normalizeDescendants();
+            $this->normalizeLanguage();
         }
 
         // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
@@ -323,15 +324,16 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
         $this->updateAttributes(['path' => $path]);
 
-        $children = $this->children()->all();
+        $children = $this->children(1)->all();
         foreach ($children as $child) {
+            /** @var self $child */
             $child->normalizePath($path);
         }
     }
 
-    public function normalizeDescendants()
+    public function normalizeLanguage()
     {
-        $ids = $this->descendants()->select('id')->column();
+        $ids = $this->children()->select('id')->column();
         self::updateAll(['language' => $this->language], ['id' => $ids]);
     }
 
@@ -340,7 +342,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
      */
     public function getParent()
     {
-        return $this->parent()->one();
+        return $this->parents(1)->one();
     }
 
     // ViewableInterface

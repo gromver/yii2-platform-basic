@@ -143,6 +143,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
                 $query->andWhere(['language' => $this->language]);
             }, 'message' => Yii::t('gromver.platform', 'Localization ({language}) for item (ID: {id}) already exists.', ['language' => $this->language, 'id' => $this->translation_id])],
             [['title',  'link', 'status'], 'required'],
+            [['ordering'], 'filter', 'filter' => 'intVal'], //for proper $changedAttributes
         ];
     }
 
@@ -202,13 +203,6 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
     public function getMenuType()
     {
         return $this->hasOne(MenuType::className(), ['id' => 'menu_type_id']);
-    }
-
-    /**
-     * @return static | null
-     */
-    public function getParent() {
-        return $this->parent()->one();
     }
 
     /**
@@ -290,7 +284,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
 
         //Если изменен тип меню или язык, смена языка возможна только для корневых пунктов меню
         if (array_key_exists('menu_type_id', $changedAttributes) || array_key_exists('language', $changedAttributes)) {
-            $this->normalizeDescendants();
+            $this->normalizeLanguage();
         }
 
         if (array_key_exists('status', $changedAttributes)) {
@@ -327,16 +321,16 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
 
         $this->updateAttributes(['path' => $path]);
 
-        $children = $this->children()->all();
+        $children = $this->children(1)->all();
         foreach ($children as $child) {
             /** @var self $child */
             $child->normalizePath($path);
         }
     }
 
-    public function normalizeDescendants()
+    public function normalizeLanguage()
     {
-        $ids = $this->descendants()->select('id')->column();
+        $ids = $this->children()->select('id')->column();
         self::updateAll(['menu_type_id' => $this->menu_type_id, 'language' => $this->language], ['id' => $ids]);
     }
 
@@ -356,6 +350,13 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
                 $config->save();
             }
         }
+    }
+
+    /**
+     * @return static | null
+     */
+    public function getParent() {
+        return $this->parents(1)->one();
     }
 
     public function getLinkParams()

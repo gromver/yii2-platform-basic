@@ -11,10 +11,10 @@ namespace gromver\platform\basic\modules\menu\controllers\backend;
 
 
 use gromver\modulequery\ModuleQuery;
+use gromver\platform\basic\modules\main\models\Table;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\menu\models\MenuItemSearch;
 use kartik\widgets\Alert;
-use yii\db\ActiveRecord;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -274,7 +274,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     {
         $model = $this->findModel($id);
 
-        if ($model->descendants()->count()) {
+        if ($model->children()->count()) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove menu item ID:{id} so far it contains descendants.", ['id' => $model->id]));
          } else {
             $model->delete();
@@ -291,17 +291,18 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     {
         $data = Yii::$app->request->getBodyParam('data', []);
 
-        $models = MenuItem::findAll(['id' => $data]);
+        $models = MenuItem::find()->where(['id' => $data])->orderBy(['lft' => SORT_DESC])->all();
 
         foreach ($models as $model) {
             /** @var MenuItem $model */
-            if ($model->descendants()->count()) continue;
+            if ($model->children()->count()) continue;
 
-            if(!$model->getIsDeletedRecord()) $model->delete();
+            $model->delete();
         }
 
-        if (!Yii::$app->request->getIsAjax())
+        if (!Yii::$app->request->getIsAjax()) {
             return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
     }
 
     public function actionOrdering()
@@ -316,7 +317,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         }
 
         MenuItem::find()->roots()->one()->reorderNode('ordering');
-        (new MenuItem())->trigger(ActiveRecord::EVENT_AFTER_UPDATE);    //фиксируем изменение таблицы в \gromver\platform\basic\common\models\Table
+        Table::updateState(MenuItem::tableName());
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
@@ -362,7 +363,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
                 $language = $parents[1];
                 //исключаем редактируемый пункт и его подпункты из списка
                 if (!empty($update_item_id) && $updateItem = MenuItem::findOne($update_item_id)) {
-                    $excludeIds = array_merge([$update_item_id], $updateItem->descendants()->select('id')->column());
+                    $excludeIds = array_merge([$update_item_id], $updateItem->children()->select('id')->column());
                     //если выбранный тип меню совпадает с типом меню редактируемого пункта, выбираем текущее значение родительского элемента
                     $selected = $updateItem->menu_type_id == $typeId ? $updateItem->parent_id : '';
                 } else {

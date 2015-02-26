@@ -127,15 +127,23 @@ class Table extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $event Event
+     * @param $value Event|ActiveRecord|string
      */
-    public static function updateState($event)
+    public static function updateState($value)
     {
         self::clearData();
 
+        if ($value instanceof Event) {
+            $tableName = $value->sender->tableName();
+        } elseif ($value instanceof ActiveRecord) {
+            $tableName = $value->tableName();
+        } else {
+            $tableName = $value;
+        }
+
         self::getDb()->createCommand("INSERT INTO ".self::tableName()." (id, timestamp) VALUES (:id, :timestamp) ON DUPLICATE KEY UPDATE [[timestamp]]=:timestamp",
             [
-                ':id' => self::getDb()->getSchema()->getRawTableName($event->sender->tableName()),
+                ':id' => self::getDb()->getSchema()->getRawTableName($tableName),
                 ':timestamp' => time()
             ]
         )->execute();
