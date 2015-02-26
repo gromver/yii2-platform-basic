@@ -50,6 +50,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_by',
             'hits',
             'lock',
+            [
+                'attribute' => 'tags',
+                'value' => implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', function($tag) {
+                    /** @var $tag \gromver\platform\basic\modules\tag\models\Tag */
+                    return Html::a($tag->title, $tag->getBackendViewLink());
+                })),
+                'format' => 'raw'
+            ]
         ],
     ]) ?>
 

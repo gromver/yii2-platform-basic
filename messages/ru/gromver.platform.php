@@ -258,4 +258,5 @@ return [
     'This page is under construction.' => 'Раздел в процессе наполнения.',
     'Yes' => 'Да',
     'No' => 'Нет',
+    'Back' => 'Назад',
 ];
