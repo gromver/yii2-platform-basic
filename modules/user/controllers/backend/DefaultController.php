@@ -39,6 +39,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'actions' => [
                     'delete' => ['post', 'delete'],
                     'bulk-delete' => ['post'],
+                    'login-as' => ['post']
                 ],
             ],
             'access' => [
@@ -65,6 +66,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                         'allow' => true,
                         'actions' => ['index', 'view'],
                         'roles' => ['read'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['login-as'],
+                        'roles' => ['administrate'],
                     ],
                 ]
             ]
@@ -221,6 +227,16 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             'user' => $user,
             'model' => $model
         ]);
+    }
+
+    public function actionLoginAs($id)
+    {
+        $user = $this->findModel($id);
+        if (!Yii::$app->user->getIsSuperAdmin() && $user->getIsSuperAdmin()) {
+            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can\'t login as superadmin.'));
+        }
+        $user->login(3600);
+        $this->redirect(['index']);
     }
 
     /**

@@ -104,6 +104,7 @@ return [
     'Widget\'s Settings' => 'Настройки виджетов',
     'Search' => 'Поиск',
     'Contact' => 'Контакты',
+    'Home' => 'Сайт',
     'Profile' => 'Профиль',
     'Logout' => 'Выход',
     'Login' => 'Авторизация',
@@ -125,6 +126,9 @@ return [
     'Email' => 'Email',
     'Work Email' => 'Рабочий Email',
     'Address' => 'Адрес',
+    'You can\'t login as superadmin.' => 'Вы не можете авторизовываться как суперадмин.',
+    'Login as {user}' => 'Авторизоваться как {user}',
+    'User params' => 'Параметры пользователя',
     //page manager
     'Add Page' => 'Добавить страницу',
     'Update Page: {title}' => 'Редактировать страницу: {title}',
@@ -252,4 +256,6 @@ return [
     'Profile saved.' => 'Профиль сохранен.',
     'Dummy Page' => 'Временная страница',
     'This page is under construction.' => 'Раздел в процессе наполнения.',
+    'Yes' => 'Да',
+    'No' => 'Нет',
 ];

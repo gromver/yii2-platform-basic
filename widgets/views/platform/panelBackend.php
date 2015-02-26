@@ -67,6 +67,7 @@ if (Yii::$app->user->isGuest) {
     $menuItems[] = [
         'label' => '<i class="glyphicon glyphicon-user"></i> ' . Yii::$app->user->identity->username,
         'items' => [
+            ['label' => '<i class="glyphicon glyphicon-home"></i> ' . Yii::t('gromver.platform', 'Home'), 'url' => Yii::$app->homeUrl],
             ['label' => '<i class="glyphicon glyphicon-envelope"></i> ' . Yii::t('gromver.platform', 'Contact'), 'url' => ['/grom/backend/default/contact']],
             '<li class="divider"></li>',
             ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Profile'), 'url' => ['/grom/user/backend/default/update', 'id' => Yii::$app->user->id]],

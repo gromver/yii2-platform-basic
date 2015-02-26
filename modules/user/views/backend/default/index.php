@@ -63,14 +63,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
+                'width' => '100px',
                 //'class' => 'gromver\platform\basic\widgets\ActionColumn',
-                'template' => '{params} {view} {update} {delete}',
+                'template' => '{login} {params} {view} {update} {delete}',
                 'deleteOptions' => ['data-method'=>'delete'],
                 'buttons' => [
                     'params' => function ($url, $model, $key) {
                             /** @var User $model */
-                            return Html::a('<i class="glyphicon glyphicon-user"></i>', ['params', 'id' => $model->id]);
-                        }
+                            return Html::a('<i class="glyphicon glyphicon-user"></i>', ['params', 'id' => $model->id], ['title' => Yii::t('gromver.platform', 'User params')]);
+                        },
+                    'login' => function ($url, $model, $key) {
+                        /** @var User $model */
+                        return Yii::$app->user->can('administrate') ? Html::a('<i class="glyphicon glyphicon-log-in"></i>', ['login-as', 'id' => $model->id], ['title' => Yii::t('gromver.platform', 'Login as {user}', ['user' => $model->username]), 'data-method' => 'post', 'data-confirm' => Yii::t('platform.gromver', 'Are you sure want to login as {user}?', ['user' => $model->username])]) : '';
+                    },
                 ]
             ]
         ],
