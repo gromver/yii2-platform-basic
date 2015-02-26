@@ -7,7 +7,7 @@ use yii\widgets\DetailView;
 /* @var $model gromver\platform\basic\modules\menu\models\MenuItem */
 
 $this->title = $model->title;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Menu Types'), 'url' => ['/grom/menu/backend/type/index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Menu Items'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', $model->menuType->title), 'url' => ['index', 'MenuItemSearch' => ['menu_type_id' => $model->menu_type_id]]];
 /*if (($parent = $model->parent) && !$parent->isRoot()) {
     $this->params['breadcrumbs'][] = ['label' => $parent->title, 'url' => ['index', 'MenuItemSearch' => ['parent_id' => $parent->id]]];
