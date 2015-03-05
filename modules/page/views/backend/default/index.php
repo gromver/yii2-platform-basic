@@ -32,10 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-            ['attribute' => 'id', 'width' => '50px'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
+            [
+                'attribute' => 'id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
+            ],
             [
                 'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\page\models\Page */
@@ -44,17 +51,27 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
-            'title',
-            'alias',
+            [
+                'attribute' => 'title',
+                'value' => function($model){
+                    /** @var \gromver\platform\basic\modules\page\models\Page $model */
+                    return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
+                },
+                'format' => 'html'
+            ],
+            //'title',
+            //'alias',
             [
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                         /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return $model->status === \gromver\platform\basic\modules\page\models\Page::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
                 'filter' => \gromver\platform\basic\modules\news\models\Post::statusLabels(),
                 'format' => 'raw',
-                'width'=>'80px'
+                'width' => '100px'
             ],
             [
                 'attribute' => 'tags',
@@ -72,6 +89,15 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
+                'attribute' => 'ordering',
+                'value' => function($model, $index) {
+                    /** @var \gromver\platform\basic\modules\page\models\Page $model */
+                    return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);
+                },
+                'format' => 'raw',
+                'width' => '100px'
+            ],
+            [
                 'class' => 'kartik\grid\ActionColumn',
                 'deleteOptions' => ['data-method' => 'delete']
             ]
@@ -86,6 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'type' => 'info',
             'before' => Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('gromver.platform', 'Add'), ['create'], ['class' => 'btn btn-success', 'data-pjax' => '0']),
             'after' =>
+                Html::a('<i class="glyphicon glyphicon-sort-by-attributes"></i> ' . Yii::t('gromver.platform', 'Ordering'), ['ordering'], ['class' => 'btn btn-default', 'data-pjax' => '0', 'onclick' => 'processOrdering(this); return false']).' '.
                 Html::a('<i class="glyphicon glyphicon-trash"></i> ' . Yii::t('gromver.platform', 'Delete'), ['bulk-delete'], ['class' => 'btn btn-danger', 'data-pjax' => '0', 'onclick' => 'processAction(this); return false']) . ' ' .
                 Html::a('<i class="glyphicon glyphicon-repeat"></i> ' . Yii::t('gromver.platform', 'Reset List'), ['index'], ['class' => 'btn btn-info']),
             'showFooter' => false
@@ -94,6 +121,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 </div>
 <script>
+    function processOrdering(el) {
+        var $el = $(el),
+            $grid = $('#table-grid'),
+            selection = $grid.yiiGridView('getSelectedRows'),
+            data = {}
+        if(!selection.length) {
+            alert(<?= json_encode(Yii::t('gromver.platform', 'Select items.')) ?>)
+            return
+        }
+        $.each(selection, function(index, value){
+            data[value] = $grid.find('tr[data-key="'+value+'"] input[name="order"]').val()
+        })
+
+        $.post($el.attr('href'), {data:data}, function(response){
+            $grid.yiiGridView('applyFilter')
+        })
+    }
     function processAction(el) {
         var $el = $(el),
             $grid = $('#table-grid'),

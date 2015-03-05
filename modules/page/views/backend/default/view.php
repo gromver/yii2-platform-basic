@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
+            'parent_id',
             'translation_id',
             [
                 'attribute' => 'language',
@@ -39,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'title',
             'alias',
+            'path',
             'preview_text:ntext',
             'detail_text:ntext',
             'metakey',
@@ -48,6 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             'created_by',
             'updated_by',
+            'lft',
+            'rgt',
+            'level',
+            'ordering',
             'hits',
             'lock',
             [

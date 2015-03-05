@@ -25,14 +25,14 @@ use yii\helpers\ArrayHelper;
  * @property string $id
  * @property integer $timestamp
  */
-class Table extends \yii\db\ActiveRecord
+class DbState extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%grom_table}}';
+        return '{{%grom_db_state}}';
     }
 
     /**

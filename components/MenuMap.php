@@ -70,7 +70,7 @@ class MenuMap extends \yii\base\Object
 
     private function createMap()
     {
-        $items = MenuItem::find()->published()->language($this->language)->asArray()->all();
+        $items = MenuItem::find()->published()->language($this->language)->orderBy('link_weight ASC')->asArray()->all();
 
         foreach ($items as $item) {
             if ($item['link_type'] == MenuItem::LINK_ROUTE) {

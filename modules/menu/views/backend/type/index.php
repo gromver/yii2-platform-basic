@@ -32,19 +32,32 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-            ['attribute' => 'id', 'width' => '60px'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
+            [
+                'attribute' => 'id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
+            ],
             [
                 'attribute' => 'title',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'format' => 'html'
             ],
-            'alias',
             [
+                'attribute' => 'alias',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'header' => Yii::t('gromver.platform', 'Menu Items'),
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\menu\models\MenuType */
                         return Html::a('(' . $model->getItems()->count() . ')', ['backend/item/index', 'MenuItemSearch[menu_type_id]' => $model->id], ['data-pjax' => 0]);
                     },
+                'width' => '80px',
                 'format' => 'raw'
             ],
             [

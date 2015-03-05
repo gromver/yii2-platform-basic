@@ -21,6 +21,7 @@ use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -59,7 +60,7 @@ use yii\helpers\Inflector;
  * @property integer $lock
  *
  * @property Post[] $posts
- * @property \gromver\platform\basic\modules\user\models\User $user
+ * @property User $user
  * @property Category $parent
  * @property Category[] $translations
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
@@ -228,6 +229,14 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
     public function getPosts()
     {
         return $this->hasMany(Post::className(), ['category_id'=>'id'])->inverseOf('category');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
     private static $_statuses = [

@@ -12,7 +12,7 @@ namespace gromver\platform\basic\modules\news\controllers\frontend;
 
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
-use gromver\platform\basic\modules\main\models\Table;
+use gromver\platform\basic\modules\main\models\DbState;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
@@ -36,7 +36,7 @@ class PostController extends \yii\web\Controller
                 'class' => 'yii\filters\HttpCache',
                 'only' => ['rss'],
                 'lastModified' => function () {
-                        return Table::timestamp('{{%grom_post}}');
+                        return DbState::timestamp('{{%grom_post}}');
                     },
             ],
         ];

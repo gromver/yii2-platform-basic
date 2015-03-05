@@ -32,13 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
@@ -49,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'menu_type_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '100px',
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
@@ -70,15 +75,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ],*/
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>'.Html::tag('small', $model->path);
                 },
                 'format' => 'html'
             ],
-            'link',
+            [
+                'attribute' => 'link',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
             [
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model){
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return Html::beginTag('div', ['class' => 'btn-group']) .
@@ -88,11 +99,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     Html::endTag('div');
                 },
                 'filter' => \gromver\platform\basic\modules\menu\models\MenuItem::statusLabels(),
-                'width' => '90px',
+                'width' => '100px',
                 'format' => 'raw'
             ],
             [
                 'attribute' => 'ordering',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return Html::input('text', 'order', $model->ordering, ['class' => 'form-control']);

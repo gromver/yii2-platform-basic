@@ -55,8 +55,8 @@ use yii\helpers\Inflector;
  * @property integer $lock
  *
  * @property Category $category
- * @property \gromver\platform\basic\modules\user\models\User[] $viewers
- * @property \gromver\platform\basic\modules\user\models\User $user
+ * @property User[] $viewers
+ * @property User $user
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  * @property Post[] $translations
  * @property PostViewed $postViewed

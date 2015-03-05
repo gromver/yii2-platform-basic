@@ -10,10 +10,13 @@
 namespace gromver\platform\basic\modules\page\controllers\backend;
 
 
+use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\modules\page\models\PageSearch;
+use kartik\alert\Alert;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -37,6 +40,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'ordering' => ['post'],
+                    'pages' => ['post'],
                 ],
             ],
             'access' => [
@@ -44,7 +48,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'publish', 'unpublish'],
+                        'actions' => ['create', 'update', 'publish', 'unpublish', 'ordering'],
                         'roles' => ['update'],
                     ],
                     [
@@ -54,7 +58,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select'],
+                        'actions' => ['index', 'view', 'select', 'pages'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -112,19 +116,33 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @param string|null $language
      * @param string|null $sourceId
+     * @param string|null $parentId
      * @param string|null $backUrl
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionCreate($language = null, $sourceId = null, $backUrl = null)
+    public function actionCreate($language = null, $sourceId = null, $parentId = null, $backUrl = null)
     {
         $model = new Page();
         $model->loadDefaultValues();
         $model->status = Page::STATUS_PUBLISHED;
         $model->language = Yii::$app->language;
 
+        if (isset($parentId)) {
+            $parentCategory = $this->findModel($parentId);
+            $model->parent_id = $parentCategory->id;
+            $model->language = $parentCategory->language;
+        }
+
         if($sourceId && $language) {
             $sourceModel = $this->findModel($sourceId);
+            /** @var Page $parentItem */
+            // если локализуемая категория имеет родителя, то пытаемся найти релевантную локализацию для родителя создаваемой категории
+            if (!($sourceModel->level > 2 && $parentItem = @$sourceModel->parent->translations[$language])) {
+                $parentItem = Page::find()->roots()->one();
+            }
+
+            $model->parent_id = $parentItem->id;
             $model->language = $language;
             $model->translation_id = $sourceModel->translation_id;
             $model->alias = $sourceModel->alias;
@@ -137,7 +155,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             $sourceModel = null;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -158,7 +176,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
@@ -175,7 +193,13 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if ($model->children()->count()) {
+            Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it subcategories so far.", ['id' => $model->id]));
+        } else {
+            $model->delete();
+        }
 
         if(Yii::$app->request->getIsDelete())
             return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
@@ -185,12 +209,24 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     public function actionBulkDelete()
     {
-        $data = Yii::$app->request->getBodyParam('data', []);
+        /*$data = Yii::$app->request->getBodyParam('data', []);
 
         $models = Page::findAll(['id'=>$data]);
 
         foreach($models as $model)
             $model->delete();
+
+        return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));*/
+        $data = Yii::$app->request->getBodyParam('data', []);
+
+        $models = Page::find()->where(['id' => $data])->orderBy(['lft' => SORT_DESC])->all();
+
+        foreach ($models as $model) {
+            /** @var Page $model */
+            if ($model->children()->count()) continue;
+
+            $model->delete();
+        }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
@@ -213,6 +249,55 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         $model->save();
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+    }
+
+    public function actionOrdering()
+    {
+        $data = Yii::$app->request->getBodyParam('data', []);
+
+        foreach ($data as $id => $order) {
+            if ($target = Page::findOne($id)) {
+                $target->updateAttributes(['ordering' => intval($order)]);
+            }
+        }
+
+        Page::find()->roots()->one()->reorderNode('ordering');
+        DbState::updateState(Page::tableName());
+
+        return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+    }
+
+    public function actionPages($update_item_id = null, $selected = '')
+    {
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $language = $parents[0];
+                //исключаем редактируемый пункт и его подпункты из списка
+                if (!empty($update_item_id) && $updateItem = Page::findOne($update_item_id)) {
+                    $excludeIds = array_merge([$update_item_id], $updateItem->children()->select('id')->column());
+                } else {
+                    $excludeIds = [];
+                }
+
+                $out = array_map(function($value) {
+                    return [
+                        'id' => $value['id'],
+                        'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
+                    ];
+                }, Page::find()->noRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
+                /** @var Page $root */
+                $root = Page::find()->roots()->one();
+                array_unshift($out, [
+                    'id' => $root->id,
+                    'name' => Yii::t('gromver.platform', 'Root')
+                ]);
+
+                echo Json::encode(['output' => $out, 'selected' => $selected ? $selected : $root->id]);
+                return;
+            }
+        }
+        echo Json::encode(['output' => '', 'selected' => $selected]);
     }
 
     /**

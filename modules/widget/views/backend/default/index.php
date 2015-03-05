@@ -33,15 +33,35 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\CheckboxColumn'],
-
             [
-                'attribute' => 'id', 'width' => '50px'
+                'attribute' => 'id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px',
             ],
-            'widget_id',
-            'widget_class',
-            'language',
-            'context',
-            'url:url',
+            [
+                'attribute' => 'widget_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'widget_class',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px',
+            ],
+            [
+                'attribute' => 'context',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'url',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'format' => 'url',
+            ],
             //'params:ntext',
             [
                 'class' => 'kartik\grid\ActionColumn',

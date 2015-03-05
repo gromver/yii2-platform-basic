@@ -28,10 +28,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'category_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function ($model){
                     return @$model->category->title;
@@ -42,11 +45,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'language',
-                'width' => '50px',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px',
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\news\models\Post */
                     return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
@@ -56,14 +62,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\news\models\Post */
                     return $model->getStatusLabel();
                 },
+                'width' => '100px',
                 'filter' => \gromver\platform\basic\modules\news\models\Post::statusLabels()
             ],
             [
                 'attribute' => 'published_at',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'format' => ['date', 'd MMM Y H:mm'],
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
@@ -76,6 +85,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'tags',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model){
                     /** @var $model \gromver\platform\basic\modules\news\models\Post */
                     return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
@@ -90,6 +100,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
+                'header' => Yii::t('gromver.platform', 'Action'),
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) use ($route) {
                     /** @var $model \gromver\platform\basic\modules\news\models\Post */
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
@@ -103,6 +116,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]),
                     ]);
                 },
+                'width' => '80px',
+                'mergeHeader' => true,
                 'format'=>'raw'
             ]
         ],

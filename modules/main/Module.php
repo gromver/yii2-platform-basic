@@ -13,7 +13,7 @@ namespace gromver\platform\basic\modules\main;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
 use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
-use gromver\platform\basic\modules\main\models\Table;
+use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use Yii;
@@ -70,7 +70,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     {
         $app->set($this->id, $this);
 
-        Table::bootstrap();
+        DbState::bootstrap();
 
         Yii::$container->set('gromver\models\fields\EditorField', [
             'controller' => 'grom/media/manager',
@@ -88,7 +88,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         ]);
         Yii::$container->set('gromver\platform\basic\components\MenuMap', [
             'cache' => $app->cache,
-            'cacheDependency' => Table::dependency(MenuItem::tableName())
+            'cacheDependency' => DbState::dependency(MenuItem::tableName())
         ]);
 
         /** @var MenuManager $manager */

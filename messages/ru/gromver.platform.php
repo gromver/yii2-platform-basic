@@ -129,6 +129,10 @@ return [
     'You can\'t login as superadmin.' => 'Вы не можете авторизовываться как суперадмин.',
     'Login as {user}' => 'Авторизоваться как {user}',
     'User params' => 'Параметры пользователя',
+    'Deleted' => 'Удален',
+    'Inactive' => 'Не активен',
+    'Active' => 'Активен',
+    'Suspended' => 'Не активирован',
     //page manager
     'Add Page' => 'Добавить страницу',
     'Update Page: {title}' => 'Редактировать страницу: {title}',
@@ -259,4 +263,5 @@ return [
     'Yes' => 'Да',
     'No' => 'Нет',
     'Back' => 'Назад',
+    'Action' => 'Действие',
 ];

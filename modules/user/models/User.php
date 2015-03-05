@@ -63,10 +63,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     public $verifyCode;
 
     private static $_statuses = [
-        self::STATUS_DELETED => 'Deleted',
-        self::STATUS_INACTIVE => 'Inactive',
-        self::STATUS_ACTIVE => 'Active',
         self::STATUS_SUSPENDED => 'Suspended',
+        self::STATUS_ACTIVE => 'Active',
+        self::STATUS_INACTIVE => 'Inactive',
+        self::STATUS_DELETED => 'Deleted',
     ];
 
     private $_isSuperAdmin = null;

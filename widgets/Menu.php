@@ -11,7 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 
 use gromver\platform\basic\modules\menu\models\MenuItem;
-use gromver\platform\basic\modules\main\models\Table;
+use gromver\platform\basic\modules\main\models\DbState;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -77,7 +77,7 @@ class Menu extends Widget
 
         $this->_rawItems = Yii::$app->db->cache(function ($db) {
             return MenuItem::find()->type($this->type)->published()->language($this->language)->asArray()->orderBy('lft')->all($db);
-        }, $this->cacheDuration, Table::dependency(MenuItem::tableName()));
+        }, $this->cacheDuration, DbState::dependency(MenuItem::tableName()));
 
         $i = 0;
 

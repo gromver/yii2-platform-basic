@@ -33,21 +33,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-
+            ['class' => '\kartik\grid\CheckboxColumn'],
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
-            'username',
-            'email:email',
+            [
+                'attribute' => 'username',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'email',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'format' => 'email',
+            ],
             [
                 'attribute' => 'status',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** @var User $model */
                         return $model->getStatusLabel();
                     },
-                'filter' => ['' => 'Не выбрано'] + User::statusLabels()
+                'filter' => User::statusLabels()
             ],
             // 'created_at',
             // 'updated_at',
@@ -55,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'last_visit_at',
             [
                 'attribute' => 'roles',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** @var User $model */
                         return implode(", ", $model->getRoles());

@@ -32,13 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function($model) {
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
@@ -49,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
@@ -59,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'path',
             [
                 'attribute' => 'tags',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
@@ -73,15 +79,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]
             ],
             [
-                'header' => Yii::t('gromver.platform', 'Posts'),
-                'value' => function($model) {
-                        /** @var \gromver\platform\basic\modules\news\models\Category $model */
-                        return Html::a('('.$model->getPosts()->count().')', ['/grom/news/backend/post/index', 'PostSearch[category_id]' => $model->id], ['data-pjax' => 0]);
-                    },
-                'format'=>'raw'
-            ],
-            [
                 'attribute' => 'published_at',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'format' => ['date', 'd MMM Y H:mm'],
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
@@ -94,22 +93,37 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model, $index, $widget) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Category */
                         return $model->status === \gromver\platform\basic\modules\news\models\Category::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
                 'filter' => \gromver\platform\basic\modules\news\models\Category::statusLabels(),
                 'format' => 'raw',
-                'width' => '80px'
+                'width' => '100px'
             ],
             [
                 'attribute' => 'ordering',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model, $index) {
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);
                     },
                 'format' => 'raw',
                 'width' => '100px'
+            ],
+            [
+                'header' => Yii::t('gromver.platform', 'Posts'),
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'value' => function($model) {
+                    /** @var \gromver\platform\basic\modules\news\models\Category $model */
+                    return Html::a('('.$model->getPosts()->count().')', ['/grom/news/backend/post/index', 'PostSearch[category_id]' => $model->id], ['data-pjax' => 0]);
+                },
+                'mergeHeader' => true,
+                'format'=>'raw'
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
@@ -134,7 +148,6 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 </div>
-
 <script>
     function processOrdering(el) {
         var $el = $(el),

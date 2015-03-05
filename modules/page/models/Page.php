@@ -11,6 +11,7 @@ namespace gromver\platform\basic\modules\page\models;
 
 
 use dosamigos\transliterator\TransliteratorHelper;
+use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\behaviors\TaggableBehavior;
 use gromver\platform\basic\behaviors\VersionBehavior;
@@ -18,6 +19,7 @@ use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\TranslatableInterface;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -30,10 +32,12 @@ use yii\helpers\Inflector;
  * @author Gayazov Roman <gromver5@gmail.com>
  *
  * @property integer $id
+ * @property integer $parent_id
  * @property integer $translation_id
  * @property string $language
  * @property string $title
  * @property string $alias
+ * @property string $path
  * @property string $preview_text
  * @property string $detail_text
  * @property string $metakey
@@ -43,10 +47,16 @@ use yii\helpers\Inflector;
  * @property integer $status
  * @property integer $created_by
  * @property integer $updated_by
+ * @property integer $lft
+ * @property integer $rgt
+ * @property integer $level
+ * @property integer $ordering
  * @property integer $hits
  * @property integer $lock
  *
+ * @property User $user
  * @property Page[] $translations
+ * @property Page $parent
  * @property \gromver\platform\basic\modules\tag\models\Tag[] $tags
  */
 class Page extends \yii\db\ActiveRecord implements TranslatableInterface, ViewableInterface, SearchableInterface
@@ -70,11 +80,16 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         return [
             [['language', 'title', 'detail_text', 'status'], 'required'],
             [['preview_text', 'detail_text'], 'string'],
-            [['created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'hits', 'lock'], 'integer'],
+            [['parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
             [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 1024],
             [['alias', 'metakey'], 'string', 'max' => 255],
             [['metadesc'], 'string', 'max' => 2048],
+
+            [['parent_id'], 'integer'],
+            [['parent_id'], 'filter', 'filter' => 'intval'],
+            [['parent_id'], 'exist', 'targetAttribute' => 'id'],
+            [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator'=>'!='],
 
             [['alias'], 'filter', 'filter' => 'trim'],
             [['alias'], 'filter', 'filter' => function($value){
@@ -86,7 +101,16 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                 }],
             [['alias'], 'unique', 'filter' => function($query){
                 /** @var $query \yii\db\ActiveQuery */
-                $query->andWhere(['language' => $this->language]);
+                //$query->andWhere(['language' => $this->language]);
+                /** @var $query \yii\db\ActiveQuery */
+                if($parent = self::findOne($this->parent_id)){
+                    $query->andWhere('lft>=:lft AND rgt<=:rgt AND level=:level AND language=:language', [
+                        'lft' => $parent->lft,
+                        'rgt' => $parent->rgt,
+                        'level' => $parent->level + 1,
+                        'language' => $this->language
+                    ]);
+                }
             }],
             [['alias'], 'string', 'max' => 250],
             [['alias'], 'required', 'enableClientValidation' => false],
@@ -94,7 +118,8 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                 /** @var $query \yii\db\ActiveQuery */
                 $query->andWhere(['language' => $this->language]);
             }, 'message' => Yii::t('gromver.platform', 'Локализация ({language}) для записи (ID:{id}) уже существует.', ['language' => $this->language, 'id' => $this->translation_id])],
-            [['tags', 'versionNote', 'lock'], 'safe']
+            [['tags', 'versionNote', 'lock'], 'safe'],
+            [['ordering'], 'filter', 'filter' => 'intVal'], //for proper $changedAttributes
         ];
     }
 
@@ -105,10 +130,12 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     {
         return [
             'id' => Yii::t('gromver.platform', 'ID'),
+            'parent_id' => Yii::t('gromver.platform', 'Parent'),
             'translation_id' => Yii::t('gromver.platform', 'Translation ID'),
             'language' => Yii::t('gromver.platform', 'Language'),
             'title' => Yii::t('gromver.platform', 'Title'),
             'alias' => Yii::t('gromver.platform', 'Alias'),
+            'path' => Yii::t('gromver.platform', 'Path'),
             'preview_text' => Yii::t('gromver.platform', 'Preview Text'),
             'detail_text' => Yii::t('gromver.platform', 'Detail Text'),
             'metakey' => Yii::t('gromver.platform', 'Meta keywords'),
@@ -116,11 +143,15 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             'created_at' => Yii::t('gromver.platform', 'Created At'),
             'updated_at' => Yii::t('gromver.platform', 'Updated At'),
             'status' => Yii::t('gromver.platform', 'Status'),
-            'tags' => Yii::t('gromver.platform', 'Tags'),
             'created_by' => Yii::t('gromver.platform', 'Created By'),
             'updated_by' => Yii::t('gromver.platform', 'Updated By'),
+            'lft' => Yii::t('gromver.platform', 'Lft'),
+            'rgt' => Yii::t('gromver.platform', 'Rgt'),
+            'level' => Yii::t('gromver.platform', 'Level'),
+            'ordering' => Yii::t('gromver.platform', 'Ordering'),
             'hits' => Yii::t('gromver.platform', 'Hits'),
             'lock' => Yii::t('gromver.platform', 'Lock'),
+            'tags' => Yii::t('gromver.platform', 'Tags'),
             'versionNote' => Yii::t('gromver.platform', 'Version Note')
         ];
     }
@@ -132,6 +163,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             BlameableBehavior::className(),
             TaggableBehavior::className(),
             SearchBehavior::className(),
+            NestedSetsBehavior::className(),
             [
                 'class' => VersionBehavior::className(),//todo затестить чекаут в версию с уже занятым алиасом
                 'attributes' => ['title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc']
@@ -139,10 +171,35 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         ];
     }
 
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+
+    /**
+     * @inheritdoc
+     * @return PageQuery
+     */
+    public static function find()
+    {
+        return new PageQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
+
     /**
      * @inheritdoc
      */
-    public function afterSave($insert, $changedAttributes)
+    /*public function afterSave($insert, $changedAttributes)
     {
         if ($insert && $this->translation_id === null) {
             $this->updateAttributes([
@@ -151,8 +208,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         }
 
         parent::afterSave($insert, $changedAttributes);
-    }
-
+    }*/
 
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
@@ -183,6 +239,92 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
+
+    public function saveNode($runValidation = true, $attributes = null)
+    {
+        if ($this->getIsNewRecord()) {
+            if($parent = self::findOne($this->parent_id)) {
+                return $this->appendTo($parent, $runValidation, $attributes);
+            } else {
+                return $this->makeRoot($parent, $runValidation, $attributes);
+            }
+        }
+        // категория перемещена в другую категорию
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
+            return $this->appendTo($parent, $runValidation, $attributes);
+        }
+        // просто апдейт
+        return $this->save($runValidation, $attributes);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        // устанавливаем translation_id по умолчанию
+        if ($insert && $this->translation_id === null) {
+            $this->updateAttributes([
+                'translation_id' => $this->id
+            ]);
+        }
+
+        // нормализуем подкатегории при смене языка
+        if (array_key_exists('language', $changedAttributes)) {
+            $this->normalizeLanguage();
+        }
+
+        // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
+            $this->refresh();
+            $this->normalizePath();
+        }
+
+        // ранжируем категории ели нужно
+        if (array_key_exists('ordering', $changedAttributes)) {
+            $this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+        }
+    }
+
+    private function calculatePath()
+    {
+        $aliases = $this->parents()->noRoots()->select('alias')->column();
+        return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
+    }
+
+    public function normalizePath($parentPath = null)
+    {
+        if($parentPath === null) {
+            $path = $this->calculatePath();
+        } else {
+            $path = $parentPath . '/' . $this->alias;
+        }
+
+        $this->updateAttributes(['path' => $path]);
+
+        $children = $this->children(1)->all();
+        foreach ($children as $child) {
+            /** @var self $child */
+            $child->normalizePath($path);
+        }
+    }
+
+    public function normalizeLanguage()
+    {
+        $ids = $this->children()->select('id')->column();
+        self::updateAll(['language' => $this->language], ['id' => $ids]);
+    }
+
+    /**
+     * @return static | null
+     */
+    public function getParent()
+    {
+        return $this->parents(1)->one();
+    }
+
 
     // ViewableInterface
     /**
@@ -248,7 +390,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         ];
     }
 
-    public function getPublished()
+    public function isPublished()
     {
         return $this->status == self::STATUS_PUBLISHED;
     }
@@ -285,12 +427,23 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      */
     static public function sqlBeforeSearch($query, $widget)
     {
-        if ($widget->frontendMode) {
+        /*if ($widget->frontendMode) {
             $query->leftJoin('{{%grom_page}}', [
                     'AND',
                     ['=', 'model_class', self::className()],
                     'model_id={{%grom_page}}.id',
                     ['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
+                ]
+            )->addSelect('{{%grom_page}}.id')
+                ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
+        }*/
+        if ($widget->frontendMode) {
+            $query->leftJoin('{{%grom_page}}', [
+                    'AND',
+                    ['=', 'model_class', self::className()],
+                    'model_id={{%grom_page}}.id',
+                    //['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
+                    ['NOT IN', '{{%grom_page}}.parent_id', Page::find()->unpublished()->select('{{%grom_page}}.id')->column()]
                 ]
             )->addSelect('{{%grom_page}}.id')
                 ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
@@ -312,8 +465,11 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                             'term' => ['model_class' => self::className()]
                         ],
                         [
+                            'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_page}}.id')->column()]
+                        ],
+                        /*[
                             'term' => ['params.published' => false]
-                        ]
+                        ]*/
                     ]
                 ]
             ];
@@ -324,10 +480,10 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      * @param $index \gromver\platform\basic\modules\elasticsearch\models\Index
      * @param $model static
      */
-    static public function elasticsearchBeforeCreateIndex($index, $model)
+    /*static public function elasticsearchBeforeCreateIndex($index, $model)
     {
         $index->params = [
             'published' => $model->status == self::STATUS_PUBLISHED
         ];
-    }
+    }*/
 }

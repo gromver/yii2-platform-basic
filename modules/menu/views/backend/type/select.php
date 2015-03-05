@@ -29,10 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
 		'columns' => [
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\menu\models\MenuType */
                         return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
@@ -40,6 +43,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html'
             ],
             [
+                'header' => Yii::t('gromver.platform', 'Action'),
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
                         'class' => 'btn btn-primary btn-xs',
@@ -50,6 +56,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             ]),
                     ]);
                 },
+                'width' => '80px',
+                'mergeHeader' => true,
                 'format'=>'raw'
             ]
 		],

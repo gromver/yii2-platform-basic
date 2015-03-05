@@ -33,13 +33,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
@@ -50,6 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'category_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function($model){
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
@@ -60,10 +65,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title;
                     })
             ],
-            'title',
-            'alias',
+            [
+                'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'alias',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
             [
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model, $index, $widget) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->status === \gromver\platform\basic\modules\news\models\Post::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
@@ -74,6 +87,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'published_at',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'format' => ['date', 'd MMM Y H:mm'],
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
@@ -86,6 +100,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'tags',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
@@ -101,12 +117,14 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'ordering',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);
                     },
                 'format' => 'raw',
-                'width' => '120px'
+                'width' => '80px'
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',

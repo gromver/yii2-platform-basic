@@ -38,6 +38,7 @@ use yii\helpers\Json;
  * @property string $path
  * @property string $note
  * @property string $link
+ * @property integer $link_weight
  * @property integer $link_type
  * @property string $link_params
  * @property string $layout_path
@@ -88,7 +89,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
     public function rules()
     {
         return [
-            [['menu_type_id', 'parent_id', 'status', 'link_type', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['menu_type_id', 'parent_id', 'status', 'link_type', 'link_weight', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
             [['menu_type_id'], 'required'],
             [['menu_type_id'], 'exist', 'targetAttribute' => 'id', 'targetClass' => MenuType::className()],
             [['language'], 'required'],
@@ -165,6 +166,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
             'note' => Yii::t('gromver.platform', 'Note'),
             'link' => Yii::t('gromver.platform', 'Link'),
             'link_type' => Yii::t('gromver.platform', 'Link Type'),
+            'link_weight' => Yii::t('gromver.platform', 'Link Weight'),
             'link_params' => Yii::t('gromver.platform', 'Link Params'),
             'layout_path' => Yii::t('gromver.platform', 'Layout Path'),
             'access_rule' => Yii::t('gromver.platform', 'Access Rule'),

@@ -32,20 +32,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-
+            ['class' => '\kartik\grid\CheckboxColumn'],
             [
                 'attribute'=>'id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width'=>'40px'
             ],
             [
                 'attribute'=>'item_id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width'=>'40px'
             ],
-            'item_class',
-            'version_note',
+            [
+                'attribute' => 'item_class',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'version_note',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
             [
                 'attribute' => 'created_at',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'format' => ['date', 'd MMM Y H:mm'],
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
@@ -58,6 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'created_by',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** $model \gromver\platform\basic\modules\version\models\Version */
                         return $model->user ? $model->user->username : $model->created_by;
@@ -65,6 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'keep_forever',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value'=>function($model) {
                         /** $model \gromver\platform\basic\modules\version\models\Version */
                         return Html::a($model->keep_forever ? Yii::t('gromver.platform', 'Yes') . ' <small class="glyphicon glyphicon-lock"></small>' : Yii::t('gromver.platform', 'No'), ['keep-forever', 'id' => $model->id], [
@@ -73,6 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'data-pjax' => 0
                         ]);
                     },
+                'width'=>'80px',
                 'format' => 'raw'
             ],
             [

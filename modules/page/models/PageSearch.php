@@ -29,8 +29,8 @@ class PageSearch extends Page
     public function rules()
     {
         return [
-            [['id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'hits', 'lock'], 'integer'],
-            [['language', 'title', 'alias', 'preview_text', 'detail_text', 'metakey', 'metadesc', 'tags', 'versionNote'], 'safe'],
+            [['id', 'parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['language', 'title', 'alias', 'path', 'preview_text', 'detail_text', 'metakey', 'metadesc', 'tags', 'versionNote'], 'safe'],
         ];
     }
 
@@ -47,42 +47,58 @@ class PageSearch extends Page
      * Creates data provider instance with search query applied
      *
      * @param array $params
+     * @param bool $withRoots
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $withRoots = false)
     {
-        $query = Page::find();
+        $query = $withRoots ? Page::find() : Page::find()->noRoots();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['updated_at' => SORT_DESC]
+                'defaultOrder' => [
+                    'lft' => SORT_ASC
+                ]
             ]
         ]);
+
+        /*$dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['updated_at' => SORT_DESC]
+            ]
+        ]);*/
 
         if (!($this->load($params) && $this->validate())) {
             return $dataProvider;
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'status' => $this->status,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'hits' => $this->hits,
-            'lock' => $this->lock,
+            '{{%grom_page}}.id' => $this->id,
+            '{{%grom_page}}.parent_id' => $this->parent_id,
+            '{{%grom_page}}.created_at' => $this->created_at,
+            '{{%grom_page}}.updated_at' => $this->updated_at,
+            '{{%grom_page}}.status' => $this->status,
+            '{{%grom_page}}.created_by' => $this->created_by,
+            '{{%grom_page}}.updated_by' => $this->updated_by,
+            '{{%grom_page}}.lft' => $this->lft,
+            '{{%grom_page}}.rgt' => $this->rgt,
+            '{{%grom_page}}.level' => $this->level,
+            '{{%grom_page}}.ordering' => $this->ordering,
+            '{{%grom_page}}.hits' => $this->hits,
+            '{{%grom_page}}.lock' => $this->lock,
         ]);
 
         $query->andFilterWhere(['like', '{{%grom_page}}.language', $this->language])
-            ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'alias', $this->alias])
-            ->andFilterWhere(['like', 'preview_text', $this->preview_text])
-            ->andFilterWhere(['like', 'detail_text', $this->detail_text])
-            ->andFilterWhere(['like', 'metakey', $this->metakey])
-            ->andFilterWhere(['like', 'metadesc', $this->metadesc]);
+            ->andFilterWhere(['like', '{{%grom_page}}.title', $this->title])
+            ->andFilterWhere(['like', '{{%grom_page}}.path', $this->path])
+            ->andFilterWhere(['like', '{{%grom_page}}.alias', $this->alias])
+            ->andFilterWhere(['like', '{{%grom_page}}.preview_text', $this->preview_text])
+            ->andFilterWhere(['like', '{{%grom_page}}.detail_text', $this->detail_text])
+            ->andFilterWhere(['like', '{{%grom_page}}.metakey', $this->metakey])
+            ->andFilterWhere(['like', '{{%grom_page}}.metadesc', $this->metadesc]);
 
         if($this->tags)
             $query->innerJoinWith('tags')->andFilterWhere(['{{%grom_tag}}.id' => $this->tags]);

@@ -30,31 +30,40 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
-                'width' => '50px',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px',
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\tag\models\Tag */
                     return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
                 },
                 'format' => 'html'
-
             ],
             [
                 'attribute' => 'status',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\tag\models\Tag */
                     return $model->getStatusLabel();
                 },
+                'width' => '100px',
                 'filter' => \gromver\platform\basic\modules\tag\models\Tag::statusLabels()
             ],
             [
+                'header' => Yii::t('gromver.platform', 'Action'),
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) use ($route) {
                     /** @var $model \gromver\platform\basic\modules\tag\models\Tag */
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
@@ -68,6 +77,8 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]),
                     ]);
                 },
+                'width' => '80px',
+                'mergeHeader' => true,
                 'format'=>'raw'
             ]
         ],

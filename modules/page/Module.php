@@ -63,7 +63,7 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     {
         return [
             SearchResultsSql::EVENT_BEFORE_SEARCH . Page::className()  => [Page::className(), 'sqlBeforeSearch'],
-            ElasticsearchModule::EVENT_BEFORE_CREATE_INDEX . Page::className() => [Page::className(), 'elasticsearchBeforeCreateIndex'],
+            //ElasticsearchModule::EVENT_BEFORE_CREATE_INDEX . Page::className() => [Page::className(), 'elasticsearchBeforeCreateIndex'],
             SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Page::className() => [Page::className(), 'elasticsearchBeforeSearch'],
         ];
     }

@@ -29,15 +29,20 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             [
                 'attribute' => 'id',
-                'width' => '50px'
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
-                'width' => '50px',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '60px',
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                         /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                         return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', $model->path, ['class' => 'text-muted']);
@@ -47,13 +52,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 			[
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return $model->getStatusLabel();
                 },
+                'width' => '100px',
                 'filter' => \gromver\platform\basic\modules\menu\models\MenuItem::statusLabels()
             ],
             [
+                'header' => Yii::t('gromver.platform', 'Action'),
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
@@ -67,7 +78,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         ]),
                     ]);
                 },
-                'format'=>'raw'
+                'width' => '80px',
+                'mergeHeader' => true,
+                'format' => 'raw'
             ]
         ],
         'responsive' => true,

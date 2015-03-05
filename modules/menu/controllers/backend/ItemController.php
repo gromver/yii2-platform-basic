@@ -11,7 +11,7 @@ namespace gromver\platform\basic\modules\menu\controllers\backend;
 
 
 use gromver\modulequery\ModuleQuery;
-use gromver\platform\basic\modules\main\models\Table;
+use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\menu\models\MenuItemSearch;
 use kartik\widgets\Alert;
@@ -317,7 +317,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         }
 
         MenuItem::find()->roots()->one()->reorderNode('ordering');
-        Table::updateState(MenuItem::tableName());
+        DbState::updateState(MenuItem::tableName());
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }

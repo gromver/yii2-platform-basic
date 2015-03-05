@@ -32,10 +32,17 @@ $this->params['breadcrumbs'][] = $this->title;
             'neverTimeout' => true,
         ],
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
-            ['attribute'=>'id', 'width'=>'50px'],
+            ['class' => '\kartik\grid\CheckboxColumn'],
+            [
+                'attribute'=>'id',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width'=>'60px'
+            ],
             [
                 'attribute' => 'language',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'width' => '80px',
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\tag\models\Tag */
@@ -44,14 +51,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
-            'title',
-            'alias',
+            [
+                'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
+            [
+                'attribute' => 'alias',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+            ],
             [
                 'attribute' => 'group',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->groupBy('group')->andWhere('[[group]]!="" AND [[group]] IS NOT NULL')->all(), 'group', 'group')
             ],
             [
                 'attribute' => 'status',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model) {
                         /** @var $model \gromver\platform\basic\modules\tag\models\Tag */
                         return $model->status === \gromver\platform\basic\modules\tag\models\Tag::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax'=>'0', 'data-method'=>'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);

@@ -10,7 +10,7 @@
 namespace gromver\platform\basic\modules\news\controllers\backend;
 
 
-use gromver\platform\basic\modules\main\models\Table;
+use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\CategorySearch;
 use kartik\widgets\Alert;
@@ -259,7 +259,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         }
 
         Category::find()->roots()->one()->reorderNode('ordering');
-        Table::updateState(Category::tableName());
+        DbState::updateState(Category::tableName());
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
