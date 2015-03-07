@@ -33,14 +33,6 @@ class DefaultController extends \yii\web\Controller
         ]);
     }
 
-    public function actionPosts($tag_id, $category_id = null)
-    {
-        return $this->render('posts', [
-            'model' => $this->loadModel($tag_id),
-            'categoryId' => $category_id
-        ]);
-    }
-
     public function loadModel($id)
     {
         if(!($model = Tag::findOne($id))) {

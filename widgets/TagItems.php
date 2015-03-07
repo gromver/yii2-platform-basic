@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\widgets;
 
 
+use gromver\platform\basic\widgets\assets\TagAsset;
 use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -69,6 +70,8 @@ class TagItems extends Widget
             'itemLayout' => $this->itemLayout,
             'model' => $this->tag
         ]);
+
+        $this->getView()->registerAssetBundle(TagAsset::className());
     }
 
     public function customControls()

@@ -11,6 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 
 use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\widgets\assets\TagAsset;
 use gromver\platform\basic\modules\tag\models\Tag;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -100,6 +101,8 @@ class TagPosts extends Widget
             'itemLayout' => $this->itemLayout,
             'model' => $this->tag
         ]);
+
+        $this->getView()->registerAssetBundle(TagAsset::className());
     }
 
     protected function getQuery()

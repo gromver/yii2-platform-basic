@@ -13,6 +13,7 @@ namespace gromver\platform\basic\modules\news\controllers\frontend;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\main\models\DbState;
+use gromver\platform\basic\modules\tag\models\Tag;
 use yii\data\ActiveDataProvider;
 use yii\helpers\StringHelper;
 use yii\helpers\Url;
@@ -111,6 +112,14 @@ class PostController extends \yii\web\Controller
         ]);
     }
 
+    public function actionTag($tag_id, $category_id = null)
+    {
+        return $this->render('tag', [
+            'model' => $this->loadTagModel($tag_id),
+            'category' => $category_id ? $this->loadCategoryModel($category_id) : null
+        ]);
+    }
+
     public function loadModel($id)
     {
         if(!($model = Post::findOne($id))) {
@@ -124,6 +133,15 @@ class PostController extends \yii\web\Controller
     {
         if(!($model = Category::findOne($id))) {
             throw new NotFoundHttpException(Yii::t('gromver.platform', 'The requested category does not exist.'));
+        }
+
+        return $model;
+    }
+
+    public function loadTagModel($id)
+    {
+        if(!($model = Tag::findOne($id))) {
+            throw new NotFoundHttpException(Yii::t('gromver.platform', 'The requested tag does not exist.'));
         }
 
         return $model;

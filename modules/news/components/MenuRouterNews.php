@@ -64,12 +64,12 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
                 'handler' => 'createAllPosts'
             ],
             [
-                'requestRoute' => 'grom/tag/frontend/default/posts',
-                'handler' => 'createTagPosts'
-            ],
-            [
                 'requestRoute' => 'grom/news/frontend/post/rss',
                 'handler' => 'createRss'
+            ],
+            [
+                'requestRoute' => 'grom/news/frontend/post/tag',
+                'handler' => 'createTag'
             ],
         ];
     }
@@ -126,7 +126,8 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
                     'language' => $menuCategory->language
                 ]);
                 if ($category && $tagId = Tag::find()->select('id')->where(['alias' => $tagAlias, 'language' => $category->language])->scalar()) {
-                    return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId, 'category_id' => $category->id]];
+                    //return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId, 'category_id' => $category->id]];
+                    return ['grom/news/frontend/post/tag', ['tag_id' => $tagId, 'category_id' => $category->id]];
                 }
             }
         } else {
@@ -164,7 +165,8 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             //ищем тег
             $tagAlias = $matches[2];
             if ($tagId = Tag::find()->select('id')->where(['alias' => $tagAlias, 'language' => \Yii::$app->language])->scalar()) {
-                return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId]];
+                //return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId]];
+                return ['grom/news/frontend/post/tag', ['tag_id' => $tagId]];
             }
         }
 
@@ -224,7 +226,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
-    public function createTagPosts($requestInfo)
+    public function createTag($requestInfo)
     {
         //строим ссылку на основе пункта меню на категорию
         if (isset($requestInfo->requestParams['category_id']) && isset($requestInfo->requestParams['tag_alias']) && $path = $this->findCategoryMenuPath($requestInfo->requestParams['category_id'], $requestInfo->menuMap)) {
@@ -232,7 +234,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             unset($requestInfo->requestParams['tag_alias'], $requestInfo->requestParams['category_id'], $requestInfo->requestParams['tag_id']);
         }
         //строим ссылку на основе пункта меню на все новости
-        if (isset($requestInfo->requestParams['tag_alias']) && $path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/post/index')) {
+        if (isset($requestInfo->requestParams['tag_alias']) && $path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index')) {
             $path .= '/tag/' . $requestInfo->requestParams['tag_alias'];
             unset($requestInfo->requestParams['tag_alias'], $requestInfo->requestParams['category_id'], $requestInfo->requestParams['tag_id']);
         }

@@ -11,6 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 
 use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\widgets\assets\TagAsset;
 
 /**
  * Class TagItems
@@ -54,5 +55,7 @@ class TagPostCloud extends Widget
             'maxWeight' => $maxWeight,
             'categoryId' => $this->categoryId
         ]);
+
+        $this->getView()->registerAssetBundle(TagAsset::className());
     }
 } 

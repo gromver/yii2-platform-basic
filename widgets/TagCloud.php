@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\widgets;
 
 
+use gromver\platform\basic\widgets\assets\TagAsset;
 use gromver\platform\basic\modules\tag\models\Tag;
 use yii\db\Query;
 use Yii;
@@ -78,6 +79,8 @@ class TagCloud extends Widget
         echo $this->render('tag/tagCloud', [
             'tags' => $this->_tags
         ]);
+
+        $this->getView()->registerAssetBundle(TagAsset::className());
     }
 
     public function customControls()
