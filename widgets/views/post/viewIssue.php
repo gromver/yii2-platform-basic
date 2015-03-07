@@ -24,7 +24,7 @@ if ($this->context->showTranslations) {
     <small class="issue-separator">|</small>
     <?php foreach ($model->tags as $tag) {
         /** @var $tag \gromver\platform\basic\modules\tag\models\Tag */
-        echo Html::a($tag->title, ['/grom/tag/default/posts', 'tag_id' => $tag->id, 'tag_alias' => $tag->alias, 'category_id' => $model->category_id], ['class' => 'issue-tag badge']);
+        echo Html::a($tag->title, ['/grom/news/frontend/post/tag', 'tag_id' => $tag->id, 'tag_alias' => $tag->alias, 'category_id' => $model->category_id], ['class' => 'issue-tag badge']);
     } ?>
 </div>
 

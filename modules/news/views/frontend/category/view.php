@@ -38,4 +38,4 @@ echo \gromver\platform\basic\widgets\CategoryView::widget([
     'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
 ]);
 
-$model->hit();
+//$model->hit();
