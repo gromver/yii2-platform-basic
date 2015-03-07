@@ -86,10 +86,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
                 'filterWidgetOptions' => [
-                    'options' => ['value' => is_int($searchModel->published_at) ? date('d.m.Y', $searchModel->published_at) : ''],
                     'pluginOptions' => [
                         'format' => 'dd.mm.yyyy'
-                    ]
+                    ],
+                    'type' => \kartik\date\DatePicker::TYPE_RANGE,
+                    'attribute2' => 'published_at_to',
                 ]
             ],
             [

@@ -23,6 +23,9 @@ class PostSearch extends Post
 {
     public $tags;
     public $language;
+    public $published_at_to;
+    public $published_at_to_timestamp;
+    public $published_at_timestamp;
 
     /**
      * @inheritdoc
@@ -32,10 +35,8 @@ class PostSearch extends Post
         return [
             [['id', 'category_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'ordering', 'hits', 'lock'], 'integer'],
             [['title', 'alias', 'preview_text', 'preview_image', 'detail_text', 'detail_image', 'metakey', 'metadesc', 'tags', 'versionNote', 'language'], 'safe'],
-            [['published_at'], 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at', 'when' => function() {
-                    return is_string($this->published_at);
-                }],
-            [['published_at'], 'integer', 'enableClientValidation' => false],
+            [['published_at'], 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at_timestamp'],
+            [['published_at_to'], 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at_to_timestamp'],
         ];
     }
 
@@ -83,8 +84,11 @@ class PostSearch extends Post
             '{{%grom_post}}.lock' => $this->lock,
         ]);
 
-        if ($this->published_at) {
-            $query->andWhere('{{%grom_post}}.published_at >= :timestamp', ['timestamp' => $this->published_at]);
+        if ($this->published_at_timestamp) {
+            $query->andWhere('{{%grom_post}}.published_at >= :timestamp_from', ['timestamp_from' => $this->published_at_timestamp]);
+        }
+        if ($this->published_at_to_timestamp) {
+            $query->andWhere('{{%grom_post}}.published_at <= :timestamp_to', ['timestamp_to' => $this->published_at_to_timestamp]);
         }
 
         $query->andFilterWhere(['like', '{{%grom_post}}.title', $this->title])
