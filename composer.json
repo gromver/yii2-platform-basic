@@ -23,6 +23,7 @@
         "kartik-v/yii2-icons": "dev-master",
         "kartik-v/bootstrap-fileinput": "dev-master",
         "kartik-v/yii2-mpdf": "dev-master",
+        "kartik-v/yii2-field-range": "dev-master",
         "zhuravljov/yii2-datetime-widgets" : "dev-master",
         "2amigos/yii2-transliterator-helper": "dev-master",
         "2amigos/yii2-selectize-widget" : "*",

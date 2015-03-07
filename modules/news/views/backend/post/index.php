@@ -95,13 +95,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     'options' => ['value' => is_int($searchModel->published_at) ? date('d.m.Y', $searchModel->published_at) : ''],
                     'pluginOptions' => [
                         'format' => 'dd.mm.yyyy'
-                    ]
+                    ],
+                    //'type' => \kartik\date\DatePicker::TYPE_RANGE,
+                    //'attribute2' => 'published_at_to'
                 ]
             ],
             [
                 'attribute' => 'tags',
-                'hAlign' => GridView::ALIGN_CENTER,
                 'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '100px',
                 'value' => function($model){
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));

@@ -53,6 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'title',
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                     /** @var \gromver\platform\basic\modules\page\models\Page $model */
                     return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
@@ -75,6 +76,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'tags',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '100px',
                 'value' => function($model){
                         /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
@@ -90,6 +93,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'ordering',
+                'hAlign' => GridView::ALIGN_CENTER,
+                'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model, $index) {
                     /** @var \gromver\platform\basic\modules\page\models\Page $model */
                     return Html::input('text', 'order', $model->ordering, ['class'=>'form-control']);

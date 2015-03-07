@@ -65,6 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'tags',
                 'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '100px',
                 'value' => function($model){
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
