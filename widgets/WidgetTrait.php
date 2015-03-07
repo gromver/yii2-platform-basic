@@ -23,7 +23,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * Class Widget
+ * Class WidgetTrait
  * Базовый класс для фронтенд виджетов, предоставляет готовый интерфейс для настройки виджета администратором
  * Настройка осуществляется на основе публичных полей виджета и phpdoc'ов
  *
@@ -33,13 +33,13 @@ use yii\helpers\Json;
  * @property $context string
  * @property $realContext string
  */
-class Widget extends \yii\base\Widget implements SpecificationInterface
+trait WidgetTrait
 {
     /**
      * ID виджета, обязательный параметр
      * @var string
      */
-    private $_id;
+    private $_wId;
     /**
      * Используется для хранения первоначального конфига
      * @var array
@@ -88,14 +88,14 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     private $_exceptionAccess = 'administrate';
 
-    public function __construct($config = [])
+    public function __construct()
     {
-        $this->_config = $config;
+        $this->_config = array_pop(func_get_args()) || $this->_config = [];
 
         try {
             //parent::__construct($config);
-            if (!empty($config)) {
-                Yii::configure($this, $config);
+            if (!empty($this->_config)) {
+                Yii::configure($this, $this->_config);
             }
             $this->preInit();
             $this->init();
@@ -125,7 +125,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      * @throws \yii\base\InvalidConfigException
      * @throws \Exception
      */
-    protected function preInit()
+    public function preInit()
     {
         if (!isset($this->id) || empty($this->id)) {
             throw new WidgetMissedIdException('Specify widget ' . __CLASS__ . '::id.');
@@ -256,7 +256,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     public function getId($autoGenerate = true)
     {
-        return $this->_id;
+        return $this->_wId;
     }
 
     /**
@@ -264,7 +264,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     public function setId($value)
     {
-        $this->_id = $value;
+        $this->_wId = $value;
     }
 
     /**

@@ -28,6 +28,7 @@
         "2amigos/yii2-transliterator-helper": "dev-master",
         "2amigos/yii2-selectize-widget" : "*",
         "creocoder/yii2-nested-sets": "0.9.*",
+        "vova07/yii2-imperavi-widget": "*",
         "zelenin/yii2-rss": "dev-master",
         "gromver/yii2-models": "*",
         "gromver/yii2-widgets": "*",
