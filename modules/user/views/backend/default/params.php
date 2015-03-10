@@ -10,8 +10,8 @@ $this->title = Yii::t('gromver.platform', 'Update User Params: {name} (ID: {id})
     'id' => $user->id,
     'name' => $user->username,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['default/index']];
-$this->params['breadcrumbs'][] = ['label' => $user->username . " (ID: $user->id)", 'url' => ['default/view', 'id' => $user->id]];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Users'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $user->username . " (ID: $user->id)", 'url' => ['view', 'id' => $user->id]];
 $this->params['breadcrumbs'][] = Yii::t('gromver.platform', 'Update');
 ?>
 <div class="user-update">
