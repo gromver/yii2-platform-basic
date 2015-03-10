@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="history-index">
 
-	<?php /*<h1><?= Html::encode($this->title) ?></h1>*/?>
+	<h3><?= Html::encode($this->title) ?></h3>
 
     <div class="btn-group pull-right">
         <?=Html::label('<i class="glyphicon glyphicon-open"></i> ' . Yii::t('gromver.platform', 'Restore'), null, ['id' => 'restore-button', 'class' => 'btn btn-default', 'data' => ['toggle'=>"tooltip", 'url' => Url::toRoute(['restore'])], 'title' => 'tooltip']) ?>

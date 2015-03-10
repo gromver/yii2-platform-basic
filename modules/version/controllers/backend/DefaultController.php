@@ -165,7 +165,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         $model = $this->findModel($id);
         if ($model->restore()) {
             if ($modal) {
-                ModalIFrame::refreshPage();
+                ModalIFrame::refreshParent();
             } else {
                 return $this->redirect(['view', 'id' => $model->id]);
             }

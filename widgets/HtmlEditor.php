@@ -9,6 +9,7 @@
 namespace gromver\platform\basic\widgets;
 
 
+use vova07\imperavi\Widget;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\Html;
@@ -17,6 +18,7 @@ class HtmlEditor extends WidgetPersonal {
     const EDITOR_CKEDITOR_BASIC = 'ckeditor_basic';
     const EDITOR_CKEDITOR_STANDARD = 'ckeditor_standard';
     const EDITOR_CKEDITOR_FULL = 'ckeditor_full';
+    const EDITOR_IMPERAVI = 'imperavi';
     const EDITOR_TEXTAREA = 'textarea';
     /**
      * @var Model the data model that this widget is associated with.
@@ -49,7 +51,7 @@ class HtmlEditor extends WidgetPersonal {
      * @type list
      * @items editorLabels
      */
-    public $editor = self::EDITOR_CKEDITOR_STANDARD;
+    public $editor = self::EDITOR_CKEDITOR_FULL;
 
 
     /**
@@ -77,7 +79,6 @@ class HtmlEditor extends WidgetPersonal {
 
     protected function launch()
     {
-        echo 'HtmlEditorWidget coming soon!';
         switch ($this->editor) {
             case self::EDITOR_CKEDITOR_BASIC:
                 echo \mihaildev\ckeditor\CKEditor::widget([
@@ -121,8 +122,16 @@ class HtmlEditor extends WidgetPersonal {
                     ])
                 ]);
                 break;
+            case self::EDITOR_IMPERAVI:
+                echo Widget::widget([
+                    'model' => $this->model,
+                    'attribute' => $this->attribute,
+                    'name' => $this->name,
+                    'value' => $this->value,
+                ]);
+                break;
             default:
-                echo $this->hasModel() ? Html::activeTextarea($this->model, $this->attribute) : Html::textarea($this->name, $this->value);
+                echo $this->hasModel() ? Html::activeTextarea($this->model, $this->attribute, $this->options) : Html::textarea($this->name, $this->value, $this->options);
         }
     }
 
@@ -132,6 +141,7 @@ class HtmlEditor extends WidgetPersonal {
             self::EDITOR_CKEDITOR_BASIC => 'ElFinder basic',
             self::EDITOR_CKEDITOR_STANDARD => 'ElFinder standard',
             self::EDITOR_CKEDITOR_FULL => 'ElFinder full',
+            self::EDITOR_IMPERAVI => 'Imperavi',
             self::EDITOR_TEXTAREA => 'Textarea',
         ];
     }

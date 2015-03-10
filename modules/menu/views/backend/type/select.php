@@ -49,7 +49,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
                         'class' => 'btn btn-primary btn-xs',
-                        'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
+                        'onclick' => \gromver\widgets\ModalIFrame::postDataJs([
                                 'id' => $model->id,
                                 'description' => Yii::t('gromver.platform', 'Menu Type: {title}', ['title' => $model->title]),
                                 'value' => $model->id . ':' . $model->alias

@@ -191,7 +191,7 @@ class MenuItemRoutes extends \yii\bootstrap\Widget
             $routerContent = strtr($template, [
                 '{icon}' => $router['icon'],
                 '{link}' => isset($router['url']) ? Html::a($router['label'], $router['url']) : Html::a($router['label'], '#', [
-                    'onclick' => ModalIFrame::emitDataJs([
+                    'onclick' => ModalIFrame::postDataJs([
                         'route' => MenuItem::toRoute($router['route']),
                         'link' => Yii::$app->urlManager->createUrl($router['route'])
                     ])

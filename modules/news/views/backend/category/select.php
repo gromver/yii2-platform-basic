@@ -67,10 +67,11 @@ $this->params['breadcrumbs'][] = $this->title;
                 'width' => '160px',
                 'filterType' => GridView::FILTER_DATE,
                 'filterWidgetOptions' => [
-                    'options' => ['value' => is_int($searchModel->published_at) ? date('d.m.Y', $searchModel->published_at) : ''],
                     'pluginOptions' => [
                         'format' => 'dd.mm.yyyy'
-                    ]
+                    ],
+                    'type' => \kartik\date\DatePicker::TYPE_RANGE,
+                    'attribute2' => 'published_at_to',
                 ]
             ],
             [
@@ -97,7 +98,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /** @var $model \gromver\platform\basic\modules\news\models\Category */
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
                         'class' => 'btn btn-primary btn-xs',
-                        'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
+                        'onclick' => \gromver\widgets\ModalIFrame::postDataJs([
                             'id' => $model->id,
                             'description' => Yii::t('gromver.platform', 'Category: {title}', ['title' => $model->title]),
                             'route' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),

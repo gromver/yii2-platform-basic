@@ -36,13 +36,11 @@ use yii\bootstrap\ActiveForm;
             <div class="form-group container">
                 <?= Html::activeLabel($model, 'detail_text') ?>
                 <div>
-                    <?= \mihaildev\ckeditor\CKEditor::widget([
+                    <?= \gromver\platform\basic\widgets\HtmlEditor::widget([
+                        'id' => 'backend-editor',
+                        'context' => Yii::$app->controller->getUniqueId(),
                         'model' => $model,
-                        'attribute' => 'detail_text',
-                        'editorOptions' => \mihaildev\elfinder\ElFinder::ckeditorOptions('grom/media/manager', [
-                            'filebrowserBrowseUrl' => ['/grom/menu/backend/item/ckeditor-select'],
-                            'extraPlugins' => 'codesnippet'
-                        ])
+                        'attribute' => 'detail_text'
                     ]) ?>
                 </div>
             </div>

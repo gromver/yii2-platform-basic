@@ -22,7 +22,7 @@ class WidgetPersonal extends Widget {
             $this->context = \Yii::$app->request->getPathInfo();
         }
 
-        $this->context .= '/' . \Yii::$app->user->id;
+        $this->context .= '/u' . \Yii::$app->user->id;
 
         parent::preInit();
     }

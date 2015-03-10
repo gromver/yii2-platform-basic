@@ -21,6 +21,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
+use yii\helpers\Url;
 
 /**
  * Class Widget
@@ -415,45 +416,26 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             return false;
         }
 
-        ob_start();
-        ob_implicit_flush(false);
-
-        $formId = $this->getId() . '-form';
-
-        ModalIFrame::begin([
-            'modalOptions' => [
-                'header' => Yii::t('gromver.platform', 'Widget "{name}" (ID: {id})', ['name' => $this->className(), 'id' => $this->id]),
-                'size' => Modal::SIZE_LARGE
-            ],
-            'buttonOptions' => [
-                'class' => 'btn btn-default',
-                'tag' => 'button',
-                'onclick' => "jQuery('#$formId').submit()",
-                'title' => Yii::t('gromver.platform', 'Configure widget')
-            ],
-        ]);
-
-        echo Html::beginForm([$this->getConfigureRoute(), 'modal' => 1], 'post', ['id' => $formId]);
-
-        echo Html::hiddenInput('url', Yii::$app->request->getAbsoluteUrl());
-
-        echo Html::hiddenInput('widget_id', $this->id);
-
-        echo Html::hiddenInput('widget_class', $this->className());
-
-        echo Html::hiddenInput('widget_context', $this->context);
-
         $objectModel = new ObjectModel($this->className());
         $objectModel->setAttributes($this->_config);
 
-        echo Html::hiddenInput('widget_config', Json::encode($objectModel->toArray(array_keys($this->_config))));
-
-        echo '<i class="glyphicon glyphicon-cog"></i>';
-
-        echo Html::endForm();
-
-        ModalIFrame::end();
-
-        return ob_get_clean();
+        return ModalIFrame::widget([
+            'options' => [
+                'class' => 'btn btn-default',
+                'title' => Yii::t('gromver.platform', 'Configure widget'),
+            ],
+            'label' => '<i class="glyphicon glyphicon-cog"></i>',
+            'url' => [$this->getConfigureRoute(), 'modal' => 1],
+            'formOptions' => [
+                'method' => 'post',
+                'params' => [
+                    'url' => Yii::$app->request->getAbsoluteUrl(),
+                    'widget_id' => $this->id,
+                    'widget_class' => $this->className(),
+                    'widget_context' => $this->context,
+                    'widget_config' => Json::encode($objectModel->toArray(array_keys($this->_config)))
+                ]
+            ]
+        ]);
     }
 }

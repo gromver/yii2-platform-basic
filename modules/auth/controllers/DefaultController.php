@@ -85,7 +85,7 @@ class DefaultController extends \yii\web\Controller
             if($model->login()) {
                 $this->setLoginAttempts(0); //if login is successful, reset the attempts
                 if ($modal) {
-                    ModalIFrame::refreshPage();
+                    ModalIFrame::refreshParent();
                 }
                 return $this->goBack();
             } else {

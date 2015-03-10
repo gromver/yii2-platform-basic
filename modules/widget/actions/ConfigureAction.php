@@ -63,7 +63,7 @@ class ConfigureAction extends \yii\base\Action
             }
 
             if ($modal) {
-                ModalIFrame::refreshPage();
+                ModalIFrame::refreshParent();
             }
         }
 
@@ -104,7 +104,7 @@ class ConfigureAction extends \yii\base\Action
                 }
 
                 if ($modal) {
-                    ModalIFrame::refreshPage();
+                    ModalIFrame::refreshParent();
                 } else {
                     return $this->redirect($url);
                 }

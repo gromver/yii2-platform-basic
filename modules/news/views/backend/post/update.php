@@ -20,15 +20,12 @@ $this->params['breadcrumbs'][] = Yii::t('gromver.platform', 'Update');
 
     <p>
         <?= \gromver\widgets\ModalIFrame::widget([
-            'modalOptions' => [
-                'header' => Yii::t('gromver.platform', 'Item Versions Manager - "{title}" (ID:{id})', ['title' => $model->title, 'id' => $model->id]),
-                'size' => \yii\bootstrap\Modal::SIZE_LARGE,
+            'options' => [
+                'class'=>'btn btn-default btn-sm'
             ],
-            'buttonContent' => Html::a('<i class="glyphicon glyphicon-hdd"></i> ' . Yii::t('gromver.platform', 'Versions'),
-                    ['/grom/version/backend/default/item', 'item_id' => $model->id, 'item_class' => $model->className()], [
-                        'class'=>'btn btn-default btn-sm',
-                    ]),
-            ]) ?>
+            'label' => '<i class="glyphicon glyphicon-hdd"></i> ' . Yii::t('gromver.platform', 'Versions'),
+            'url' => ['/grom/version/backend/default/item', 'item_id' => $model->id, 'item_class' => $model->className()]
+        ]) ?>
     </p>
 
     <?= $this->render('_form', [

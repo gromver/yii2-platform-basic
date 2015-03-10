@@ -90,7 +90,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Configuration saved.'));
 
                     if ($modal) {
-                        ModalIFrame::refreshPage();
+                        ModalIFrame::refreshParent();
                     }
                 } catch (\Exception $e) {
                     Yii::$app->session->setFlash(Alert::TYPE_DANGER, $e->getMessage());

@@ -48,9 +48,9 @@ use yii\bootstrap\ActiveForm;
 
             <?php $this->registerJs("$('#" . Html::getInputId($model, 'link_type') . "').change(function (event){
                 if($(this).val() === '" . \gromver\platform\basic\modules\menu\models\MenuItem::LINK_ROUTE . "') {
-                    $('#router-button a').attr('href', " . \yii\helpers\Json::encode(\yii\helpers\Url::toRoute(['routers'])) . ")
+                    $('a#router').attr('href', " . \yii\helpers\Json::encode(\yii\helpers\Url::toRoute(['routers'])) . ")
                 } else {
-                    $('#router-button a').attr('href', " . \yii\helpers\Json::encode(\yii\helpers\Url::toRoute(['select'])) . ")
+                    $('a#router').attr('href', " . \yii\helpers\Json::encode(\yii\helpers\Url::toRoute(['select'])) . ")
                 }
             }).change()") ?>
 
@@ -62,20 +62,16 @@ use yii\bootstrap\ActiveForm;
                     'template' => "{label}\n{beginWrapper}\n<div class=\"input-group\">{input}{controls}</div>\n{error}\n{endWrapper}\n{hint}",
                     'parts' => [
                         '{controls}' => \gromver\widgets\ModalIFrame::widget([
+                            'options' => [
                                 'id' => 'router',
-                                'modalOptions' => [
-                                    'header' => $linkLabel,
-                                    'size' => \yii\bootstrap\Modal::SIZE_LARGE,
-                                ],
-                                'buttonOptions' => [
-                                    'tag' => 'span',
-                                    'class' => 'input-group-btn'
-                                ],
-                                'buttonContent' => Html::a('<span class="glyphicon glyphicon-folder-open"></span>', ['routers'], ['class'=>'btn btn-default']),
-                                'iframeHandler' => "function(data){
+                                'class' => 'input-group-btn'
+                            ],
+                            'url' => ['routers'],
+                            'label' => Html::tag('span', '<span class="glyphicon glyphicon-folder-open"></span>', ['class'=>'btn btn-default']),
+                            'handler' => "function(data){
                                     $('#{$linkInputId}').val(data.route)
-                                }",
-                            ])
+                                }"
+                        ])
                     ]
                 ])->textInput(['maxlength' => 1024]) ?>
 

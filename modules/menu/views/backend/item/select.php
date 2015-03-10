@@ -69,7 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return Html::a(Yii::t('gromver.platform', 'Select'), '#', [
                         'class' => 'btn btn-primary btn-xs',
-                        'onclick' => \gromver\widgets\ModalIFrame::emitDataJs([
+                        'onclick' => \gromver\widgets\ModalIFrame::postDataJs([
                             'id' => $model->id,
                             'description' => Yii::t('gromver.platform', 'Menu Item: {title}', ['title' => $model->title]),
                             'route' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),

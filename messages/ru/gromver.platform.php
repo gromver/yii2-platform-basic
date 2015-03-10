@@ -174,6 +174,7 @@ return [
     'Version Data' => 'Данные версии',
     'Character Count' => 'Количество символов',
     'Versions' => 'Версии',
+    'Item Versions' => 'История изменений',
     //widget manager
     'Widget ID' => 'ID виджета',
     'Widget Class' => 'Класс виджета',
