@@ -33,7 +33,7 @@ AppAsset::register($this);
                 'body' => $body
             ]) ?>
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-md-3 col-sm-4">
                 <?= \gromver\platform\basic\widgets\Menu::widget([
                     'id' => 'top-menu',
                     'widgetConfig' => [
@@ -48,7 +48,7 @@ AppAsset::register($this);
                     ]
                 ]) ?>
             </div>
-            <div class="col-sm-9">
+            <div class="col-md-9 col-sm-8">
                 <?= $content ?>
             </div>
         </div>

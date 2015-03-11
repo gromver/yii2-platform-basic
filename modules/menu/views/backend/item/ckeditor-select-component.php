@@ -9,10 +9,12 @@
 
 $iframeId = 'iframe-select';
 
-$this->registerJs("$(document).on('data', '#{$iframeId}', function(e, data){
+$this->registerAssetBundle(\gromver\widgets\ModalIFrameAsset::className());
+
+$this->registerJs("yii.gromverIframe.dataHandler = function(data){
     window.opener.CKEDITOR.tools.callFunction({$CKEditorFuncNum}, data.link);
     window.close();
-})");
+}");
 ?>
 <style>
     body {
