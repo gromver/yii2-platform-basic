@@ -28,21 +28,25 @@ class ConfigureAction extends \yii\base\Action
     public $view = '@gromver/platform/basic/modules/widget/views/actions/configure/form';
 
     public function run($modal=null) {
-        if(!($widget_id = Yii::$app->request->getBodyParam('widget_id')))
+        if (!($widget_id = Yii::$app->request->getBodyParam('widget_id'))) {
             throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget ID isn't specified"));
+        }
 
-        if(!($widget_class = Yii::$app->request->getBodyParam('widget_class')))
+        if (!($widget_class = Yii::$app->request->getBodyParam('widget_class'))) {
             throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Class isn't specified"));
+        }
 
-        if(($widget_context = Yii::$app->request->getBodyParam('widget_context'))===null)
+        if (($widget_context = Yii::$app->request->getBodyParam('widget_context'))===null) {
             throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget Context isn't specified"));
+        }
 
         $selected_context = Yii::$app->request->getBodyParam('selected_context', $widget_context);
 
         $task = Yii::$app->request->getBodyParam('task');
 
-        if(($url = Yii::$app->request->getBodyParam('url'))===null)
+        if (($url = Yii::$app->request->getBodyParam('url'))===null) {
             throw new BadRequestHttpException(Yii::t('gromver.platform', "Widget page url isn't specified"));
+        }
         //$url = Yii::$app->request->getBodyParam('url', Yii::$app->request->getReferrer());
 
         if ($task=='delete') {
