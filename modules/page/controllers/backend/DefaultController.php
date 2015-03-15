@@ -209,14 +209,6 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     public function actionBulkDelete()
     {
-        /*$data = Yii::$app->request->getBodyParam('data', []);
-
-        $models = Page::findAll(['id'=>$data]);
-
-        foreach($models as $model)
-            $model->delete();
-
-        return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));*/
         $data = Yii::$app->request->getBodyParam('data', []);
 
         $models = Page::find()->where(['id' => $data])->orderBy(['lft' => SORT_DESC])->all();

@@ -13,6 +13,8 @@ namespace gromver\platform\basic\modules\page;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
+use gromver\platform\basic\interfaces\module\MenuRouterInterface;
+use gromver\platform\basic\modules\page\components\MenuRouterPage;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\widgets\SearchResultsElasticsearch;
 use gromver\platform\basic\widgets\SearchResultsSql;
@@ -24,7 +26,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface, ModuleEventsInterface
+class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface, ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\page\controllers';
     public $defaultRoute = 'frontend/default';
@@ -52,8 +54,17 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
             'label' => Yii::t('gromver.platform', 'Pages'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Page View'), 'url' => ['/grom/page/backend/default/select']],
+                ['label' => Yii::t('gromver.platform', 'Page Guide'), 'url' => ['/grom/page/backend/default/select', 'route' => 'grom/page/frontend/default/guide']],
             ]
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMenuRouter()
+    {
+        return MenuRouterPage::className();
     }
 
     /**

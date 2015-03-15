@@ -178,7 +178,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         ];
     }
 
-
     /**
      * @inheritdoc
      * @return PageQuery
@@ -195,20 +194,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     {
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
-
-    /**
-     * @inheritdoc
-     */
-    /*public function afterSave($insert, $changedAttributes)
-    {
-        if ($insert && $this->translation_id === null) {
-            $this->updateAttributes([
-                'translation_id' => $this->id
-            ]);
-        }
-
-        parent::afterSave($insert, $changedAttributes);
-    }*/
 
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
@@ -276,6 +261,11 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             $this->normalizeLanguage();
         }
 
+        // нормализуем подкатегории при смене статуса
+        /*if (array_key_exists('status', $changedAttributes)) {
+            $this->normalizeStatus();
+        }*/
+
         // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
@@ -317,6 +307,12 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         self::updateAll(['language' => $this->language], ['id' => $ids]);
     }
 
+    public function normalizeStatus()
+    {
+        $ids = $this->children()->select('id')->column();
+        self::updateAll(['status' => $this->status], ['id' => $ids]);
+    }
+
     /**
      * @return static | null
      */
@@ -332,7 +328,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      */
     public function getFrontendViewLink()
     {
-        return ['/grom/page/frontend/default/view', 'id' => $this->id, UrlManager::LANGUAGE_PARAM => $this->language];
+        return ['/grom/page/frontend/default/view', 'id' => $this->id, 'alias' => $this->alias, UrlManager::LANGUAGE_PARAM => $this->language];
     }
 
     /**
@@ -340,7 +336,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      */
     public static function frontendViewLink($model)
     {
-        return ['/grom/page/frontend/default/view', 'id' => $model['id'], UrlManager::LANGUAGE_PARAM => $model['language']];
+        return ['/grom/page/frontend/default/view', 'id' => $model['id'], 'alias' => $model['alias'], UrlManager::LANGUAGE_PARAM => $model['language']];
     }
 
     /**
@@ -393,6 +389,25 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     public function isPublished()
     {
         return $this->status == self::STATUS_PUBLISHED;
+    }
+
+    public function getBreadcrumbs($includeSelf = false)
+    {
+        if ($this->isRoot()) {
+            return [];
+        } else {
+            $path = $this->parents()->noRoots()->all();
+            if ($includeSelf) {
+                $path[] = $this;
+            }
+            return array_map(function ($item) {
+                /** @var self $item */
+                return [
+                    'label' => $item->title,
+                    'url' => $item->getFrontendViewLink()
+                ];
+            }, $path);
+        }
     }
 
     // SearchableInterface

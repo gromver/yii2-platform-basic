@@ -1,0 +1,60 @@
+.page-list {
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+}
+.page-list ul {
+    margin: 0;
+}
+/*.page-list ul li {
+}*/
+
+.page-list ul li > span, .page-list ul li > a {
+    display: block;
+    padding: 10px;
+    border-bottom: 1px solid #dddddd;
+}
+.page-list ul li > span.toggle {
+    float: right;
+    width: 30px;
+    text-align: center;
+    padding: 10px 0;
+    border-left: 1px solid #dddddd;
+    cursor: pointer;
+    color: #999999;
+}
+.page-list ul li > span.toggle + a {
+    margin-right: 30px;
+}
+.page-list ul ul li > span, .page-list ul ul li > a {
+    padding-left: 20px;
+}
+.page-list ul.level-1 > li:last-child > * {
+    border-bottom: none;
+}
+.page-list ul ul li > span, .page-list ul ul li > a, .page-list ul li > span:hover, .page-list ul li > a:hover {
+    text-decoration: none;
+    background-color: #eeeeee;
+}
+.page-list ul ul li > a {
+    color: #555555;
+}
+.page-list ul ul li > span:hover, .page-list ul ul li > a:hover {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #44b5f6;
+}
+
+.page-list .toggle i.glyphicon-chevron-down {
+    display: none;
+}
+.page-list .toggle.collapsed i.glyphicon-chevron-down {
+    display: inline-block;
+}
+.page-list .toggle.collapsed i.glyphicon-chevron-up {
+    display: none;
+}
+
+.page-list ul li.active > a, .page-list ul li.active > span {
+    background-color: #337ab7;
+    color: #ffffff;
+}

@@ -33,9 +33,28 @@ class DefaultController extends \yii\web\Controller
         ]);
     }
 
+    public function actionGuide($id)
+    {
+        /** @var \gromver\platform\basic\modules\menu\models\MenuItem $menu */
+        $menu = Yii::$app->menuManager->getActiveMenu();
+        $model = $this->loadModel($id);
+
+        if ($menu->isApplicableContext()) {
+            list($route, $params) = $menu->parseUrl();
+            $rootModel = $this->loadModel($params['id']);
+        } else {
+            $rootModel = $model;
+        }
+
+        return $this->render('guide', [
+            'rootModel' => $rootModel,
+            'model' => $model
+        ]);
+    }
+
     public function loadModel($id)
     {
-        if(!($model = Page::findOne($id))) {
+        if(!($model = Page::find()->where(['id' => $id])->published()->one())) {
             throw new NotFoundHttpException(Yii::t('gromver.platform', 'The requested page does not exist.'));
         }
 

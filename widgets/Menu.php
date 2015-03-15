@@ -91,7 +91,7 @@ class Menu extends Widget
 
     private function prepareMenuItems(&$index, $level)
     {
-        $items = array();
+        $items = [];
         $activeMenuIds = Yii::$app->menuManager->getActiveMenuIds();
         $urlManager = Yii::$app->urlManager;
 
@@ -116,7 +116,7 @@ class Menu extends Widget
                     )
                 ];
                 $index++;
-            } elseif ($level<$item['level']) {
+            } elseif ($level < $item['level']) {
                 $items[count($items)-1]['items'] = $this->prepareMenuItems($index, $item['level']);
             } else {
                 return $items;

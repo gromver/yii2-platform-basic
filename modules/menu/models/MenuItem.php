@@ -411,7 +411,9 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
         return Yii::t('gromver.platform', self::$_linkTypes[$type]);
     }
 
-
+    /**
+     * @return array    [path, params]
+     */
     public function parseUrl()
     {
         $arUrl = parse_url($this->link);
