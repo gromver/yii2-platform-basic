@@ -58,3 +58,11 @@
     background-color: #337ab7;
     color: #ffffff;
 }
+.page-list ul li > span.toggle.collapsed, .page-list ul li > span.toggle:hover {
+    background-color: #ffffff;
+    color: #999999;
+}
+.page-list ul li > span.toggle, .page-list ul li > span.toggle.collapsed:hover {
+    background-color: #eeeeee;
+    color: #999999;
+}
