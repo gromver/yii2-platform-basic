@@ -1,3 +1,6 @@
 .platform-panel {
     z-index: 1070;
 }
+.popup.auth-popup {
+    max-width: 500px;
+}

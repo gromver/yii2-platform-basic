@@ -8,6 +8,7 @@ use yii\web\View;
  * @var string $content
  */
 AppAsset::register($this);
+\gromver\widgets\ModalIFrameContentAsset::register($this);
 
 if($debug=Yii::$app->getModule('debug'))
     Yii::$app->getView()->off(View::EVENT_END_BODY, [$debug, 'renderToolbar']);

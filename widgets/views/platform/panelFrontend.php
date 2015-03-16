@@ -66,7 +66,7 @@ if (Yii::$app->user->isGuest) { ?>
                 'class' => 'navbar-link',
             ],
             'popupOptions' => [
-                'style' => 'max-width: 500px'
+                'class' => 'auth-popup'
             ],
             'label' => Yii::t('gromver.platform', 'Login'),
             'url' => $loginUrl
