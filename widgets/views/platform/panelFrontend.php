@@ -11,11 +11,13 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
+$this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PlatformAsset::className());
+
 $navBar = NavBar::begin([
     'brandLabel' => Yii::$app->grom->siteName,
     'brandUrl' => Yii::$app->homeUrl,
     'options' => [
-        'class' => 'navbar-inverse navbar-fixed-top',
+        'class' => 'navbar-inverse navbar-fixed-top platform-panel',
     ],
 ]); ?>
 
