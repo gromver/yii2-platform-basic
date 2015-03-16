@@ -10,12 +10,14 @@
 namespace gromver\platform\basic\modules\main;
 
 
+use gromver\modulequery\ModuleEventsInterface;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
 use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\caching\ExpressionDependency;
@@ -29,7 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property string $siteName
  * @property bool $isEditMode
  */
-class Module extends \yii\base\Module implements BootstrapInterface, DesktopInterface, MenuItemRoutesInterface
+class Module extends \yii\base\Module implements BootstrapInterface, DesktopInterface, MenuItemRoutesInterface, ModuleEventsInterface
 {
     const SESSION_KEY_MODE = '__grom_mode';
 
@@ -220,5 +222,25 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     public function applyModalLayout()
     {
         Yii::$app->layout = $this->modalLayout;
+    }
+
+    public function events()
+    {
+        return [
+            User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave'
+        ];
+    }
+
+    /**
+     * @param $user User
+     * Всем пользователям всегда устанавливаем роль Authorized
+     */
+    public function beforeUserRolesSave($user)
+    {
+        $roles = $user->getRoles();
+        if (!in_array('Authorized', $roles)) {
+            $roles[] = 'Authorized';
+            $user->setRoles($roles);
+        }
     }
 }

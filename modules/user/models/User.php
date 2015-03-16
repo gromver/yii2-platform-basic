@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\modules\user\models;
 
 
+use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\news\models\PostViewed;
 use Yii;
@@ -50,6 +51,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     const EVENT_BEFORE_SAFE_DELETE = 'beforeSafeDelete';
     const EVENT_AFTER_SAFE_DELETE = 'afterSafeDelete';
+    const EVENT_BEFORE_USER_ROLES_SAVE = 'beforeUserRolesSave';
 
     /**
      * @var string the raw password. Used to collect password input and isn't saved in database
@@ -312,11 +314,14 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
-        $newRoles = $this->_roles;
-        if(is_array($newRoles))
+        //$newRoles = $this->_roles;
+        if(is_array($this->_roles)) {
+            ModuleEvent::trigger(self::EVENT_BEFORE_USER_ROLES_SAVE, [$this]);
+            $newRoles = $this->_roles;
             $this->_roles = null;
-        else
+        } else {
             return;
+        }
 
         $oldRoles = $this->getRoles();
 
@@ -398,8 +403,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
 
     public function getRoles()
     {
-        if(!isset($this->_roles))
+        if (!isset($this->_roles)) {
             $this->_roles = array_keys(Yii::$app->authManager->getRolesByUser($this->id));
+        }
 
         return $this->_roles;
     }
