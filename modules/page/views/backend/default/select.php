@@ -44,12 +44,11 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'value' => function ($model) {
-                    /** @var $model \gromver\platform\basic\modules\page\models\Page */
-                    return $model->title . '<br/>' . Html::tag('small', $model->alias, ['class' => 'text-muted']);
+                'value' => function($model){
+                    /** @var \gromver\platform\basic\modules\page\models\Page $model */
+                    return str_repeat(" • ", max($model->level-2, 0)) . $model->title . '<br/>' . Html::tag('small', ' — ' . $model->path, ['class' => 'text-muted']);
                 },
                 'format' => 'html'
-
             ],
             [
                 'attribute' => 'status',

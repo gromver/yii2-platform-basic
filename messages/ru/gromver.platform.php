@@ -57,6 +57,7 @@ return [
     'News' => 'Новости',
     'Widgets' => 'Виджеты',
     'Page View' => 'Страница',
+    'Page Guide' => 'Гайд',
     'Post View' => 'Статья',
     'Category View' => 'Категория',
     'All Posts' => 'Все статьи',
