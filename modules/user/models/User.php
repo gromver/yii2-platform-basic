@@ -10,6 +10,8 @@
 namespace gromver\platform\basic\modules\user\models;
 
 
+use gromver\platform\basic\modules\news\models\Post;
+use gromver\platform\basic\modules\news\models\PostViewed;
 use Yii;
 use yii\base\ModelEvent;
 use yii\base\NotSupportedException;
@@ -167,12 +169,11 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
-     * todo
      * @return \yii\db\ActiveQuery
      */
     public function getViewedPosts()
     {
-        //return $this->hasMany(CmsPostViewed::className(), ['user_id' => 'id']);
+        return $this->hasMany(Post::className(), ['id' => 'post_id'])->viaTable(PostViewed::tableName(), ['user_id' => 'id']);
     }
 
     public function behaviors()
