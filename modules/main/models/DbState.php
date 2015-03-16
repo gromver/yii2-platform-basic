@@ -13,6 +13,7 @@ namespace gromver\platform\basic\modules\main\models;
 use Yii;
 use yii\base\Event;
 use yii\behaviors\TimestampBehavior;
+use yii\caching\ChainedDependency;
 use yii\caching\ExpressionDependency;
 use yii\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
@@ -76,7 +77,6 @@ class DbState extends \yii\db\ActiveRecord
 
     /**
      * Возвращает время последненго изменения в таблице $table
-     * todo зделать возможность указывать множество таблиц
      * @param $table string table name
      * @return mixed
      */
@@ -86,11 +86,23 @@ class DbState extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $table string table name
+     * @param $table string|[] table name
      * @return ExpressionDependency
      */
     public static function dependency($table)
     {
+        if (is_array($table)) {
+            $dependencies = [];
+
+            foreach ($table as $t) {
+                $dependencies[] = new ExpressionDependency(['expression' => self::className().'::timestamp("'.$t.'")']);
+            }
+
+            return new ChainedDependency([
+                'dependencies' => $dependencies
+            ]);
+        }
+
         return new ExpressionDependency(['expression' => self::className().'::timestamp("'.$table.'")']);
     }
 
