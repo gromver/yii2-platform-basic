@@ -56,25 +56,23 @@ if (Yii::$app->user->isGuest) { ?>
             }, Yii::$app->acceptedLanguages)) ?>
         </div>
     </div>
-    <?php
-    $loginUrl = Yii::$app->user->loginUrl;
-    $loginUrl['modal'] = 1;
-
-    echo ModalIFrame::widget([
-        'buttonOptions' => [
-            'tag' => 'div',
-            'class' => 'navbar-text navbar-right'
-        ],
-        'modalOptions' => [
-            'size' => Modal::SIZE_DEFAULT,
-            'closeButton' => false
-        ],
-        'iframeOptions' => [
-            'height' => '320px'
-        ],
-        'buttonContent' => '<i class="glyphicon glyphicon-log-in"></i>&nbsp;&nbsp;' . Html::a(Yii::t('gromver.platform', 'Login'), $loginUrl, ['class' => 'navbar-link'])
-    ]);
-} else {
+    <div class="navbar-text navbar-right">
+        <i class="glyphicon glyphicon-log-in"></i>&nbsp;&nbsp;
+        <?php
+        $loginUrl = Yii::$app->user->loginUrl;
+        $loginUrl['modal'] = 1;
+        echo ModalIFrame::widget([
+            'options' => [
+                'class' => 'navbar-link',
+            ],
+            'popupOptions' => [
+                'style' => 'max-width: 500px'
+            ],
+            'label' => Yii::t('gromver.platform', 'Login'),
+            'url' => $loginUrl
+        ]) ?>
+    </div>
+<?php } else {
     $items = [];
     if(Yii::$app->user->can('administrate')) {
         $items[] = ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Admin Panel'), 'url' => ['/grom/backend/default/index']];
