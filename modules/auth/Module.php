@@ -31,8 +31,15 @@ class Module extends \yii\base\Module implements MenuItemRoutesInterface, Deskto
      */
     public $rememberMeTime = 2592000; // 30 days
     public $attemptsBeforeCaptcha = 3; // Unsuccessful Login Attempts before Captcha
-    public $loginLayout = 'login';
+    public $authLayout = 'auth';    // если null то применится макет приложения
     public $desktopOrder = 2;
+
+    public function init()
+    {
+        if ($this->authLayout) {
+            $this->layout = $this->authLayout;
+        }
+    }
 
     /**
      * @inheritdoc

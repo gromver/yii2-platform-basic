@@ -96,9 +96,8 @@ class DefaultController extends \yii\web\Controller
         }
 
         if ($modal) {
+            $this->module->layout = null;
             Yii::$app->grom->applyModalLayout();
-        } else {
-            $this->module->layout = $this->module->loginLayout;
         }
 
         return $this->render('login', [
@@ -149,6 +148,7 @@ class DefaultController extends \yii\web\Controller
                 Yii::$app->getSession()->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', 'There was an error sending email.'));
             }
         }
+
         return $this->render('requestPasswordResetToken', [
             'model' => $model,
         ]);
