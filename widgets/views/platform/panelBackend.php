@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $this yii\web\View
+ * @var $widget gromver\platform\basic\widgets\PlatformPanel
  */
 
 use yii\bootstrap\NavBar;
@@ -9,11 +10,13 @@ use yii\helpers\Html;
 
 $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PlatformAsset::className());
 
-$navBar = NavBar::begin([
+$navBar = NavBar::begin(\yii\helpers\ArrayHelper::merge([
     'brandLabel' => Yii::$app->grom->siteName,
     'brandUrl' => ['/grom/backend/default/index'],
-    'options' => $this->context->options,
-]); ?>
+    'options' => [
+        'class' => 'navbar-inverse navbar-fixed-top platform-panel'
+    ],
+], $widget->options)); ?>
 
 <?= Html::beginForm([$this->context->searchRoute], 'get', ['class' => 'navbar-form navbar-left',  'role' => "search"]) ?>
 
