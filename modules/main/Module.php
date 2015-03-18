@@ -96,6 +96,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         /** @var MenuManager $manager */
         $manager = \Yii::createObject(MenuManager::className());
         $rules = [$manager];
+        $rules['auth'] = 'grom/auth/default/login';
+        $rules['admin'] = 'grom/backend/default/index';
         if (is_array($this->blockedUrlRules) && count($this->blockedUrlRules)) {
             foreach ($this->blockedUrlRules as $rule) {
                 $rules[$rule] = 'grom/default/page-not-found'; //блокируем доступ напрямую
