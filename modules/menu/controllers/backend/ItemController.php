@@ -183,21 +183,28 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     /**
      * Creates a new MenuItem model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @param null $menu_type_id
+     * @param null $menuTypeId
      * @param null $sourceId
+     * @param null $parentId
      * @param null $language
      * @param string|null $backUrl
      * @return string|\yii\web\Response
      * @throws NotFoundHttpException
      */
-    public function actionCreate($menu_type_id = null, $sourceId = null, $language = null, $backUrl = null)
+    public function actionCreate($menuTypeId = null, $sourceId = null, $parentId = null, $language = null, $backUrl = null)
     {
         $model = new MenuItem();
         $model->loadDefaultValues();
         $model->status = MenuItem::STATUS_PUBLISHED;
         $model->language = Yii::$app->language;
 
-        if (isset($menu_type_id)) $model->menu_type_id = $menu_type_id;
+        if (isset($menuTypeId)) $model->menu_type_id = $menuTypeId;
+
+        if (isset($parentId)) {
+            $parentCategory = $this->findModel($parentId);
+            $model->parent_id = $parentCategory->id;
+            $model->language = $parentCategory->language;
+        }
 
         if (isset($sourceId) && $language) {
             $sourceModel = $this->findModel($sourceId);
