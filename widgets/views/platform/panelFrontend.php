@@ -16,7 +16,7 @@ $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PlatformAsset:
 
 $navBar = NavBar::begin(\yii\helpers\ArrayHelper::merge([
     'brandLabel' => Yii::$app->grom->siteName,
-    'brandUrl' => ['/grom/backend/default/index'],
+    'brandUrl' => Yii::$app->homeUrl,
     'options' => [
         'class' => 'navbar-inverse navbar-fixed-top platform-panel'
     ],
