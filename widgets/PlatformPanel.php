@@ -19,7 +19,7 @@ class PlatformPanel extends \yii\bootstrap\Widget
 {
     public $layout = 'platform/panelFrontend';
     public $searchRoute = '/grom/sqlsearch/frontend/default/index';
-    public $navOptions = [
+    public $options = [
         'class' => 'navbar-inverse navbar-fixed-top platform-panel',
     ];
 
