@@ -58,7 +58,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'pages'],
+                        'actions' => ['index', 'view', 'select', 'pages', 'page-list'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -97,6 +97,17 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             'searchModel' => $searchModel,
             'route' => $route
         ]);
+    }
+
+    /**
+     * Отдает список страниц для Selectize виджета
+     * @param null $query
+     * @param null $language
+     */
+    public function actionPageList($query = null, $language = null) {
+        $result = Page::find()->select('id AS value, title AS text')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        echo Json::encode($result);
     }
 
     /**

@@ -52,6 +52,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
+                'attribute' => 'parent_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'value' => function($model){
+                    /** @var \gromver\platform\basic\modules\page\models\Page $model */
+                    return $model->parent->title;
+                },
+                'filterType' => \dosamigos\selectize\Selectize::className(),
+                'filterWidgetOptions' => [
+                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\page\models\Page::find()->where(['id' => $searchModel->parent_id])->all(), 'id', 'title'),
+                    'clientOptions' => [
+                        'maxItems' => 1
+                    ],
+                    'url' => ['/grom/page/backend/default/page-list']
+                ]
+            ],
+            [
                 'attribute' => 'title',
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
@@ -115,7 +131,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
             'heading' => '<h3 class="panel-title"><i class="glyphicon glyphicon-th-list"></i> ' . Html::encode($this->title) . '</h3>',
             'type' => 'info',
-            'before' => Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('gromver.platform', 'Add'), ['create'], ['class' => 'btn btn-success', 'data-pjax' => '0']),
+            'before' => Html::a('<i class="glyphicon glyphicon-plus"></i> ' . Yii::t('gromver.platform', 'Add'), $searchModel->parent_id ? ['create', 'parentId' => $searchModel->parent_id] : ['create'], ['class' => 'btn btn-success', 'data-pjax' => '0']),
             'after' =>
                 Html::a('<i class="glyphicon glyphicon-sort-by-attributes"></i> ' . Yii::t('gromver.platform', 'Ordering'), ['ordering'], ['class' => 'btn btn-default', 'data-pjax' => '0', 'onclick' => 'processOrdering(this); return false']).' '.
                 Html::a('<i class="glyphicon glyphicon-trash"></i> ' . Yii::t('gromver.platform', 'Delete'), ['bulk-delete'], ['class' => 'btn btn-danger', 'data-pjax' => '0', 'onclick' => 'processAction(this); return false']) . ' ' .

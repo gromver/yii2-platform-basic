@@ -68,16 +68,21 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'vAlign' => GridView::ALIGN_MIDDLE,
+                'value' => function($model) {
+                    /** @var \gromver\platform\basic\modules\news\models\Post $model */
+                    return $model->title . '<br/>' . Html::tag('small', ' — ' . $model->alias, ['class' => 'text-muted']);
+                },
+                'format' => 'html'
             ],
-            [
+            /*[
                 'attribute' => 'alias',
                 'vAlign' => GridView::ALIGN_MIDDLE,
-            ],
+            ],*/
             [
                 'attribute' => 'status',
                 'hAlign' => GridView::ALIGN_CENTER,
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'value' => function ($model, $index, $widget) {
+                'value' => function ($model) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Post */
                         return $model->status === \gromver\platform\basic\modules\news\models\Post::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },

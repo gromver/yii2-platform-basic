@@ -54,11 +54,16 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'title',
                 'vAlign' => GridView::ALIGN_MIDDLE,
+                'value' => function($model) {
+                    /** @var \gromver\platform\basic\modules\tag\models\Tag $model */
+                    return $model->title . '<br/>' . Html::tag('small', ' — ' . $model->alias, ['class' => 'text-muted']);
+                },
+                'format' => 'html'
             ],
-            [
+            /*[
                 'attribute' => 'alias',
                 'vAlign' => GridView::ALIGN_MIDDLE,
-            ],
+            ],*/
             [
                 'attribute' => 'group',
                 'vAlign' => GridView::ALIGN_MIDDLE,

@@ -58,7 +58,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'categories'],
+                        'actions' => ['index', 'view', 'select', 'categories', 'category-list'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -98,6 +98,17 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                 'searchModel' => $searchModel,
                 'route' => $route
             ]);
+    }
+
+    /**
+     * Отдает список категорий для Selectize виджета
+     * @param null $query
+     * @param null $language
+     */
+    public function actionCategoryList($query = null, $language = null) {
+        $result = Category::find()->select('id AS value, title AS text')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        echo Json::encode($result);
     }
 
     /**

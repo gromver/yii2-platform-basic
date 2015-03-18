@@ -274,7 +274,8 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
 
         // ранжируем категории ели нужно
         if (array_key_exists('ordering', $changedAttributes)) {
-            $this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+            //$this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+            $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }
     }
 
@@ -318,13 +319,12 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     }
 
     /**
-     * @return static | null
+     * @return PageQuery
      */
     public function getParent()
     {
-        return $this->parents(1)->one();
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
-
 
     // ViewableInterface
     /**

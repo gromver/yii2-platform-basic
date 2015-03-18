@@ -35,12 +35,14 @@ class MenuItemSearch extends MenuItem
      * Creates data provider instance with search query applied
      *
      * @param array $params
+     * @param bool $excludeRoots
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $excludeRoots = true)
     {
-        $query = MenuItem::find()->noRoots();
+        $query = $excludeRoots ? MenuItem::find()->noRoots() : MenuItem::find();
+        $query->with(['menuType', 'translations']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

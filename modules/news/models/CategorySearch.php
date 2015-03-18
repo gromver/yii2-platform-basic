@@ -37,12 +37,13 @@ class CategorySearch extends Category
 
     /**
      * @param $params
-     * @param bool $withRoots
+     * @param bool $excludeRoots
      * @return ActiveDataProvider
      */
-    public function search($params, $withRoots = false)
+    public function search($params, $excludeRoots = true)
     {
-        $query = $withRoots ? Category::find() : Category::find()->noRoots();
+        $query = $excludeRoots ? Category::find()->noRoots() : Category::find();
+        $query->with(['tags', 'translations', 'parent']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

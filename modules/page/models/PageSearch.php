@@ -47,13 +47,14 @@ class PageSearch extends Page
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     * @param bool $withRoots
+     * @param bool $excludeRoots
      *
      * @return ActiveDataProvider
      */
-    public function search($params, $withRoots = false)
+    public function search($params, $excludeRoots = true)
     {
-        $query = $withRoots ? Page::find() : Page::find()->noRoots();
+        $query = $excludeRoots ? Page::find()->noRoots() : Page::find();
+        $query->with(['tags', 'translations', 'parent']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -100,8 +101,9 @@ class PageSearch extends Page
             ->andFilterWhere(['like', '{{%grom_page}}.metakey', $this->metakey])
             ->andFilterWhere(['like', '{{%grom_page}}.metadesc', $this->metadesc]);
 
-        if($this->tags)
+        if($this->tags) {
             $query->innerJoinWith('tags')->andFilterWhere(['{{%grom_tag}}.id' => $this->tags]);
+        }
 
         return $dataProvider;
     }

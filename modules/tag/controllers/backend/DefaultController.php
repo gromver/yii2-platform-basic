@@ -213,7 +213,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
-
+    /**
+     * Отдает список тегов для Selectize виджета
+     * @param null $query
+     * @param null $language
+     */
     public function actionTagList($query = null, $language = null) {
         $result = Tag::find()->select('id AS value, title AS text, group AS optgroup')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
 

@@ -50,7 +50,7 @@ class TagSearch extends Tag
      */
     public function search($params)
     {
-        $query = Tag::find();
+        $query = Tag::find()->with(['translations']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
