@@ -12,9 +12,7 @@ $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PlatformAsset:
 $navBar = NavBar::begin([
     'brandLabel' => Yii::$app->grom->siteName,
     'brandUrl' => ['/grom/backend/default/index'],
-    'options' => [
-        'class' => 'navbar-inverse navbar-fixed-top platform-panel',
-    ],
+    'options' => $this->context->navOptions,
 ]); ?>
 
 <?= Html::beginForm([$this->context->searchRoute], 'get', ['class' => 'navbar-form navbar-left',  'role' => "search"]) ?>
