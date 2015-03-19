@@ -55,12 +55,14 @@ class BaseSearchModule extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
+     * Инедксация сохраненой модели для последующего поиска по этому индексу
      * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
      */
     public function indexPage($model) {}
 
     /**
+     * Удаление записи из индекса соответсвующей удаленной модели
      * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
      */

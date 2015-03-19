@@ -18,6 +18,8 @@ use yii\caching\Cache;
 
 /**
  * Class MenuMap
+ * Хелпер для работы с пунктами меню
+ * Использует кеширование
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

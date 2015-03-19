@@ -84,18 +84,23 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         Yii::$container->set('gromver\models\fields\MediaField', [
             'controller' => 'grom/media/manager'
         ]);
+        $moduleConfigDependency = new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()']);
         Yii::$container->set('gromver\modulequery\ModuleQuery', [
             'cache' => $app->cache,
-            'cacheDependency' => new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()'])
+            'cacheDependency' => $moduleConfigDependency
         ]);
         Yii::$container->set('gromver\platform\basic\components\MenuMap', [
             'cache' => $app->cache,
             'cacheDependency' => DbState::dependency(MenuItem::tableName())
         ]);
+        Yii::$container->set('gromver\platform\basic\components\MenuUrlRule', [
+            'cache' => $app->cache,
+            'cacheDependency' => $moduleConfigDependency
+        ]);
 
         /** @var MenuManager $manager */
-        $manager = \Yii::createObject(MenuManager::className());
-        $rules = [$manager];
+        //$manager = \Yii::createObject(MenuManager::className());
+        //$rules = [$manager];
         $rules['auth'] = 'grom/auth/default/login';
         $rules['admin'] = 'grom/backend/default/index';
         if (is_array($this->blockedUrlRules) && count($this->blockedUrlRules)) {
@@ -106,7 +111,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
 
         $app->urlManager->addRules($rules, false); //вставляем в начало списка
 
-        $app->set('menuManager', $manager);
+        $app->set('menuManager', \Yii::createObject(MenuManager::className())/*$manager*/);
 
         ModuleQuery::instance()->implement('\gromver\platform\common\interfaces\BootstrapInterface')->invoke('bootstrap', [$app]);
     }

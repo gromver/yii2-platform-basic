@@ -105,7 +105,7 @@ class PageGuide extends Widget
                     $prevModel = $rgtLeaf;
                 }
             } else {
-                $prevModel = $model->getParent();
+                $prevModel = $model->parent;
             }
         }
         // следущая страница
@@ -114,7 +114,7 @@ class PageGuide extends Widget
         } else {
             if (!($nextModel = $model->children(1)->published()->one() or $nextModel = $model->next()->published()->one())) {
                 //пытаемся выйти наверх
-                while(($parentModel = $model->getParent()) && !$parentModel->equals($this->rootPage)) {
+                while(($parentModel = $model->parent) && !$parentModel->equals($this->rootPage)) {
                     if ($nextModel = $parentModel->next()->one()) break;
                     $model = $parentModel;
                 }

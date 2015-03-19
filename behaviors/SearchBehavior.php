@@ -18,6 +18,8 @@ use yii\db\ActiveRecord;
 
 /**
  * Class SearchBehavior
+ * Данное поведение инициирует соответсвующие модульные события [[ModuleEvent::trigger]] после удаления/записи модели
+ * Эти события используют поисковые модули (Sql, Elasticsearch) для построения поискового индекса
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */

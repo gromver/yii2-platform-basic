@@ -11,11 +11,11 @@ namespace gromver\platform\basic\components;
 
 
 /**
- * Class MenuUrlRuleParse
+ * Class MenuRouterUrlRuleParse
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class MenuUrlRuleParse extends MenuUrlRule
+class MenuRouterUrlRuleParse extends MenuRouterUrlRule
 {
     /**
      * @var string
@@ -25,12 +25,12 @@ class MenuUrlRuleParse extends MenuUrlRule
     /**
      * @inheritdoc
      */
-    public function process($requestInfo, $menuManager)
+    public function process($requestInfo, $menuUrlRule)
     {
         if ($this->menuRoute && $this->menuRoute != $requestInfo->menuRoute) {
             return false;
         }
 
-        return $menuManager->getRouter($this->router)->{$this->handler}($requestInfo);
+        return $menuUrlRule->getRouter($this->router)->{$this->handler}($requestInfo);
     }
 } 

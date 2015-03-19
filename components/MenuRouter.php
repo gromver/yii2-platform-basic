@@ -12,6 +12,8 @@ namespace gromver\platform\basic\components;
 
 /**
  * Class MenuRouter
+ * Базовый класс для описания правил маршрутизации
+ * используется на уровне модулей в связке с \gromver\platform\basic\interfaces\module\MenuRouterInterface
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
