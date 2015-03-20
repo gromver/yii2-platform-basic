@@ -70,13 +70,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
-                'filterType' => \dosamigos\selectize\Selectize::className(),
+                'filterType' => \dosamigos\selectize\SelectizeDropDownList::className(),
                 'filterWidgetOptions' => [
                     'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
-                    'url' => ['/grom/tag/backend/default/tag-list']
+                    'loadUrl' => ['/grom/tag/backend/default/tag-list']
                 ]
             ],
             [

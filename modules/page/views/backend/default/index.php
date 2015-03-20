@@ -58,13 +58,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     /** @var \gromver\platform\basic\modules\page\models\Page $model */
                     return $model->parent->title;
                 },
-                'filterType' => \dosamigos\selectize\Selectize::className(),
+                'filterType' => \dosamigos\selectize\SelectizeDropDownList::className(),
                 'filterWidgetOptions' => [
                     'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\page\models\Page::find()->where(['id' => $searchModel->parent_id])->all(), 'id', 'title'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
-                    'url' => ['/grom/page/backend/default/page-list']
+                    'loadUrl' => ['/grom/page/backend/default/page-list']
                 ]
             ],
             [
@@ -98,13 +98,13 @@ $this->params['breadcrumbs'][] = $this->title;
                         /** @var $model \gromver\platform\basic\modules\page\models\Page */
                         return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
                     },
-                'filterType' => \dosamigos\selectize\Selectize::className(),
+                'filterType' => \dosamigos\selectize\SelectizeDropDownList::className(),
                 'filterWidgetOptions' => [
                     'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
                     'clientOptions' => [
                         'maxItems' => 1
                     ],
-                    'url' => ['/grom/tag/backend/default/tag-list']
+                    'loadUrl' => ['/grom/tag/backend/default/tag-list']
                 ]
             ],
             [
