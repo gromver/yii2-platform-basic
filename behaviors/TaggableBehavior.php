@@ -49,7 +49,7 @@ class TaggableBehavior extends \yii\base\Behavior
      */
     public function getTags()
     {
-        return $this->owner->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable(Tag::pivotTableName(), ['item_id' => 'id'], function($query) {
+        return is_array($this->_tags) ? Tag::findAll(['id' => $this->_tags]) : $this->owner->hasMany(Tag::className(), ['id' => 'tag_id'])->viaTable(Tag::pivotTableName(), ['item_id' => 'id'], function($query) {
             /** @var $query ActiveQuery */
             $query->andWhere(['item_class' => $query->modelClass]);
         })->indexBy('id');
@@ -62,11 +62,13 @@ class TaggableBehavior extends \yii\base\Behavior
     {
         $this->owner->getDb()->transaction(function() use ($event){
             if(isset($this->_tags) && is_array($this->_tags)) {
+                $newTags = $this->_tags;
+                $this->_tags = null;
                 $oldTags = ArrayHelper::map($this->owner->tags, 'id', 'id');
                 $this->owner->setIsNewRecord(false);
 
-                $toAppend = array_diff($this->_tags, $oldTags);
-                $toRemove = array_diff($oldTags, $this->_tags);
+                $toAppend = array_diff($newTags, $oldTags);
+                $toRemove = array_diff($oldTags, $newTags);
 
                 foreach($toAppend as $id) {
                     $tag = Tag::findOne($id);
