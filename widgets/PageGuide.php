@@ -43,7 +43,7 @@ class PageGuide extends Widget
      * @items layouts
      * @translation gromver.platform
      */
-    public $layout = 'page/guide';
+    public $layout = 'page/guideDefault';
     /**
      * @type yesno
      * @translation gromver.platform
@@ -186,7 +186,8 @@ class PageGuide extends Widget
     public static function layouts()
     {
         return [
-            'page/guide' => Yii::t('gromver.platform', 'Default'),
+            'page/guideDefault' => Yii::t('gromver.platform', 'Default'),
+            'page/guideAdvanced' => Yii::t('gromver.platform', 'Advanced'),
         ];
     }
 } 

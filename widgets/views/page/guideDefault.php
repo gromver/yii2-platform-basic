@@ -41,7 +41,10 @@ $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PageAsset::cla
     </div>
     <div class="col-md-4">
         <div class="page-list">
-            <?= $this->render('_items', [
+            <?/*= \kartik\widgets\SideNav::widget([
+                'items' => 'items'
+            ]) */?>
+            <?= $this->render('_itemsDefault', [
                 'items' => $items,
                 'level' => 1,
                 'collapse' => false,

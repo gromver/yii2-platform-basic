@@ -21,7 +21,15 @@ use yii\helpers\Html; ?>
             }
             echo Html::beginTag('li', $options);
 
-            echo Html::tag('span', '<i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>', [
+            /*echo Html::tag('span', '<i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>', [
+                'class' => 'toggle' . ($item['hasActiveChild'] || $item['active'] ? '' : ' collapsed'),
+                'data' => [
+                    'toggle' => 'collapse',
+                    'target' => '#' . $ulId
+                ],
+            ]);*/
+
+            echo Html::a($item['label'] . '<i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>', null, [
                 'class' => 'toggle' . ($item['hasActiveChild'] || $item['active'] ? '' : ' collapsed'),
                 'data' => [
                     'toggle' => 'collapse',
@@ -29,9 +37,7 @@ use yii\helpers\Html; ?>
                 ],
             ]);
 
-            echo Html::a($item['label'], $item['url']);
-
-            echo $this->render('_items', [
+            echo $this->render('_itemsDefault', [
                 'items' => $item['items'],
                 'level' => $level + 1,
                 'collapse' => !($item['hasActiveChild'] || $item['active']),
