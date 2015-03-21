@@ -21,14 +21,6 @@ use yii\helpers\Html; ?>
             }
             echo Html::beginTag('li', $options);
 
-            /*echo Html::tag('span', '<i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>', [
-                'class' => 'toggle' . ($item['hasActiveChild'] || $item['active'] ? '' : ' collapsed'),
-                'data' => [
-                    'toggle' => 'collapse',
-                    'target' => '#' . $ulId
-                ],
-            ]);*/
-
             echo Html::a($item['label'] . '<i class="glyphicon glyphicon-chevron-down"></i><i class="glyphicon glyphicon-chevron-up"></i>', null, [
                 'class' => 'toggle' . ($item['hasActiveChild'] || $item['active'] ? '' : ' collapsed'),
                 'data' => [

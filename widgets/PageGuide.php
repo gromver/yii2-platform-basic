@@ -78,17 +78,13 @@ class PageGuide extends Widget
         }
 
         /** items list */
-        /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
-        if ($this->rootPage->equals($this->page)) {
-            $items = $this->page->children(2)->published()->all();
+        if (($this->page->level - $this->rootPage->level) > 1) {
+            $listRoot = $this->page->parents($this->page->isLeaf() ? 2 : 1)->one();
         } else {
-            if ($this->page->isLeaf() && ($this->page->level - $this->rootPage->level) > 1) {
-                $levels = [$this->page->level, $this->page->level - 1];
-            } else {
-                $levels = [$this->page->level, $this->page->level + 1];
-            }
-            $items = $this->rootPage->children()->published()->andWhere(['level' => $levels])->all();
+            $listRoot = $this->rootPage;
         }
+        /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
+        $items = $listRoot->children(2)->published()->all();
         if (count($items)) {
             $hasActiveChild = false;
             $items = $this->prepareItems($items, $items[0]->level, $hasActiveChild);
