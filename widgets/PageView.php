@@ -25,24 +25,24 @@ class PageView extends Widget
     /**
      * Page model or PageId or PageId:PageAlias
      * @var Page|string
-     * @type modal
+     * @field modal
      * @url /grom/page/backend/default/select
      * @translation gromver.platform
      */
     public $page;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @translation gromver.platform
      */
     public $layout = 'page/article';
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $showTranslations;
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $useHighlights = true;

@@ -43,13 +43,13 @@ class SearchResultsSql extends Widget
      */
     public $frontendMode = true;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      */
     public $layout = 'searchSql/results';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @editable
      */

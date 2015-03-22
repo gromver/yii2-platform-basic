@@ -27,20 +27,20 @@ class Menu extends Widget
     /**
      * MenuTypeId or MenuTypeId:MenuTypeAlias
      * @var string
-     * @type modal
+     * @field modal
      * @url /grom/menu/backend/type/select
      * @translation gromver.platform
      * @label Menu Type
      */
     public $type;
     /**
-     * @type list
+     * @field list
      * @items languages
      * @translation gromver.platform
      */
     public $language;
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $showInaccessible = true;

@@ -25,26 +25,26 @@ class PostList extends Widget
     /**
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
-     * @type modal
+     * @field modal
      * @url /grom/news/backend/post/select
      * @translation gromver.platform
      */
     public $category;
     /**
-     * @type list
+     * @field list
      * @items languages
      * @translation gromver.platform
      */
     public $language;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      * @translation gromver.platform
      */
     public $layout = 'post/listDefault';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @editable
      * @translation gromver.platform
@@ -55,7 +55,7 @@ class PostList extends Widget
      */
     public $pageSize = 20;
     /**
-     * @type list
+     * @field list
      * @editable
      * @items sortColumns
      * @var string
@@ -63,7 +63,7 @@ class PostList extends Widget
      */
     public $sort = 'published_at';
     /**
-     * @type list
+     * @field list
      * @editable
      * @items sortDirections
      * @translation gromver.platform

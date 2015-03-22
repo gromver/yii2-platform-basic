@@ -43,7 +43,7 @@ class Calendar extends Widget
     private $_calendar = [];
 
     /**
-     * @type list
+     * @field list
      * @items layouts
      */
     public $layout = 'calendar/default';

@@ -24,20 +24,20 @@ class CategoryList extends Widget
     /**
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
-     * @type modal
+     * @field modal
      * @url /grom/news/backend/category/select
      * @translation gromver.platform
      */
     public $category;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      * @translation gromver.platform
      */
     public $layout = 'category/list';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @editable
      * @translation gromver.platform
@@ -45,7 +45,7 @@ class CategoryList extends Widget
     public $itemLayout = '_itemArticle';
     /**
      * @var string
-     * @type list
+     * @field list
      * @editable
      * @items sortColumns
      * @translation gromver.platform
@@ -53,7 +53,7 @@ class CategoryList extends Widget
     public $sort = 'lft';
     /**
      * @var string
-     * @type list
+     * @field list
      * @editable
      * @items sortDirections
      * @translation gromver.platform

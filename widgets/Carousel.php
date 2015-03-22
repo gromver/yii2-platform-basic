@@ -18,8 +18,8 @@ namespace gromver\platform\basic\widgets;
 class Carousel extends Widget
 {
     /**
-     * @type multiple
-     * @fieldType object
+     * @field multiple
+     * @multyField object
      * @object \gromver\platform\basic\widgets\CarouselItem
      * @label Slides
      * @translation gromver.platform
@@ -36,7 +36,7 @@ class Carousel extends Widget
 
 class CarouselItem {
     /**
-     * @type editor
+     * @field editor
      * @translation gromver.platform
      */
     public $content;

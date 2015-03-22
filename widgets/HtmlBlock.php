@@ -18,7 +18,7 @@ class HtmlBlock extends Widget
      */
     public $title;
     /**
-     * @type editor
+     * @field editor
      * @label Content
      * @translation gromver.platform
      * @var string

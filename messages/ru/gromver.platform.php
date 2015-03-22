@@ -251,7 +251,6 @@ return [
     'Font Space' => 'Шаг шрифта',
     'Menu Type' => 'Тип меню',
     'Show Inaccessible' => 'Отображать недоступные',
-    'Cache Duration' => 'Время кеширования',
     'With Captcha' => 'Включить капчу',
     'Authorization is failed.' => 'Не удалось авторизировать пользователя.',
     'The form is filled incorrectly.' => 'Форма заполнена неправильно.',
@@ -267,4 +266,8 @@ return [
     'Back' => 'Назад',
     'Action' => 'Действие',
     'Configure widget' => 'Настроить виджет',
+    '<h3>Caching</h3>' => '<h3>Кеширование</h3>',
+    'Cache Component' => 'Компонент кеширования',
+    'Cache Duration' => 'Время кеширования',
+    'No cache' => 'Без кеша',
 ];

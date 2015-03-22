@@ -24,7 +24,7 @@ class UserProfile extends Widget {
      */
     public $model;
     /**
-     * @type list
+     * @field list
      * @multiple
      * @items params
      * @empty All

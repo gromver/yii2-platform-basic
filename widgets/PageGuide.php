@@ -11,6 +11,7 @@ namespace gromver\platform\basic\widgets;
 
 
 use gromver\platform\basic\assets\CkeditorHighlightAsset;
+use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\page\models\Page;
 use yii\base\InvalidConfigException;
 use Yii;
@@ -22,10 +23,12 @@ use Yii;
  */
 class PageGuide extends Widget
 {
+    use WidgetCacheTrait;
+
     /**
      * Page model or PageId or PageId:PageAlias
      * @var Page|string
-     * @type modal
+     * @field modal
      * @url /grom/page/backend/default/select
      * @translation gromver.platform
      */
@@ -33,29 +36,29 @@ class PageGuide extends Widget
     /**
      * Page model or PageId or PageId:PageAlias
      * @var Page|string
-     * @type modal
+     * @field modal
      * @url /grom/page/backend/default/select
      * @translation gromver.platform
      */
     public $page;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @translation gromver.platform
      */
     public $layout = 'page/guideDefault';
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $showTranslations;
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $useHighlights = true;
 
-    protected function launch()
+    public function init()
     {
         if ($this->rootPage && !$this->rootPage instanceof Page) {
             $this->rootPage = Page::findOne(intval($this->rootPage));
@@ -77,44 +80,54 @@ class PageGuide extends Widget
             CkeditorHighlightAsset::register($this->getView());
         }
 
-        /** items list */
-        if (($this->page->level - $this->rootPage->level) > 1) {
-            $listRoot = $this->page->parents($this->page->isLeaf() ? 2 : 1)->one();
-        } else {
-            $listRoot = $this->rootPage;
-        }
-        /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
-        $items = $listRoot->children(2)->published()->all();
-        if (count($items)) {
-            $hasActiveChild = false;
-            $items = $this->prepareItems($items, $items[0]->level, $hasActiveChild);
-        }
+        $this->ensureCache();
+    }
 
-        /** nav */
-        $model = $this->page;
-        $prevModel = $nextModel = null;
-        // предыдущая страница
-        if (!$this->rootPage->equals($this->page)) {
-            if ($prevModel = $model->prev()->published()->one()) {
-                //пытаемся найти лист(правый)
-                if ($rgtLeaf = $prevModel->leaves()->published()->orderBy(['lft' => SORT_DESC])->one()) {
-                    $prevModel = $rgtLeaf;
-                }
+    protected function launch()
+    {
+
+        if (!$this->cache || (list($items, $prevModel, $nextModel) = Yii::$app->cache->get([__CLASS__, $this->rootPage->id, $this->page->id])) === false) {
+            /** items list */
+            if (($this->page->level - $this->rootPage->level) > 1) {
+                $listRoot = $this->page->parents($this->page->isLeaf() ? 2 : 1)->one();
             } else {
-                $prevModel = $model->parent;
+                $listRoot = $this->rootPage;
             }
-        }
-        // следущая страница
-        if ($this->rootPage->equals($this->page)) {
-            $nextModel = $model->children(1)->published()->one();
-        } else {
-            if (!($nextModel = $model->children(1)->published()->one() or $nextModel = $model->next()->published()->one())) {
-                //пытаемся выйти наверх
-                while(($parentModel = $model->parent) && !$parentModel->equals($this->rootPage)) {
-                    if ($nextModel = $parentModel->next()->one()) break;
-                    $model = $parentModel;
+            /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
+            $items = $listRoot->children(2)->published()->all();
+            if (count($items)) {
+                $hasActiveChild = false;
+                $items = $this->prepareItems($items, $items[0]->level, $hasActiveChild);
+            }
+
+            /** nav */
+            $model = $this->page;
+            $prevModel = $nextModel = null;
+            // предыдущая страница
+            if (!$this->rootPage->equals($this->page)) {
+                if ($prevModel = $model->prev()->published()->one()) {
+                    //пытаемся найти лист(правый)
+                    if ($rgtLeaf = $prevModel->leaves()->published()->orderBy(['lft' => SORT_DESC])->one()) {
+                        $prevModel = $rgtLeaf;
+                    }
+                } else {
+                    $prevModel = $model->parent;
                 }
             }
+            // следущая страница
+            if ($this->rootPage->equals($this->page)) {
+                $nextModel = $model->children(1)->published()->one();
+            } else {
+                if (!($nextModel = $model->children(1)->published()->one() or $nextModel = $model->next()->published()->one())) {
+                    //пытаемся выйти наверх
+                    while(($parentModel = $model->parent) && !$parentModel->equals($this->rootPage)) {
+                        if ($nextModel = $parentModel->next()->one()) break;
+                        $model = $parentModel;
+                    }
+                }
+            }
+
+            Yii::$app->cache->set([__CLASS__, $this->rootPage->id, $this->page->id], [$items, $prevModel, $nextModel], $this->cacheDuration, DbState::dependency(Page::tableName()));
         }
 
         echo $this->render($this->layout, [
@@ -151,8 +164,9 @@ class PageGuide extends Widget
             } elseif ($level < $model->level) {
                 array_unshift($rawItems, $model);
                 $hasActiveChild = false;
-                $items[count($items) - 1]['items'] = $this->prepareItems($rawItems, $model->level, $hasActiveChild);
-                $items[count($items) - 1]['hasActiveChild'] = $hasActiveChild;
+                $last = count($items) - 1;
+                $items[$last]['items'] = $this->prepareItems($rawItems, $model->level, $hasActiveChild);
+                $items[$last]['hasActiveChild'] = $hasActiveChild;
             } else {
                 array_unshift($rawItems, $model);
                 return $items;

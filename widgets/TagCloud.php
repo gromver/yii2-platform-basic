@@ -23,7 +23,7 @@ use Yii;
 class TagCloud extends Widget
 {
     /**
-     * @type list
+     * @field list
      * @items languages
      * @translation gromver.platform
      */

@@ -25,25 +25,25 @@ class PostView extends Widget
     /**
      * Post model or PostId or PostId:PageAlias
      * @var Post|string
-     * @type modal
+     * @field modal
      * @url /grom/news/backend/post/select
      * @translation gromver.platform
      */
     public $post;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      * @translation gromver.platform
      */
     public $layout = 'post/viewIssue';
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $showTranslations;
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $useHighlights = true;

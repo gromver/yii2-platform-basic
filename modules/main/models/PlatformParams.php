@@ -24,15 +24,15 @@ class PlatformParams extends  \yii\base\Object
      */
     public $siteName;
     /**
-     * @type multiple
-     * @fieldType text
+     * @field multiple
+     * @multyField text
      * @email
      * @translation gromver.platform
      */
     public $adminEmail;
     /**
-     * @type multiple
-     * @fieldType text
+     * @field multiple
+     * @multyField text
      * @email
      * @translation gromver.platform
      */
@@ -49,7 +49,7 @@ class PlatformParams extends  \yii\base\Object
      */
     public $keywords;
     /**
-     * @type list
+     * @field list
      * @items robots
      * @translation gromver.platform
      * @label Robots

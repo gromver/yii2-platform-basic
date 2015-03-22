@@ -38,14 +38,14 @@ class UserParams
      */
     public $work_phone;
     /**
-     * @type text
+     * @field text
      * @email
      * @translation gromver.platform
      * @var string
      */
     public $email;
     /**
-     * @type text
+     * @field text
      * @email
      * @translation gromver.platform
      * @var string

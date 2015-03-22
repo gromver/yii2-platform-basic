@@ -22,7 +22,7 @@ use Yii;
 class Contact extends Widget
 {
     /**
-     * @type yesno
+     * @field yesno
      * @translation gromver.platform
      */
     public $withCaptcha;

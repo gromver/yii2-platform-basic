@@ -48,7 +48,7 @@ class HtmlEditor extends WidgetPersonal {
     public $options = [];
     /**
      * @var string
-     * @type list
+     * @field list
      * @items editorLabels
      */
     public $editor = self::EDITOR_CKEDITOR_FULL;

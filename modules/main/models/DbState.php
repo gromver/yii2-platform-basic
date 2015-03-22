@@ -86,7 +86,7 @@ class DbState extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param $table string|[] table name
+     * @param $table string|array table name
      * @return ExpressionDependency
      */
     public static function dependency($table)

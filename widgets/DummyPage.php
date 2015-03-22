@@ -23,7 +23,7 @@ class DummyPage extends Widget
     /**
      * Dummy page description
      * @var string
-     * @type textarea
+     * @field textarea
      * @translation gromver.platform
      */
     public $message;

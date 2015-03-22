@@ -24,7 +24,7 @@ class PostDay extends Widget
 {
     /**
      * @var Category|string
-     * @type modal
+     * @field modal
      * @url /grom/frontend/default/select-category
      * @translation gromver.platform
      */
@@ -42,20 +42,20 @@ class PostDay extends Widget
      */
     public $day;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @translation gromver.platform
      */
     public $layout = 'post/day';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @translation gromver.platform
      */
     public $itemLayout = '_itemIssue';
 
     /**
-     * @type list
+     * @field list
      * @editable
      * @items sortColumns
      * @var string
@@ -64,7 +64,7 @@ class PostDay extends Widget
     public $sort = 'published_at';
 
     /**
-     * @type list
+     * @field list
      * @editable
      * @items sortDirections
      * @translation gromver.platform

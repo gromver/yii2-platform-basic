@@ -45,13 +45,13 @@ class SearchResultsElasticsearch extends Widget
         ]
     ];
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      */
     public $layout = 'searchElasticsearch/results';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @editable
      */

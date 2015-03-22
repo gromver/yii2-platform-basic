@@ -17,7 +17,7 @@ class HtmlEditorTrait extends InputWidget implements SpecificationInterface {
 
     /**
      * @var string
-     * @type list
+     * @field list
      * @items editorLabels
      */
     public $editor;

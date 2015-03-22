@@ -24,13 +24,13 @@ class CategoryView extends Widget
     /**
      * Category or CategoryId or CategoryId:CategoryPath
      * @var Category|string
-     * @type modal
+     * @field modal
      * @url /grom/news/backend/category/select
      * @translation gromver.platform
      */
     public $category;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      * @translation gromver.platform

@@ -26,7 +26,7 @@ class TagItems extends Widget
     /**
      * Tag model or TagId
      * @var Tag|string
-     * @type modal
+     * @field modal
      * @url /grom/tag/backend/default/select
      * @translation gromver.platform
      */
@@ -36,14 +36,14 @@ class TagItems extends Widget
      */
     public $pageSize = 20;
     /**
-     * @type list
+     * @field list
      * @items layouts
      * @editable
      * @translation gromver.platform
      */
     public $layout = 'tag/itemsDefault';
     /**
-     * @type list
+     * @field list
      * @items itemLayouts
      * @editable
      * @translation gromver.platform
