@@ -1,28 +1,29 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: roman
- * Date: 07.03.15
- * Time: 12:29
+ * @link https://github.com/gromver/yii2-platform-basic.git#readme
+ * @copyright Copyright (c) Gayazov Roman, 2014
+ * @license https://github.com/gromver/yii2-platform-basic/blob/master/LICENSE
+ * @package yii2-platform-basic
+ * @version 1.0.0
  */
 
 namespace gromver\platform\basic\widgets;
 
-
-use yii\base\ErrorException;
-
+/**
+ * Class WidgetPersonal
+ * @package yii2-platform-basic
+ * @author Gayazov Roman <gromver5@gmail.com>
+ */
 class WidgetPersonal extends Widget {
     protected function preInit()
     {
-        if (\Yii::$app->user->getIsGuest()) {
-            throw new ErrorException('You must be authorized.');
-        }
-
         if (!isset($this->context)) {
             $this->context = \Yii::$app->request->getPathInfo();
         }
 
-        $this->context .= '/u' . \Yii::$app->user->id;
+        if (!\Yii::$app->user->getIsGuest()) {
+            $this->context .= '/u' . \Yii::$app->user->id;
+        }
 
         parent::preInit();
     }

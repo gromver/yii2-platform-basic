@@ -1,9 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: roman
- * Date: 22.03.15
- * Time: 10:01
+ * @link https://github.com/gromver/yii2-platform-basic.git#readme
+ * @copyright Copyright (c) Gayazov Roman, 2014
+ * @license https://github.com/gromver/yii2-platform-basic/blob/master/LICENSE
+ * @package yii2-platform-basic
+ * @version 1.0.0
  */
 
 namespace gromver\platform\basic\widgets;
@@ -12,6 +13,11 @@ namespace gromver\platform\basic\widgets;
 use yii\caching\Cache;
 use yii\di\Instance;
 
+/**
+ * Class WidgetCacheTrait
+ * @package yii2-platform-basic
+ * @author Gayazov Roman <gromver5@gmail.com>
+ */
 trait WidgetCacheTrait {
     /**
      * @var Cache|string
