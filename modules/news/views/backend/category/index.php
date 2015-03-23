@@ -99,7 +99,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model, $index, $widget) {
                         /** @var $model \gromver\platform\basic\modules\news\models\Category */
-                        return $model->status === \gromver\platform\basic\modules\news\models\Category::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
+                        return $model->status === \gromver\platform\basic\modules\news\models\Category::STATUS_PUBLISHED ? Html::a('<i class="glyphicon glyphicon-ok-circle"></i>', \yii\helpers\Url::to(['unpublish', 'id' => $model->id]), ['class' => 'btn btn-default btn-xs', 'data-pjax' => '0', 'data-method' => 'post']) : Html::a('<i class="glyphicon glyphicon-remove-circle"></i>', \yii\helpers\Url::to(['publish', 'id' => $model->id]), ['class' => 'btn btn-danger btn-xs', 'data-pjax' => '0', 'data-method' => 'post']);
                     },
                 'filter' => \gromver\platform\basic\modules\news\models\Category::statusLabels(),
                 'format' => 'raw',
