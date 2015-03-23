@@ -50,6 +50,7 @@ class MenuType extends \yii\db\ActiveRecord
     {
         return [
             [['id', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lock'], 'integer'],
+            [['title'], 'required'],
             [['title'], 'string', 'max' => 1024],
             [['alias'], 'filter', 'filter' => 'trim'],
             [['alias'], 'filter', 'filter' => function($value){

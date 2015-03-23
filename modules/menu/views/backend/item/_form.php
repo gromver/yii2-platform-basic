@@ -30,17 +30,17 @@ use yii\bootstrap\ActiveForm;
 
             <?= $form->field($model, 'alias')->textInput(['maxlength' => 255, 'placeholder' => Yii::t('gromver.platform', 'Auto-generate')]) ?>
 
-            <?= $form->field($model, 'menu_type_id')->dropDownList(['' => Yii::t('gromver.platform', 'Select ...')] + \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\menu\models\MenuType::find()->all(),'id', 'title'), ['id' => 'menu_type_id']) ?>
+            <?= $form->field($model, 'menu_type_id')->dropDownList(['' => Yii::t('gromver.platform', 'Select ...')] + \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\menu\models\MenuType::find()->all(),'id', 'title')) ?>
+
+            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
 
             <?= $form->field($model, 'parent_id')->widget(\kartik\widgets\DepDrop::className(), [
                 'pluginOptions'=>[
-                    'depends' => ['menu_type_id', 'language'],
+                    'depends' => [Html::getInputId($model, 'menu_type_id'), Html::getInputId($model, 'language')],
                     'placeholder' => Yii::t('gromver.platform', 'Select ...'),
                     'url' => \yii\helpers\Url::to(['type-items', 'update_item_id' => $model->isNewRecord ? null : $model->id, 'selected' => $model->parent_id]),
                 ]
             ]) ?>
-
-            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
 
             <?//= $form->field($model, 'path')->textInput(['maxlength' => 2048]) ?>
 
@@ -133,4 +133,4 @@ use yii\bootstrap\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-<?php $this->registerJs('$("#menu_type_id").change()', \yii\web\View::POS_READY);
+<?php $this->registerJs('$("#' . Html::getInputId($model, 'menu_type_id') . '").change()', \yii\web\View::POS_READY);
