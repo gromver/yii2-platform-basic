@@ -99,8 +99,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
         ]);
 
         /** @var MenuManager $manager */
-        //$manager = \Yii::createObject(MenuManager::className());
-        //$rules = [$manager];
         $rules['auth'] = 'grom/auth/default/login';
         $rules['admin'] = 'grom/backend/default/index';
         if (is_array($this->blockedUrlRules) && count($this->blockedUrlRules)) {
@@ -111,7 +109,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
 
         $app->urlManager->addRules($rules, false); //вставляем в начало списка
 
-        $app->set('menuManager', \Yii::createObject(MenuManager::className())/*$manager*/);
+        $app->set('menuManager', \Yii::createObject(MenuManager::className()));
 
         ModuleQuery::instance()->implement('\gromver\platform\common\interfaces\BootstrapInterface')->invoke('bootstrap', [$app]);
     }
@@ -132,7 +130,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
 
         // устанавливает мета описание сайта по умолчанию
         $view = Yii::$app->getView();
-        $view->title = @$this->params['title'];
+        $view->title = $this->getSiteName();
         if (!empty($this->params['keywords'])) {
             $view->registerMetaTag(['name' => 'keywords', 'content' => $this->params['keywords']], 'keywords');
         }
