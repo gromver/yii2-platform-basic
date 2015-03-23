@@ -300,11 +300,6 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             ]);
         }
 
-        // нормализуем подкатегории при смене языка
-        if (array_key_exists('language', $changedAttributes)) {
-            $this->normalizeLanguage();
-        }
-
         // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
@@ -338,12 +333,6 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             /** @var self $child */
             $child->normalizePath($path);
         }
-    }
-
-    public function normalizeLanguage()
-    {
-        $ids = $this->children()->select('id')->column();
-        self::updateAll(['language' => $this->language], ['id' => $ids]);
     }
 
     /**

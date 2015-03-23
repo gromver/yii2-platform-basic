@@ -256,16 +256,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             ]);
         }
 
-        // нормализуем подкатегории при смене языка
-        if (array_key_exists('language', $changedAttributes)) {
-            $this->normalizeLanguage();
-        }
-
-        // нормализуем подкатегории при смене статуса
-        if (array_key_exists('status', $changedAttributes)) {
-            $this->normalizeStatus();
-        }
-
         // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
@@ -298,22 +288,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         foreach ($children as $child) {
             /** @var self $child */
             $child->normalizePath($path);
-        }
-    }
-
-    public function normalizeLanguage()
-    {
-        $ids = $this->children()->select('id')->column();
-        self::updateAll(['language' => $this->language], ['id' => $ids]);
-    }
-
-    public function normalizeStatus()
-    {
-        $ids = $this->children()->select('id')->column();
-        self::updateAll(['status' => $this->status], ['id' => $ids]);
-        foreach ($this->children()->each() as $model) {
-            /** @var self $model */
-            $model->save(false);    // trigger events
         }
     }
 
@@ -450,8 +424,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                     'AND',
                     ['=', 'model_class', self::className()],
                     'model_id={{%grom_page}}.id',
-                    ['=', '{{%grom_page}}.status', self::STATUS_PUBLISHED],
-                    //['NOT IN', '{{%grom_page}}.parent_id', Page::find()->unpublished()->select('{{%grom_page}}.id')->column()]
+                    ['NOT IN', '{{%grom_page}}.parent_id', Page::find()->unpublished()->select('{{%grom_page}}.id')->column()]
                 ]
             )->addSelect('{{%grom_page}}.id')
                 ->andWhere('model_class=:pageClassName XOR {{%grom_page}}.id IS NULL', [':pageClassName' => self::className()]);
@@ -472,26 +445,12 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                         [
                             'term' => ['model_class' => self::className()]
                         ],
-                        /*[
-                            'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_page}}.id')->column()]
-                        ],*/
                         [
-                            'term' => ['params.published' => false]
-                        ]
+                            'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_page}}.id')->column()]
+                        ],
                     ]
                 ]
             ];
         }
-    }
-
-    /**
-     * @param $index \gromver\platform\basic\modules\elasticsearch\models\Index
-     * @param $model static
-     */
-    static public function elasticsearchBeforeCreateIndex($index, $model)
-    {
-        $index->params = [
-            'published' => $model->status == self::STATUS_PUBLISHED
-        ];
     }
 }
