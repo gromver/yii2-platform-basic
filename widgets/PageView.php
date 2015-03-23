@@ -47,7 +47,7 @@ class PageView extends Widget
      */
     public $useHighlights = true;
 
-    protected function launch()
+    public function init()
     {
         if ($this->page && !$this->page instanceof Page) {
             $this->page = Page::findOne(intval($this->page));
@@ -56,7 +56,10 @@ class PageView extends Widget
         if (empty($this->page)) {
             throw new InvalidConfigException(Yii::t('gromver.platform', 'Page not found.'));
         }
+    }
 
+    protected function launch()
+    {
         if ($this->useHighlights) {
             CkeditorHighlightAsset::register($this->getView());
         }
