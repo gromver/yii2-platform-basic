@@ -33,7 +33,7 @@ $navBar = NavBar::begin(\yii\helpers\ArrayHelper::merge([
 
 <?= Html::endForm() ?>
 
-<?php if (Yii::$app->user->can('administrate')) { ?>
+<?php if (Yii::$app->user->can('customize')) { ?>
     <div class="input-group navbar-left">
         <?= Html::tag('span', Yii::t('gromver.platform', 'Editing mode'), ['class' => 'navbar-text']) . '&nbsp;' ?>
         <div class="btn-group">

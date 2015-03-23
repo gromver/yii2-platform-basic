@@ -26,6 +26,10 @@ class BackendController extends \yii\web\Controller
     {
         Yii::$app->grom->applyBackendLayout();
 
+        if (!Yii::$app->user->can('administrate')) {
+            Yii::$app->user->loginRequired();
+        }
+
         return parent::beforeAction($action);
     }
 } 

@@ -47,7 +47,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     [
                         'allow' => true,
                         'actions' => ['update', 'restore', 'publish', 'unpublish', 'keep-forever', 'bulk-keep-forever'],
-                        'roles' => ['update'],
+                        'roles' => ['versions'],
                     ],
                     [
                         'allow' => true,

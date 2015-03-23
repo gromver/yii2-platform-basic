@@ -42,7 +42,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     [
                         'allow' => true,
                         'actions' => ['create', 'update', 'configure'],
-                        'roles' => ['update'],
+                        'roles' => ['customize'],
                     ],
                     [
                         'allow' => true,

@@ -6,30 +6,40 @@ class m140820_085040_grom_rbac extends \yii\db\Migration
     {
         $auth = Yii::$app->authManager;
 
-        // add "createPermission" permission
+        // право на создание элемента (create)
         $createPermission = $auth->createPermission('create');
         $createPermission->description = 'create';
         $auth->add($createPermission);
 
-        // add "readPermission" permission
+        // право на просмотр элемента (view, index)
         $readPermission = $auth->createPermission('read');
         $readPermission->description = 'read';
         $auth->add($readPermission);
 
-        // add "updatePermission" permission
+        // право на изменение элемента (update)
         $updatePermission = $auth->createPermission('update');
         $updatePermission->description = 'update';
         $auth->add($updatePermission);
 
-        // add "deletePermission" permission
+        // право удалять элементы (delete)
         $deletePermission = $auth->createPermission('delete');
         $deletePermission->description = 'delete';
         $auth->add($deletePermission);
 
-        // add "userPermission" permission
+        // право заходить в админку (обязательная проверка для всех экшенов в BackendController)
         $administratePermission = $auth->createPermission('administrate');
         $administratePermission->description = 'administrate';
         $auth->add($administratePermission);
+
+        // право настраивать виджеты
+        $customizePermission = $auth->createPermission('customize');
+        $customizePermission->description = 'customize';
+        $auth->add($customizePermission);
+
+        // право доступа к контролю версий элемента
+        $versionsPermission = $auth->createPermission('versions');
+        $versionsPermission->description = 'versions';
+        $auth->add($versionsPermission);
 
         // add the rule
         $authorizedRule = new \gromver\platform\basic\rules\AuthorizedRule();
@@ -40,23 +50,20 @@ class m140820_085040_grom_rbac extends \yii\db\Migration
         $authorized->ruleName = $authorizedRule->name;
         $auth->add($authorized);
 
-        // add "Reader" role
-        $reader = $auth->createRole('Reader');
-        $auth->add($reader);
-        $auth->addChild($reader, $readPermission);
-
         // add "Author" role
         $author = $auth->createRole('Author');
         $auth->add($author);
+        $auth->addChild($author, $administratePermission);
+        $auth->addChild($author, $readPermission);
         $auth->addChild($author, $createPermission);
         $auth->addChild($author, $updatePermission);
-        $auth->addChild($author, $reader);
 
         // add "Administrator" role
         $admin = $auth->createRole('Administrator');
         $auth->add($admin);
         $auth->addChild($admin, $deletePermission);
-        $auth->addChild($admin, $administratePermission);
+        $auth->addChild($admin, $customizePermission);
+        $auth->addChild($admin, $versionsPermission);
         $auth->addChild($admin, $author);
     }
 
@@ -64,7 +71,6 @@ class m140820_085040_grom_rbac extends \yii\db\Migration
     {
         $auth = Yii::$app->authManager;
 
-        $auth->remove($auth->getRole('Reader'));
         $auth->remove($auth->getRole('Author'));
         $auth->remove($auth->getRole('Administrator'));
         $auth->remove($auth->getRole('Authorized'));
@@ -73,6 +79,8 @@ class m140820_085040_grom_rbac extends \yii\db\Migration
         $auth->remove($auth->getPermission('update'));
         $auth->remove($auth->getPermission('delete'));
         $auth->remove($auth->getPermission('administrate'));
+        $auth->remove($auth->getPermission('customize'));
+        $auth->remove($auth->getPermission('versions'));
         $auth->remove($auth->getRule('isAuthorized'));
     }
 }

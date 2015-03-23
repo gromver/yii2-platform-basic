@@ -70,9 +70,9 @@ class DefaultController extends \yii\web\Controller
 
     public function actionLogin($modal = null)
     {
-        if (!\Yii::$app->user->isGuest) {
+        /*if (!\Yii::$app->user->isGuest) {
             $this->goHome();
-        }
+        }*/
 
         $model = new LoginForm();
 

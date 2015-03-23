@@ -17,11 +17,9 @@ use gromver\platform\basic\widgets\assets\WidgetAsset;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
-use yii\helpers\Url;
 
 /**
  * Class Widget
@@ -70,7 +68,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      * Право доступа к кнопке настроек виджета
      * @var string
      */
-    private $_configureAccess = 'administrate';
+    private $_configureAccess = 'customize';
     /**
      * Компонент настройки виджетов, доступ к которому имеют пользователи с правом 'administrate'
      * Для настройки кастомных прав доступа к настройкам виджета нужно:
@@ -94,7 +92,6 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
         $this->_config = $config;
 
         try {
-            //parent::__construct($config);
             if (!empty($config)) {
                 Yii::configure($this, $config);
             }
