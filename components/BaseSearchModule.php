@@ -13,6 +13,8 @@ namespace gromver\platform\basic\components;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\behaviors\SearchBehavior;
+use gromver\platform\basic\interfaces\model\SearchableInterface;
+use yii\base\InvalidParamException;
 
 /**
  * Class BaseSearchModule
@@ -58,13 +60,25 @@ class BaseSearchModule extends \yii\base\Module implements ModuleEventsInterface
      * Инедксация сохраненой модели для последующего поиска по этому индексу
      * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
+     * @throw InvalidParamException
      */
-    public function indexPage($model) {}
+    public function indexPage($model)
+    {
+        if (!$model instanceof SearchableInterface) {
+            throw new InvalidParamException(__CLASS__ . '::indexPage($model). $model must be an \gromver\platform\basic\interfaces\model\SearchableInterface.');
+        }
+    }
 
     /**
      * Удаление записи из индекса соответсвующей удаленной модели
      * @param \yii\db\ActiveRecord|\gromver\platform\basic\interfaces\model\ViewableInterface|\gromver\platform\basic\interfaces\model\SearchableInterface $model
      * @return bool|null
+     * @throw InvalidParamException
      */
-    public function deletePage($model) {}
+    public function deletePage($model)
+    {
+        if (!$model instanceof SearchableInterface) {
+            throw new InvalidParamException(__CLASS__ . '::indexPage($model). $model must be an \gromver\platform\basic\interfaces\model\SearchableInterface.');
+        }
+    }
 } 

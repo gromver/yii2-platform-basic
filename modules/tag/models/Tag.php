@@ -145,11 +145,24 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
         parent::afterSave($insert, $changedAttributes);
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function afterDelete()
+    {
+        parent::afterDelete();
+
+        $this->getDb()->createCommand()->delete(self::pivotTableName(), ['tag_id' => $this->id])->execute();
+    }
+
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
         self::STATUS_UNPUBLISHED => 'Unpublished',
     ];
 
+    /**
+     * @return array
+     */
     public static function statusLabels()
     {
         return array_map(function($label) {
@@ -157,16 +170,13 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
         }, self::$_statuses);
     }
 
+    /**
+     * @param string|null $status
+     * @return string
+     */
     public function getStatusLabel($status = null)
     {
         return Yii::t('gromver.platform', self::$_statuses[$status === null ? $this->status : $status]);
-    }
-
-    public function afterDelete()
-    {
-        parent::afterDelete();
-
-        $this->getDb()->createCommand()->delete(self::pivotTableName(), ['tag_id' => $this->id])->execute();
     }
 
     /**
@@ -177,11 +187,18 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
         return $this->hasMany(TagToItem::className(), ['tag_id' => 'id']);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function optimisticLock()
     {
         return 'lock';
     }
 
+    /**
+     * Увеличивает счетчик просмотров
+     * @return int
+     */
     public function hit()
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
@@ -296,14 +313,19 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
     }
 
     //TranslatableInterface
+    /**
+     * @inheritdoc
+     */
     public function getTranslations()
     {
         return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->andWhere(['!=', 'language', $this->language])->indexBy('language');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLanguage()
     {
         return $this->language;
     }
-
 }

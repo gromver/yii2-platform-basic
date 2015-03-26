@@ -22,16 +22,25 @@ namespace gromver\platform\basic\modules\tag\models;
  */
 class TagToItem extends \yii\db\ActiveRecord
 {
+    /**
+     * @inheritdoc
+     */
     public static function tableName()
     {
         return '{{%grom_tag_to_item}}';
     }
 
+    /**
+     * @inheritdoc
+     */
     public static function primaryKey()
     {
         return ['tag_id', 'item_id', 'item_class'];
     }
 
+    /**
+     * @return null|static
+     */
     public function getItem()
     {
         /** @var \yii\db\ActiveRecord $itemClass */

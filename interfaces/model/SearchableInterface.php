@@ -16,7 +16,19 @@ namespace gromver\platform\basic\interfaces\model;
  */
 interface SearchableInterface
 {
+    /**
+     * @return string
+     */
     public function getSearchTitle();
+
+    /**
+     * @return string
+     */
     public function getSearchContent();
+
+    /**
+     * ['sport', 'policy', ...]
+     * @return array
+     */
     public function getSearchTags();
 }

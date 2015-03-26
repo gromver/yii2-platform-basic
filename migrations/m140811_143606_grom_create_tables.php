@@ -373,7 +373,7 @@ class m140811_143606_grom_create_tables extends \yii\db\Migration
             'title' => Schema::TYPE_STRING . '(1024) NOT NULL',
             'content' => Schema::TYPE_TEXT . ' NOT NULL',
             'tags' => Schema::TYPE_STRING . '(1024) NOT NULL',
-            'updated_at' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'date' => Schema::TYPE_INTEGER . ' NOT NULL',
             'url_frontend' => Schema::TYPE_STRING . '(1024) NOT NULL',
             'url_backend' => Schema::TYPE_STRING . '(1024) NOT NULL',
             'FULLTEXT (title,content)',

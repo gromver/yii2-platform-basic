@@ -226,11 +226,22 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         return $this->hasOne(PostViewed::className(), ['post_id' => 'id'])->onCondition(['user_id' => Yii::$app->user ? Yii::$app->user->id : null])->inverseOf('post');
     }
 
+    /**
+     * @return bool
+     */
+    public function getPublished()
+    {
+        return $this->status == self::STATUS_PUBLISHED;
+    }
+
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
         self::STATUS_UNPUBLISHED => 'Unpublished',
     ];
 
+    /**
+     * @return array
+     */
     public static function statusLabels()
     {
         return array_map(function($label) {
@@ -238,6 +249,10 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             }, self::$_statuses);
     }
 
+    /**
+     * @param string|null $status
+     * @return string
+     */
     public function getStatusLabel($status=null)
     {
         if ($status === null) {
@@ -245,7 +260,6 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         }
         return Yii::t('gromver.platform', self::$_statuses[$status]);
     }
-
 
     /**
      * @inheritdoc
@@ -256,16 +270,26 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         return new PostQuery(get_called_class());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function optimisticLock()
     {
         return 'lock';
     }
 
+    /**
+     * Увеличивает счетчик просмотров
+     * @return int
+     */
     public function hit()
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
+    /**
+     * Помечает модель как "просмотренная" для текущего пользователя
+     */
     public function view()
     {
         if (Yii::$app->user->id && !$this->postViewed) {
@@ -273,6 +297,9 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         }
     }
 
+    /**
+     * @return array
+     */
     public function getDayLink()
     {
         return ['/grom/news/post/day', 'category_id' => $this->category_id, 'year' => date('Y', $this->published_at), 'month' => date('m', $this->published_at), 'day' => date('j', $this->published_at)];
@@ -312,40 +339,20 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     }
 
     //TranslatableInterface
+    /**
+     * @inheritdoc
+     */
     public function getTranslations()
     {
         return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->andWhere(['!=', 'language', $this->language])->indexBy('language');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLanguage()
     {
         return $this->language;
-    }
-
-    public function extraFields()
-    {
-        return [
-            //'language',
-            'published',
-            'tags' => function($model) {
-                    return array_values(array_map(function ($tag) {
-                        return $tag->title;
-                    }, $model->tags));
-                },
-            'text' => function($model) {
-                    /** @var self $model */
-                    return strip_tags($model->preview_text . "\n" . $model->detail_text);
-                },
-            'date' => function($model) {
-                    /** @var self $model */
-                    return date(DATE_ISO8601, $model->published_at);
-                },
-        ];
-    }
-
-    public function getPublished()
-    {
-        return $this->status == self::STATUS_PUBLISHED;
     }
 
     // SearchableInterface

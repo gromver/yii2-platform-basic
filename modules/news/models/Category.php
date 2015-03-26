@@ -204,13 +204,15 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function transactions()
     {
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
-
 
     /**
      * @inheritdoc
@@ -237,11 +239,53 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
+    /**
+     * @return CategoryQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function getPublished()
+    {
+        return $this->status == self::STATUS_PUBLISHED;
+    }
+
+    /**
+     * @param bool $includeSelf
+     * @return array
+     */
+    public function getBreadcrumbs($includeSelf = false)
+    {
+        if ($this->isRoot()) {
+            return [];
+        } else {
+            $path = $this->parents()->noRoots()->all();
+            if ($includeSelf) {
+                $path[] = $this;
+            }
+            return array_map(function ($item) {
+                /** @var self $item */
+                return [
+                    'label' => $item->title,
+                    'url' => $item->getFrontendViewLink()
+                ];
+            }, $path);
+        }
+    }
+
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
         self::STATUS_UNPUBLISHED => 'Unpublished',
     ];
 
+    /**
+     * @return array
+     */
     public static function statusLabels()
     {
         return array_map(function($label) {
@@ -249,6 +293,10 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             }, self::$_statuses);
     }
 
+    /**
+     * @param string|null $status
+     * @return string
+     */
     public function getStatusLabel($status = null)
     {
         if ($status === null) {
@@ -257,16 +305,28 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         return Yii::t('gromver.platform', self::$_statuses[$status]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function optimisticLock()
     {
         return 'lock';
     }
 
+    /**
+     * Увеличивает счетчик просмотров
+     * @return int
+     */
     public function hit()
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
+    /**
+     * @param bool $runValidation
+     * @param null $attributes
+     * @return bool
+     */
     public function saveNode($runValidation = true, $attributes = null)
     {
         if ($this->getIsNewRecord()) {
@@ -310,12 +370,18 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         }
     }
 
+    /**
+     * @return string
+     */
     private function calculatePath()
     {
         $aliases = $this->parents()->noRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 
+    /**
+     * @param string $parentPath
+     */
     public function normalizePath($parentPath = null)
     {
         if($parentPath === null) {
@@ -331,14 +397,6 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             /** @var self $child */
             $child->normalizePath($path);
         }
-    }
-
-    /**
-     * @return CategoryQuery
-     */
-    public function getParent()
-    {
-        return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
 
     // ViewableInterface
@@ -375,58 +433,20 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
     }
 
     // TranslatableInterface
+    /**
+     * @inheritdoc
+     */
     public function getTranslations()
     {
         return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->andWhere(['!=', 'language', $this->language])->indexBy('language');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLanguage()
     {
         return $this->language;
-    }
-
-    public function extraFields()
-    {
-        return [
-            'published',
-            'tags' => function($model) {
-                return array_values(array_map(function($tag) {
-                    return $tag->title;
-                }, $model->tags));
-            },
-            'text' => function($model) {
-                    /** @var self $model */
-                    return strip_tags($model->preview_text . "\n" . $model->detail_text);
-                },
-            'date' => function($model) {
-                    /** @var self $model */
-                    return date(DATE_ISO8601, $model->published_at);
-                },
-        ];
-    }
-
-    public function getPublished()
-    {
-        return $this->status == self::STATUS_PUBLISHED;
-    }
-
-    public function getBreadcrumbs($includeSelf = false)
-    {
-        if ($this->isRoot()) {
-            return [];
-        } else {
-            $path = $this->parents()->noRoots()->all();
-            if ($includeSelf) {
-                $path[] = $this;
-            }
-            return array_map(function ($item) {
-                /** @var self $item */
-                return [
-                    'label' => $item->title,
-                    'url' => $item->getFrontendViewLink()
-                ];
-            }, $path);
-        }
     }
 
     // SearchableInterface

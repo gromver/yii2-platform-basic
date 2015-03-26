@@ -72,6 +72,8 @@ class Module extends \gromver\platform\basic\components\BaseSearchModule impleme
      */
     public function indexPage($model)
     {
+        parent::indexPage($model);
+
         $index = Index::findOne(['model_id' => $model->getPrimaryKey(), 'model_class' => $model->className()]) or $index = new Index();
         $index->model_id = $model->getPrimaryKey();
         $index->model_class = $model->className();
@@ -93,6 +95,8 @@ class Module extends \gromver\platform\basic\components\BaseSearchModule impleme
      */
     public function deletePage($model)
     {
+        parent::deletePage($model);
+
         $index = Index::find()->where(['model_id' => $model->getPrimaryKey(), 'model_class' => $model->className()])->one();
         ModuleEvent::trigger(self::EVENT_BEFORE_DELETE_INDEX . $model->className(), [$model, $index]);
         if ($index) {

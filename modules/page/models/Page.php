@@ -156,6 +156,9 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function behaviors()
     {
         return [
@@ -171,6 +174,9 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         ];
     }
 
+    /**
+     * @inheritdoc
+     */
     public function transactions()
     {
         return [
@@ -195,11 +201,53 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         return $this->hasOne(User::className(), ['id' => 'created_by']);
     }
 
+    /**
+     * @return PageQuery
+     */
+    public function getParent()
+    {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished()
+    {
+        return $this->status == self::STATUS_PUBLISHED;
+    }
+
+    /**
+     * @param bool $includeSelf
+     * @return array
+     */
+    public function getBreadcrumbs($includeSelf = false)
+    {
+        if ($this->isRoot()) {
+            return [];
+        } else {
+            $path = $this->parents()->noRoots()->all();
+            if ($includeSelf) {
+                $path[] = $this;
+            }
+            return array_map(function ($item) {
+                /** @var self $item */
+                return [
+                    'label' => $item->title,
+                    'url' => $item->getFrontendViewLink()
+                ];
+            }, $path);
+        }
+    }
+
     private static $_statuses = [
         self::STATUS_PUBLISHED => 'Published',
         self::STATUS_UNPUBLISHED => 'Unpublished',
     ];
 
+    /**
+     * @return array
+     */
     public static function statusLabels()
     {
         return array_map(function($label) {
@@ -207,7 +255,11 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             }, self::$_statuses);
     }
 
-    public function getStatusLabel($status=null)
+    /**
+     * @param string|null $status
+     * @return string
+     */
+    public function getStatusLabel($status = null)
     {
         if ($status === null) {
             return Yii::t('gromver.platform', self::$_statuses[$this->status]);
@@ -215,16 +267,28 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         return Yii::t('gromver.platform', self::$_statuses[$status]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function optimisticLock()
     {
         return 'lock';
     }
 
+    /**
+     * Увеличивает счетчик просмотров
+     * @return int
+     */
     public function hit()
     {
         return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
+    /**
+     * @param bool $runValidation
+     * @param null $attributes
+     * @return bool
+     */
     public function saveNode($runValidation = true, $attributes = null)
     {
         if ($this->getIsNewRecord()) {
@@ -268,12 +332,18 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         }
     }
 
+    /**
+     * @return string
+     */
     private function calculatePath()
     {
         $aliases = $this->parents()->noRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 
+    /**
+     * @param string $parentPath
+     */
     public function normalizePath($parentPath = null)
     {
         if($parentPath === null) {
@@ -289,14 +359,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             /** @var self $child */
             $child->normalizePath($path);
         }
-    }
-
-    /**
-     * @return PageQuery
-     */
-    public function getParent()
-    {
-        return $this->hasOne(self::className(), ['id' => 'parent_id']);
     }
 
     // ViewableInterface
@@ -333,58 +395,20 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     }
 
     //TranslatableInterface
+    /**
+     * @inheritdoc
+     */
     public function getTranslations()
     {
         return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->andWhere(['!=', 'language', $this->language])->indexBy('language');
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getLanguage()
     {
         return $this->language;
-    }
-
-    public function extraFields()
-    {
-        return [
-            'published',
-            'tags' => function($model) {
-                    return array_values(array_map(function($tag) {
-                        return $tag->title;
-                    }, $model->tags));
-                },
-            'text' => function($model) {
-                    /** @var self $model */
-                    return strip_tags($model->preview_text . ' ' . $model->detail_text);
-                },
-            'date' => function($model) {
-                    /** @var self $model */
-                    return date(DATE_ISO8601, $model->updated_at);
-                },
-        ];
-    }
-
-    public function isPublished()
-    {
-        return $this->status == self::STATUS_PUBLISHED;
-    }
-
-    public function getBreadcrumbs($includeSelf = false)
-    {
-        if ($this->isRoot()) {
-            return [];
-        } else {
-            $path = $this->parents()->noRoots()->all();
-            if ($includeSelf) {
-                $path[] = $this;
-            }
-            return array_map(function ($item) {
-                /** @var self $item */
-                return [
-                    'label' => $item->title,
-                    'url' => $item->getFrontendViewLink()
-                ];
-            }, $path);
-        }
     }
 
     // SearchableInterface
