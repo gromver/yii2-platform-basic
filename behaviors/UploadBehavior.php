@@ -27,6 +27,31 @@ use yii\web\UploadedFile;
  */
 class UploadBehavior extends \yii\base\Behavior
 {
+    /**
+     * ['attribute' => [...settings...]]
+     * settings:
+     *  - fileName: шаблон по которому будет строиться название файла, можно использовать маски
+     *      Динамические, на основе своист модели:
+     *          {attrName} => $model->attrName
+     *      Предустановленные, при загрузке файла
+     *          #name# => название загружаемого файла
+     *          #extension# => расширение загружаемого файла
+     *          #attribute# => название поля для которого загружается файл
+     *      Примеры шаблонов для загружаемого файла upload.jpg
+     *          #name#.#extension# => upload.jpg
+     *          {id}_full.#extension# => "{$this->owner->id}_full.jpg" => 123_full.jpg
+     *  - basePath: физический путь к директории для хранения файлов, по умолчанию "@webroot"
+     *  - baseUrl: урл к директории для хранения файлов, по умолчанию "@web"
+     *  - savePath: путь к директории где хранятся файлы относительно basePath, по умолчанию "upload"
+     *  - validate: валидатор применяемый к загружаемому файлу, в качестве параметра может быть:
+     *      - название класса валидатора FileValidator::className()
+     *      - конфигурационный массив
+     *      - объект *Validator
+     *  - process: постобработка файла, после сохранения, объект класса \gromver\platform\basic\behaviors\upload\BaseProcessor или конфигурационный массив
+     *
+     * На заметку - Убирать правила валидации для данных полей в модели - в противном случае значения полей будут затиратся после обновления модели
+     * @var array
+     */
     public $attributes;
     public $options = [];
 
@@ -285,13 +310,18 @@ class UploadBehavior extends \yii\base\Behavior
 
     /**
      * @param $attribute string
+     * @param $staticContext bool
      */
-    public function deleteFile($attribute)
+    public function deleteFile($attribute, $staticContext = false)
     {
         @unlink($this->getFilePath($attribute));
-        $this->owner->$attribute = null;
-        $this->_ignoreUpdateEvents = true;
-        $this->owner->save(false);
-        $this->_ignoreUpdateEvents = false;
+        if ($staticContext) {
+            $this->owner->updateAll([$attribute => null], $this->owner->getPrimaryKey(true));
+        } else {
+            $this->owner->$attribute = null;
+            $this->_ignoreUpdateEvents = true;
+            $this->owner->save(false);
+            $this->_ignoreUpdateEvents = false;
+        }
     }
 }

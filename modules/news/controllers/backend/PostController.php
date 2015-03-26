@@ -34,8 +34,8 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post', 'delete'],
-                    'bulk-delete' => ['post'],
-                    'delete-file' => ['post'],
+                    'bulk-delete' => ['post', 'delete'],
+                    'delete-file' => ['post', 'delete'],
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'ordering' => ['post'],
@@ -241,9 +241,13 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
     {
         $model = $this->findModel($pk);
 
-        $model->deleteFile($attribute);
-
-        $this->redirect(['update', 'id'=>$pk]);
+        if (Yii::$app->request->getIsDelete()) {
+            $model->deleteFile($attribute, true);
+            echo Json::encode([]);
+        } else {
+            $model->deleteFile($attribute);
+            $this->redirect(['update', 'id' => $pk]);
+        }
     }
 
 

@@ -83,14 +83,30 @@ use yii\bootstrap\ActiveForm;
                 'loadUrl' => ['/grom/tag/backend/default/tag-list']
             ]) ?>
 
-            <?= $form->field($model, 'detail_image')->widget(\gromver\platform\basic\widgets\FileInput::classname(), [
+            <?= $form->field($model, 'detail_image')->widget(\kartik\file\FileInput::classname(), [
                 'options' => ['accept' => 'image/*'],
-                'pluginOptions' => ['showUpload' => false]
+                'pluginOptions' => [
+                    'initialPreview' => $model->getFileUrl('detail_image') ? [Html::img($model->getFileUrl('detail_image'), ['class' => 'file-preview-image'])] : []/*new \yii\web\JsExpression('undefined')*/,
+                    'initialPreviewConfig' => [[
+                        'caption' => $model->getFileUrl('detail_image'),
+                        'url' => \yii\helpers\Url::to(['delete-file', 'pk' => $model->id, 'attribute' => 'detail_image']),
+                    ]],
+                    'showUpload' => false,
+                    'showRemove' => false,
+                ]
             ]) ?>
 
-            <?= $form->field($model, 'preview_image')->widget(\gromver\platform\basic\widgets\FileInput::classname(), [
+            <?= $form->field($model, 'preview_image')->widget(\kartik\file\FileInput::classname(), [
                 'options' => ['accept' => 'image/*'],
-                'pluginOptions' => ['showUpload' => false]
+                'pluginOptions' => [
+                    'initialPreview' => $model->getFileUrl('preview_image') ? [Html::img($model->getFileUrl('preview_image'), ['class' => 'file-preview-image'])] : []/* new \yii\web\JsExpression('undefined')*/,
+                    'initialPreviewConfig' => [[
+                        'caption' => $model->getFileUrl('preview_image'),
+                        'url' => \yii\helpers\Url::to(['delete-file', 'pk' => $model->id, 'attribute' => 'preview_image']),
+                    ]],
+                    'showUpload' => false,
+                    'showRemove' => false,
+                ]
             ]) ?>
         </div>
         <div id="meta-options" class="tab-pane">

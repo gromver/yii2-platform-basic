@@ -84,7 +84,7 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             [['category_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'ordering', 'hits', 'lock'], 'integer'],
             [['preview_text', 'detail_text'], 'string'],
             [['language'], 'string', 'max' => 7],
-            [['title', 'preview_image', 'detail_image'], 'string', 'max' => 1024],
+            [['title'], 'string', 'max' => 1024],
             [['alias', 'metakey'], 'string', 'max' => 255],
             [['metadesc'], 'string', 'max' => 2048],
 

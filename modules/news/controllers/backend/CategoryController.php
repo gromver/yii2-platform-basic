@@ -17,6 +17,7 @@ use kartik\widgets\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -35,8 +36,8 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post', 'delete'],
-                    'bulk-delete' => ['post'],
-                    'delete-file' => ['post'],
+                    'bulk-delete' => ['post', 'delete'],
+                    'delete-file' => ['post', 'delete'],
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'ordering' => ['post'],
@@ -279,9 +280,13 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     {
         $model = $this->findModel($pk);
 
-        $model->deleteFile($attribute);
-
-        $this->redirect(['update', 'id'=>$pk]);
+        if (Yii::$app->request->getIsDelete()) {
+            $model->deleteFile($attribute, true);
+            echo Json::encode([]);
+        } else {
+            $model->deleteFile($attribute);
+            $this->redirect(['update', 'id' => $pk]);
+        }
     }
 
     public function actionCategories($update_item_id = null, $selected = '')

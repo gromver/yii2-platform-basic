@@ -86,7 +86,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
         return [
             [['parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
             [['preview_text', 'detail_text'], 'string'],
-            [['title', 'preview_image', 'detail_image'], 'string', 'max' => 1024],
+            [['title'], 'string', 'max' => 1024],
             [['alias', 'metakey'], 'string', 'max' => 255],
             [['path', 'metadesc'], 'string', 'max' => 2048],
 
