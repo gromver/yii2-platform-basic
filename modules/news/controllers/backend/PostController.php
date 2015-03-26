@@ -241,7 +241,7 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
     {
         $model = $this->findModel($pk);
 
-        if (Yii::$app->request->getIsDelete()) {
+        if (Yii::$app->request->getIsAjax()) {
             $model->deleteFile($attribute, true);
             echo Json::encode([]);
         } else {
