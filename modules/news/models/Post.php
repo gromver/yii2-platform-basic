@@ -170,12 +170,10 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                     ],
                     'preview_image'=>[
                         'fileName' => '{id}-thumb.#extension#',
-                        'process' => ThumbnailProcessor::className()
+                        'fileProcessor' => ThumbnailProcessor::className()
                     ]
                 ],
                 'options' => [
-                    'basePath' => '@app/web',
-                    'baseUrl' => '',
                     'savePath'=>'upload/posts'
                 ]
             ]

@@ -194,12 +194,10 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
                     ],
                     'preview_image'=>[
                         'fileName' => '{id}-thumb.#extension#',
-                        'process' => ThumbnailProcessor::className()
+                        'fileProcessor' => ThumbnailProcessor::className()
                     ]
                 ],
                 'options' => [
-                    'basePath' => '@app/web',
-                    'baseUrl' => '',
                     'savePath' => 'upload/categories'
                 ]
             ]

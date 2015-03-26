@@ -24,30 +24,40 @@ use yii\web\UploadedFile;
  * Class UploadBehavior
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
+ *
+ *
  */
 class UploadBehavior extends \yii\base\Behavior
 {
     /**
-     * ['attribute' => [...settings...]]
-     * settings:
+     * [
+     *      'attribute_1' => [...settings...],
+     *      'attribute_2' => [...settings...],
+     * ]
+     * settings: массив описывающий поле attribute
      *  - fileName: шаблон по которому будет строиться название файла, можно использовать маски
-     *      Динамические, на основе своист модели:
+     *      Динамические, на основе своиств модели:
      *          {attrName} => $model->attrName
      *      Предустановленные, при загрузке файла
      *          #name# => название загружаемого файла
      *          #extension# => расширение загружаемого файла
      *          #attribute# => название поля для которого загружается файл
+     *      Анонимная функция
+     *          function($uploadedFile, $model) {}, где
+     *              $uploadedFile - объект \yii\web\UploadedFile
+     *              $model - модель ($this->owner)
      *      Примеры шаблонов для загружаемого файла upload.jpg
      *          #name#.#extension# => upload.jpg
      *          {id}_full.#extension# => "{$this->owner->id}_full.jpg" => 123_full.jpg
+     *      Если fileName не указан то будет использовано реальное имя, загружаемого файла
      *  - basePath: физический путь к директории для хранения файлов, по умолчанию "@webroot"
      *  - baseUrl: урл к директории для хранения файлов, по умолчанию "@web"
      *  - savePath: путь к директории где хранятся файлы относительно basePath, по умолчанию "upload"
-     *  - validate: валидатор применяемый к загружаемому файлу, в качестве параметра может быть:
-     *      - название класса валидатора FileValidator::className()
-     *      - конфигурационный массив
+     *  - fileValidator: валидатор применяемый к загружаемому файлу, в качестве параметра может быть:
+     *      - название класса валидатора *FileValidator::className()
+     *      - конфигурационный массив, если 'class' не указан то по умолчанию FileValidator::className()
      *      - объект *Validator
-     *  - process: постобработка файла, после сохранения, объект класса \gromver\platform\basic\behaviors\upload\BaseProcessor или конфигурационный массив
+     *  - fileProcessor: постобработка файла, после сохранения, объект класса \gromver\platform\basic\behaviors\upload\BaseProcessor или конфигурационный массив
      *
      * На заметку - Убирать правила валидации для данных полей в модели - в противном случае значения полей будут затиратся после обновления модели
      * @var array
@@ -57,7 +67,6 @@ class UploadBehavior extends \yii\base\Behavior
 
     private $_ignoreUpdateEvents = false;
     private static $defaultOptions = [
-        //'fileName' => '#name#.#extension#',
         'basePath' => '@webroot',
         'baseUrl' => '@web',
         'savePath' => 'upload'
@@ -171,13 +180,14 @@ class UploadBehavior extends \yii\base\Behavior
             }
         }
     }
+
     /**
      * @param $attribute
      * @return array|null|object|Validator
      */
     private function getValidator($attribute)
     {
-        if (!($validator = @$this->attributes[$attribute]['validate']))
+        if (!($validator = @$this->attributes[$attribute]['fileValidator']))
             return null;
 
         if ($validator instanceof Validator) {
@@ -187,11 +197,11 @@ class UploadBehavior extends \yii\base\Behavior
         if (is_array($validator)) {
             isset($validator['class']) or $validator['class'] = FileValidator::className();
             $validator['attributes'] = $attribute;
-            return $this->attributes[$attribute]['validate'] = Yii::createObject($validator);
+            return $this->attributes[$attribute]['fileValidator'] = Yii::createObject($validator);
         }
 
         if (is_string($validator)) {
-            return $this->attributes[$attribute]['validate'] = Validator::createValidator($validator, $this->owner, $attribute);
+            return $this->attributes[$attribute]['fileValidator'] = Validator::createValidator($validator, $this->owner, $attribute);
         }
     }
 
@@ -202,19 +212,19 @@ class UploadBehavior extends \yii\base\Behavior
      */
     private function getProcessor($attribute)
     {
-        if (!($process = @$this->attributes[$attribute]['process']))
+        if (!($processor = @$this->attributes[$attribute]['fileProcessor']))
             return null;
 
-        if (is_array($process)) {
-            return $this->attributes[$attribute]['process'] = Yii::createObject($process);
+        if (is_array($processor)) {
+            return $this->attributes[$attribute]['fileProcessor'] = Yii::createObject($processor);
         }
 
-        if (is_string($process)) {
-            return $this->attributes[$attribute]['process'] = Yii::createObject(['class'=>$process]);
+        if (is_string($processor)) {
+            return $this->attributes[$attribute]['fileProcessor'] = Yii::createObject(['class'=>$processor]);
         }
 
-        if ($process instanceof BaseProcessor) {
-            return $process;
+        if ($processor instanceof BaseProcessor) {
+            return $processor;
         }
 
         throw new InvalidConfigException('Обработчик файлов должен быть экземпляром класса ' . BaseProcessor::className());
@@ -232,7 +242,7 @@ class UploadBehavior extends \yii\base\Behavior
             $filename = @$this->attributes[$attribute]['fileName'];
 
             if ($filename instanceof \Closure)
-                return $filename($file, $this->_model);
+                return $filename($file, $this->owner);
 
             if (is_string($filename) && !empty($filename)) {
                 $fields = $this->owner->attributes();
