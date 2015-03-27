@@ -127,7 +127,7 @@ class PageGuide extends Widget
                 }
             }
 
-            Yii::$app->cache->set([__CLASS__, $this->rootPage->id, $this->page->id], [$items, $prevModel, $nextModel], $this->cacheDuration, DbState::dependency(Page::tableName()));
+            Yii::$app->cache->set([__CLASS__, $this->rootPage->id, $this->page->id], [$items, $prevModel, $nextModel], $this->cacheDuration, ($this->cacheDependency ? $this->cacheDependency : DbState::dependency(Page::tableName())));
         }
 
         echo $this->render($this->layout, [

@@ -34,6 +34,11 @@ trait WidgetCacheTrait {
      * @translation gromver.platform
      */
     public $cacheDuration = 3600;
+    /**
+     * @var \yii\caching\Dependency
+     * @ignore
+     */
+    public $cacheDependency;
 
     protected function ensureCache()
     {
