@@ -28,8 +28,12 @@ class SearchResultsSql extends Widget
 
     /**
      * Модели по которым будет производится поиск
-     * @ignore
      * @var string[]
+     * @field list
+     * @items models
+     * @empty All
+     * @translation gromver.platform
+     * @multiple
      */
     public $models;
     /**
@@ -110,16 +114,18 @@ class SearchResultsSql extends Widget
             $query->select("{$indexTable}.*")->orderBy("{$indexTable}.updated_at DESC");
         }
 
-        if ($this->models) {
-            // ищем только по тем моделям которые в списке
-            $query->andWhere(['model_class' => $this->models]);
-            // ивент на модификацию запроса сторонними модулями
-            foreach ($this->models as $modelClass) {
-                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, new SearchResultsSqlEvent([
-                    'query' => $query,
-                    'widget' => $this
-                ]));
-            }
+        if (empty($this->models)) {
+            $this->models = array_keys(self::models());
+        }
+
+        // ищем только по тем моделям которые в списке
+        $query->andWhere(['model_class' => $this->models]);
+        // ивент на модификацию запроса сторонними модулями
+        foreach ($this->models as $modelClass) {
+            ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, new SearchResultsSqlEvent([
+                'query' => $query,
+                'widget' => $this
+            ]));
         }
 
         echo $this->render($this->layout, [
@@ -179,6 +185,15 @@ class SearchResultsSql extends Widget
     {
         return [
             '_itemDefault' => Yii::t('gromver.platform', 'Default'),
+        ];
+    }
+
+    public static function models()
+    {
+        return [
+            'gromver\platform\basic\modules\page\models\Page' => Yii::t('gromver.platform', 'Pages'),
+            'gromver\platform\basic\modules\news\models\Post' => Yii::t('gromver.platform', 'Posts'),
+            'gromver\platform\basic\modules\news\models\Category' => Yii::t('gromver.platform', 'Categories'),
         ];
     }
 }

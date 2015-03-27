@@ -77,12 +77,12 @@ class MenuUrlRule extends Object implements UrlRuleInterface
     protected function buildRules()
     {
         //нам нужно собрать все роутеры от модулей и вытащить из них инструкции по маршрутизации
-        $event = new MenuUrlRuleEvent([
+        $routers = ModuleEvent::trigger(self::EVENT_FETCH_MODULE_ROUTERS, new MenuUrlRuleEvent([
             'routers' => []
-        ]);
-        ModuleEvent::trigger(self::EVENT_FETCH_MODULE_ROUTERS, $event);
+        ]), 'routers');
+
         // вытаскиваем инструкции из всех роутеров
-        foreach ($event->routers as $routerClass) {
+        foreach ($routers as $routerClass) {
             $router = $this->getRouter($routerClass);
 
             foreach ($router->createUrlRules() as $rule) {

@@ -13,6 +13,8 @@ namespace gromver\platform\basic\widgets;
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\widgets\events\DesktopEvent;
 use Yii;
+use yii\caching\Cache;
+use yii\di\Instance;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
@@ -23,12 +25,20 @@ use yii\helpers\Html;
  */
 class Desktop extends \yii\bootstrap\Widget
 {
-    const CACHE_KEY = __CLASS__;
     const EVENT_FETCH_ITEMS = 'DesktopItems';
 
+    /**
+     * @var string|Cache
+     */
     public $cache = 'cache';
-    public $cacheDuration = 0;
-
+    /**
+     * @var int
+     */
+    public $cacheDuration;
+    /**
+     * @var \yii\caching\Dependency
+     */
+    public $cacheDependency;
     /**
      * @var array list of menu items. Each menu item should be an array of the following structure:
      *
@@ -156,11 +166,21 @@ class Desktop extends \yii\bootstrap\Widget
             $this->route = Yii::$app->controller->getRoute();
         }
 
-        $event = new DesktopEvent([
-            'items' => $this->items
-        ]);
-        ModuleEvent::trigger(self::EVENT_FETCH_ITEMS, $event);
-        $this->items = $event->items;
+        if ($this->cache) {
+            /** @var Cache $cache */
+            $this->cache = Instance::ensure($this->cache, Cache::className());
+            $cacheKey = [__CLASS__, $this->items];
+            if (($this->items = $this->cache->get($cacheKey)) === false) {
+                $this->items = ModuleEvent::trigger(self::EVENT_FETCH_ITEMS, new DesktopEvent([
+                    'items' => $this->items
+                ]), 'items');
+                $this->cache->set($cacheKey, $this->items, $this->cacheDuration, $this->cacheDependency);
+            }
+        } else {
+            $this->items = ModuleEvent::trigger(self::EVENT_FETCH_ITEMS, new DesktopEvent([
+                'items' => $this->items
+            ]), 'items');
+        }
 
         $this->normalizeItems();
         $options = $this->options;

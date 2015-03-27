@@ -25,6 +25,5 @@ $this->params['breadcrumbs'][] = $this->title;
     echo \gromver\platform\basic\widgets\SearchResultsElasticsearch::widget([
         'id' => 'fSearchResult',
         'query' => $query,
-        'models' => $this->context->module->getFrontendSearchableModels(),
     ]); ?>
 </div>

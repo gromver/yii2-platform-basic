@@ -58,12 +58,23 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         'grom/tag/frontend<path:(/.*)?>',
         'grom/user/frontend<path:(/.*)?>',
     ];
+    /**
+     * @var int
+     * Unused
+     */
     public $desktopOrder = 1;
     public $errorLayout = '@gromver/platform/basic/modules/main/views/layouts/error';
     public $modalLayout = '@gromver/platform/basic/modules/main/views/layouts/modal';
     public $backendLayout = '@gromver/platform/basic/modules/main/views/layouts/main';
 
+    /**
+     * @var string
+     */
     private $_mode;
+    /**
+     * @var null|\yii\caching\Dependency
+     */
+    private $_moduleConfigDependency;
 
     /**
      * @inheritdoc
@@ -84,10 +95,10 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         Yii::$container->set('gromver\models\fields\MediaField', [
             'controller' => 'grom/media/manager'
         ]);
-        $moduleConfigDependency = new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()']);
+        $this->_moduleConfigDependency = new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()']);
         Yii::$container->set('gromver\modulequery\ModuleQuery', [
             'cache' => $app->cache,
-            'cacheDependency' => $moduleConfigDependency
+            'cacheDependency' => $this->_moduleConfigDependency
         ]);
         Yii::$container->set('gromver\platform\basic\components\MenuMap', [
             'cache' => $app->cache,
@@ -95,7 +106,11 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         ]);
         Yii::$container->set('gromver\platform\basic\components\MenuUrlRule', [
             'cache' => $app->cache,
-            'cacheDependency' => $moduleConfigDependency
+            'cacheDependency' => $this->_moduleConfigDependency
+        ]);
+        Yii::$container->set('gromver\platform\basic\widgets\Desktop', [
+            'cache' => $app->cache,
+            'cacheDependency' => $this->_moduleConfigDependency
         ]);
 
         /** @var MenuManager $manager */
@@ -114,6 +129,13 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         ModuleQuery::instance()->implement('\gromver\platform\common\interfaces\BootstrapInterface')->invoke('bootstrap', [$app]);
     }
 
+    /**
+     * @return null|\yii\caching\Dependency
+     */
+    public function getModuleConfigDependency()
+    {
+        return $this->_moduleConfigDependency;
+    }
     /**
      * @inheritdoc
      */
@@ -181,6 +203,10 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         ];
     }
 
+    /**
+     * @param string $mode
+     * @param bool $saveInSession
+     */
     public function setMode($mode, $saveInSession = true)
     {
         $this->_mode = in_array($mode, self::modes()) ? $mode : self::MODE_VIEW;
@@ -190,6 +216,9 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         }
     }
 
+    /**
+     * @return string
+     */
     public function getMode()
     {
         if(!isset($this->_mode)) {
@@ -199,36 +228,57 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         return $this->_mode;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsEditMode()
     {
         return $this->getMode() === self::MODE_EDIT;
     }
 
+    /**
+     * @return array
+     */
     public static function modes()
     {
         return [self::MODE_VIEW, self::MODE_EDIT];
     }
 
+    /**
+     * @return string
+     */
     public function getSiteName()
     {
         return !empty($this->params['siteName']) ? $this->params['siteName'] : Yii::$app->name;
     }
 
+    /**
+     * apply platform's backend layout
+     */
     public function applyBackendLayout()
     {
         Yii::$app->layout = $this->backendLayout;
     }
 
+    /**
+     * apply platform's error layout
+     */
     public function applyErrorLayout()
     {
         Yii::$app->layout = $this->errorLayout;
     }
 
+    /**
+     * apply platform's modal layout
+     */
     public function applyModalLayout()
     {
         Yii::$app->layout = $this->modalLayout;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function events()
     {
         return [
