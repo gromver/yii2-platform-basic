@@ -7,18 +7,19 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\interfaces\module;
+namespace gromver\platform\basic\components\events;
+
+
+use gromver\modulequery\Event;
 
 /**
- * Interface MenuRouterInterface
- * Используется модулями, для предоставления своего роутера пунктов меню
+ * Class SearchableModelsEvent
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface MenuRouterInterface
-{
+class SearchableModelsEvent extends Event {
     /**
-     * @return string | \gromver\platform\basic\components\MenuRouter
+     * @var array   ["ModelClass1", "ModelClass2", ...]
      */
-    public function getMenuRouter();
-} 
+    public $models;
+}

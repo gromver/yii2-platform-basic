@@ -7,19 +7,19 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\interfaces\module;
+namespace gromver\platform\basic\widgets\events;
+
+
+use gromver\modulequery\Event;
 
 /**
- * Interface DesktopInterface
- * Используется модулями для предоставления своих ссылок на рабочий стол
+ * Class MenuItemRoutesEvent
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-interface DesktopInterface
-{
+class MenuItemRoutesEvent extends Event {
     /**
-     * @return array
-     * @see \gromver\platform\basic\widgets\Desktop
+     * @var array
      */
-    public function getDesktopItem();
+    public $items;
 }

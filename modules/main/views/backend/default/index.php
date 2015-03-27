@@ -4,5 +4,5 @@
  */
 
 echo \gromver\platform\basic\widgets\Desktop::widget([
-    'items' => $items
+    //'items' => $items
 ]);

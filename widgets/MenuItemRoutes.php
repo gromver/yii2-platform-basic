@@ -10,7 +10,9 @@
 namespace gromver\platform\basic\widgets;
 
 
+use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\widgets\events\MenuItemRoutesEvent;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -23,6 +25,8 @@ use yii\helpers\Html;
  */
 class MenuItemRoutes extends \yii\bootstrap\Widget
 {
+    const EVENT_FETCH_ITEMS = 'MenuItemRoutesItems';
+
     /**
      * @var array list of menu items. Each menu item should be an array of the following structure:
      *
@@ -112,6 +116,12 @@ class MenuItemRoutes extends \yii\bootstrap\Widget
      */
     public function run()
     {
+        $event = new MenuItemRoutesEvent([
+            'items' => $this->items
+        ]);
+        ModuleEvent::trigger(self::EVENT_FETCH_ITEMS, $event);
+        $this->items = $event->items;
+
         $this->normalizeItems();
         $options = $this->options;
         $tag = ArrayHelper::remove($options, 'tag', 'div');

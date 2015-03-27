@@ -10,7 +10,8 @@
 namespace gromver\platform\basic\modules\version;
 
 
-use gromver\platform\basic\interfaces\module\DesktopInterface;
+use gromver\modulequery\ModuleEventsInterface;
+use gromver\platform\basic\widgets\Desktop;
 use Yii;
 
 /**
@@ -18,22 +19,32 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements DesktopInterface
+class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\version\controllers';
     public $defaultRoute = 'backend/default';
     public $desktopOrder = 9;
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
      */
-    public function getDesktopItem()
+    public function addDesktopItem($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Versions'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Versions'), 'url' => ['/grom/version/backend/default/index']]
             ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
+        return [
+            Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
         ];
     }
 }

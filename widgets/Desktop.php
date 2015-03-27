@@ -10,6 +10,8 @@
 namespace gromver\platform\basic\widgets;
 
 
+use gromver\modulequery\ModuleEvent;
+use gromver\platform\basic\widgets\events\DesktopEvent;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
@@ -22,6 +24,7 @@ use yii\helpers\Html;
 class Desktop extends \yii\bootstrap\Widget
 {
     const CACHE_KEY = __CLASS__;
+    const EVENT_FETCH_ITEMS = 'DesktopItems';
 
     public $cache = 'cache';
     public $cacheDuration = 0;
@@ -139,7 +142,9 @@ class Desktop extends \yii\bootstrap\Widget
      * @see isItemActive()
      */
     //public $params;
-
+    /**
+     * @var int
+     */
     public $columns = 3;
 
     /**
@@ -151,6 +156,12 @@ class Desktop extends \yii\bootstrap\Widget
             $this->route = Yii::$app->controller->getRoute();
         }
 
+        $event = new DesktopEvent([
+            'items' => $this->items
+        ]);
+        ModuleEvent::trigger(self::EVENT_FETCH_ITEMS, $event);
+        $this->items = $event->items;
+
         $this->normalizeItems();
         $options = $this->options;
         $tag = ArrayHelper::remove($options, 'tag', 'div');
@@ -158,9 +169,8 @@ class Desktop extends \yii\bootstrap\Widget
     }
 
     /**
-     * Recursively renders the menu items (without the container tag).
-     * @param array $items the menu items to be rendered recursively
-     * @return string the rendering result
+     * @param null|integer $columns
+     * @return string
      */
     protected function renderItems($columns = null)
     {

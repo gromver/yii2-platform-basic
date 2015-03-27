@@ -13,11 +13,11 @@ namespace gromver\platform\basic\modules\main;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
-use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
 use gromver\platform\basic\modules\main\models\DbState;
-use gromver\platform\basic\interfaces\module\DesktopInterface;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\user\models\User;
+use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\widgets\MenuItemRoutes;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\caching\ExpressionDependency;
@@ -31,7 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property string $siteName
  * @property bool $isEditMode
  */
-class Module extends \yii\base\Module implements BootstrapInterface, DesktopInterface, MenuItemRoutesInterface, ModuleEventsInterface
+class Module extends \yii\base\Module implements BootstrapInterface, ModuleEventsInterface
 {
     const SESSION_KEY_MODE = '__grom_mode';
 
@@ -152,11 +152,11 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
      */
-    public function getDesktopItem()
+    public function addDesktopItem($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/grom/backend/default/index']],
@@ -167,11 +167,11 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
      */
-    public function getMenuItemRoutes()
+    public function addMenuItemRoutes($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'System'),
             'items' => [
                 //['label' => Yii::t('gromver.platform', 'Sitemap'), 'route' => 'grom/frontend/default/sitemap'/*, 'icon' => '<i class="glyphicon glyphicon-cog"></i>'*/],
@@ -232,7 +232,9 @@ class Module extends \yii\base\Module implements BootstrapInterface, DesktopInte
     public function events()
     {
         return [
-            User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave'
+            User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave',
+            Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
+            MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
         ];
     }
 

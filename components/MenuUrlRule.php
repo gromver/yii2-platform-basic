@@ -10,10 +10,9 @@
 namespace gromver\platform\basic\components;
 
 
-//use gromver\modulequery\ModuleEvent;
-use gromver\modulequery\ModuleQuery;
-//use gromver\modulequery\Value;
+use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\components\events\MenuUrlRuleEvent;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\base\Object;
@@ -35,7 +34,7 @@ use yii\web\View;
  */
 class MenuUrlRule extends Object implements UrlRuleInterface
 {
-    const EVENT_MODULE_ROUTERS = 'MenuUrlRuleModuleRouters';
+    const EVENT_FETCH_MODULE_ROUTERS = 'MenuUrlRuleRouters';
 
     public $cache = 'cache';
     public $cacheDuration;
@@ -78,11 +77,12 @@ class MenuUrlRule extends Object implements UrlRuleInterface
     protected function buildRules()
     {
         //нам нужно собрать все роутеры от модулей и вытащить из них инструкции по маршрутизации
-        $routers = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\module\MenuRouterInterface')->fetch('getMenuRouter');
-        //$routers = new Value([]);
-        //ModuleEvent::trigger(self::EVENT_MODULE_ROUTERS, [$routers]);
+        $event = new MenuUrlRuleEvent([
+            'routers' => []
+        ]);
+        ModuleEvent::trigger(self::EVENT_FETCH_MODULE_ROUTERS, $event);
         // вытаскиваем инструкции из всех роутеров
-        foreach ($routers as $routerClass) {
+        foreach ($event->routers as $routerClass) {
             $router = $this->getRouter($routerClass);
 
             foreach ($router->createUrlRules() as $rule) {

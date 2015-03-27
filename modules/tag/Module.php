@@ -10,9 +10,10 @@
 namespace gromver\platform\basic\modules\tag;
 
 
-use gromver\platform\basic\interfaces\module\DesktopInterface;
-use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
-use gromver\platform\basic\interfaces\module\MenuRouterInterface;
+use gromver\modulequery\ModuleEventsInterface;
+use gromver\platform\basic\components\MenuUrlRule;
+use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\tag\components\MenuRouterTag;
 use Yii;
 
@@ -21,18 +22,18 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInterface, MenuItemRoutesInterface
+class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\tag\controllers';
     public $defaultRoute = 'frontend/default';
     public $desktopOrder = 7;
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
      */
-    public function getDesktopItem()
+    public function addDesktopItem($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Tags'), 'url' => ['/grom/tag/backend/default/index']],
@@ -41,11 +42,11 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
      */
-    public function getMenuItemRoutes()
+    public function addMenuItemRoutes($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Tags'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Tag Cloud'), 'route' => 'grom/tag/frontend/default/index'],
@@ -55,10 +56,22 @@ class Module extends \yii\base\Module implements MenuRouterInterface, DesktopInt
     }
 
     /**
+     * @param $event \gromver\platform\basic\widgets\events\MenuUrlRuleEvent
+     */
+    public function addMenuRouter($event)
+    {
+        $event->routers[] = MenuRouterTag::className();
+    }
+
+    /**
      * @inheritdoc
      */
-    public function getMenuRouter()
+    public function events()
     {
-        return MenuRouterTag::className();
+        return [
+            Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
+            MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
+            MenuUrlRule::EVENT_FETCH_MODULE_ROUTERS => 'addMenuRouter'
+        ];
     }
 }

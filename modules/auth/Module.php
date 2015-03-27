@@ -10,8 +10,9 @@
 namespace gromver\platform\basic\modules\auth;
 
 
-use gromver\platform\basic\interfaces\module\DesktopInterface;
-use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
+use gromver\modulequery\ModuleEventsInterface;
+use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\widgets\MenuItemRoutes;
 use Yii;
 
 /**
@@ -22,7 +23,7 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements MenuItemRoutesInterface, DesktopInterface
+class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\auth\controllers';
     /**
@@ -42,11 +43,11 @@ class Module extends \yii\base\Module implements MenuItemRoutesInterface, Deskto
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
      */
-    public function getMenuItemRoutes()
+    public function addMenuItemRoutes($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Auth'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Login'), 'route' => 'grom/auth/default/login'],
@@ -58,16 +59,27 @@ class Module extends \yii\base\Module implements MenuItemRoutesInterface, Deskto
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
      */
-    public function getDesktopItem()
+    public function addDesktopItem($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Auth'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Login'), 'url' => ['/grom/auth/default/login']],
                 ['label' => Yii::t('gromver.platform', 'Password Reset'), 'url' => ['/grom/auth/default/request-password-reset']],
             ]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function events()
+    {
+        return [
+            Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
+            MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes'
         ];
     }
 }

@@ -11,14 +11,13 @@ namespace gromver\platform\basic\modules\page;
 
 
 use gromver\modulequery\ModuleEventsInterface;
-use gromver\platform\basic\interfaces\module\DesktopInterface;
-use gromver\platform\basic\interfaces\module\MenuItemRoutesInterface;
-use gromver\platform\basic\interfaces\module\MenuRouterInterface;
+use gromver\platform\basic\components\MenuUrlRule;
+use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\page\components\MenuRouterPage;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\widgets\SearchResultsElasticsearch;
 use gromver\platform\basic\widgets\SearchResultsSql;
-use gromver\platform\basic\modules\elasticsearch\Module as ElasticsearchModule;
 use Yii;
 
 /**
@@ -26,18 +25,18 @@ use Yii;
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoutesInterface, MenuRouterInterface, ModuleEventsInterface
+class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\page\controllers';
     public $defaultRoute = 'frontend/default';
     public $desktopOrder = 5;
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
      */
-    public function getDesktopItem()
+    public function addDesktopItem($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Pages'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Pages'), 'url' => ['/grom/page/backend/default/index']]
@@ -46,11 +45,11 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
      */
-    public function getMenuItemRoutes()
+    public function addMenuItemRoutes($event)
     {
-        return [
+        $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Pages'),
             'items' => [
                 ['label' => Yii::t('gromver.platform', 'Page View'), 'url' => ['/grom/page/backend/default/select']],
@@ -60,11 +59,11 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     }
 
     /**
-     * @inheritdoc
+     * @param $event \gromver\platform\basic\widgets\events\MenuUrlRuleEvent
      */
-    public function getMenuRouter()
+    public function addMenuRouter($event)
     {
-        return MenuRouterPage::className();
+        $event->routers[] = MenuRouterPage::className();
     }
 
     /**
@@ -73,6 +72,9 @@ class Module extends \yii\base\Module implements DesktopInterface, MenuItemRoute
     public function events()
     {
         return [
+            Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
+            MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
+            MenuUrlRule::EVENT_FETCH_MODULE_ROUTERS => 'addMenuRouter',
             SearchResultsSql::EVENT_BEFORE_SEARCH . Page::className()  => [Page::className(), 'sqlBeforeSearch'],
             SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Page::className() => [Page::className(), 'elasticsearchBeforeSearch'],
         ];
