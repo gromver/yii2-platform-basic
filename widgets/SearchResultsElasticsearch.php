@@ -12,6 +12,7 @@ namespace gromver\platform\basic\widgets;
 
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\elasticsearch\models\Index;
+use gromver\platform\basic\widgets\events\SearchResultsElasticsearchEvent;
 use Yii;
 use yii\data\ActiveDataProvider;
 
@@ -87,7 +88,10 @@ class SearchResultsElasticsearch extends Widget
             $this->filters[] = ['terms' => ['model_class' => $this->models]];
             // ивент на модификацию фильтров ($this->filters) сторонними модулями
             foreach ($this->models as $modelClass) {
-                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, [$query, $this]);
+                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, new SearchResultsElasticsearchEvent([
+                    'query' => $query,
+                    'widget' => $this
+                ]));
             }
         }
 

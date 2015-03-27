@@ -476,13 +476,12 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
     // SqlSearch integration
     /**
-     * @param $query \yii\db\ActiveQuery
-     * @param $widget \gromver\platform\basic\widgets\SearchResultsSql
+     * @param $event \gromver\platform\basic\widgets\events\SearchResultsSqlEvent
      */
-    static public function sqlBeforeSearch($query, $widget)
+    static public function sqlBeforeSearch($event)
     {
-        if ($widget->frontendMode) {
-            $query->leftJoin('{{%grom_category}}', [
+        if ($event->widget->frontendMode) {
+            $event->query->leftJoin('{{%grom_category}}', [
                     'AND',
                     ['=', 'model_class', self::className()],
                     'model_id={{%grom_category}}.id',
@@ -496,13 +495,12 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
     // ElasticSearch integration
     /**
-     * @param $query \yii\elasticsearch\ActiveQuery
-     * @param $widget \gromver\platform\basic\widgets\SearchResultsElasticsearch
+     * @param $event \gromver\platform\basic\widgets\events\SearchResultsElasticsearchEvent
      */
-    static public function elasticsearchBeforeSearch($query, $widget)
+    static public function elasticsearchBeforeSearch($event)
     {
-        if ($widget->frontendMode) {
-            $widget->filters[] = [
+        if ($event->widget->frontendMode) {
+            $event->widget->filters[] = [
                 'not' => [
                     'and' => [
                         [

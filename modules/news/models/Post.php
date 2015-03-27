@@ -382,13 +382,12 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
 
     // SqlSearch integration
     /**
-     * @param $query \yii\db\ActiveQuery
-     * @param $widget \gromver\platform\basic\widgets\SearchResultsSql
+     * @param $event \gromver\platform\basic\widgets\events\SearchResultsSqlEvent
      */
-    static public function sqlBeforeSearch($query, $widget)
+    static public function sqlBeforeSearch($event)
     {
-        if ($widget->frontendMode) {
-            $query->leftJoin('{{%grom_post}}', [
+        if ($event->widget->frontendMode) {
+            $event->query->leftJoin('{{%grom_post}}', [
                     'AND',
                     ['=', 'model_class', self::className()],
                     'model_id={{%grom_post}}.id',
@@ -402,13 +401,12 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
 
     // ElasticSearch integration
     /**
-     * @param $query \yii\elasticsearch\ActiveQuery
-     * @param $widget \gromver\platform\basic\widgets\SearchResultsElasticsearch
+     * @param $event \gromver\platform\basic\widgets\events\SearchResultsElasticsearchEvent
      */
-    static public function elasticsearchBeforeSearch($query, $widget)
+    static public function elasticsearchBeforeSearch($event)
     {
-        if ($widget->frontendMode) {
-            $widget->filters[] = [
+        if ($event->widget->frontendMode) {
+            $event->widget->filters[] = [
                 'not' => [
                     'and' => [
                         [
@@ -431,14 +429,13 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     }
 
     /**
-     * @param $index \gromver\platform\basic\modules\elasticsearch\models\Index
-     * @param $model static
+     * @param $event \gromver\platform\basic\modules\elasticsearch\events\ElasticModuleEvent
      */
-    static public function elasticsearchBeforeCreateIndex($index, $model)
+    static public function elasticsearchBeforeCreateIndex($event)
     {
-        $index->params = [
-            'published' => $model->status == self::STATUS_PUBLISHED,
-            'category_id' => $model->category_id
+        $event->index->params = [
+            'published' => $event->model->status == self::STATUS_PUBLISHED,
+            'category_id' => $event->model->category_id
         ];
     }
 }

@@ -62,7 +62,9 @@ class SearchBehavior extends \yii\base\Behavior
      */
     public function searchIndexPage($event)
     {
-        ModuleEvent::trigger(self::EVENT_INDEX_PAGE, [$this->owner]);
+        ModuleEvent::trigger(self::EVENT_INDEX_PAGE, new SearchBehaviorEvent([
+            'model' => $this->owner
+        ]));
     }
 
     /**
@@ -70,6 +72,8 @@ class SearchBehavior extends \yii\base\Behavior
      */
     public function searchDeletePage($event)
     {
-        ModuleEvent::trigger(self::EVENT_DELETE_PAGE, [$this->owner]);
+        ModuleEvent::trigger(self::EVENT_DELETE_PAGE, new SearchBehaviorEvent([
+            'model' => $this->owner
+        ]));
     }
 } 

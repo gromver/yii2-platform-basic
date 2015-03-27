@@ -12,6 +12,7 @@ namespace gromver\platform\basic\widgets;
 
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\sqlsearch\models\Index;
+use gromver\platform\basic\widgets\events\SearchResultsSqlEvent;
 use yii\data\ActiveDataProvider;
 use Yii;
 
@@ -114,7 +115,10 @@ class SearchResultsSql extends Widget
             $query->andWhere(['model_class' => $this->models]);
             // ивент на модификацию запроса сторонними модулями
             foreach ($this->models as $modelClass) {
-                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, [$query, $this]);
+                ModuleEvent::trigger(self::EVENT_BEFORE_SEARCH . $modelClass, new SearchResultsSqlEvent([
+                    'query' => $query,
+                    'widget' => $this
+                ]));
             }
         }
 
