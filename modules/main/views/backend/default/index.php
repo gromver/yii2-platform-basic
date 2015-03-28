@@ -1,8 +1,4 @@
 <?php
-/**
- * @var $items array
- */
+/* @var $this yii\web\View */
 
-echo \gromver\platform\basic\widgets\Desktop::widget([
-    //'items' => $items
-]);
+echo \gromver\platform\basic\widgets\Desktop::widget();

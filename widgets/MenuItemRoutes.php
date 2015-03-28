@@ -94,7 +94,7 @@ class MenuItemRoutes extends \yii\bootstrap\Widget
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     public $options = [
-        'class' => 'clearfix'
+        'class' => 'clearfix list-unstyled'
     ];
     /**
      * @var string the CSS class that will be assigned to the first item in the main menu or each submenu.

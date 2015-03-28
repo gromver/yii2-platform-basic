@@ -109,11 +109,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     {
         Yii::$app->grom->applyModalLayout();
 
-        $items = ModuleQuery::instance()->implement('\gromver\platform\basic\interfaces\module\MenuItemRoutesInterface')->orderBy('desktopOrder')->fetch('getMenuItemRoutes');
-
-        return $this->render('routers', [
-                'items' => $items
-            ]);
+        return $this->render('routers');
     }
 
     /**
