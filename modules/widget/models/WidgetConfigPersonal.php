@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\modules\widget\models;
 
 
+use gromver\platform\basic\modules\user\models\User;
 use Yii;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
@@ -33,15 +34,17 @@ use yii\helpers\Json;
  * @property integer $created_by
  * @property integer $updated_by
  * @property string $lock
+ * @property User $owner
+ *
  */
-class WidgetConfig extends \yii\db\ActiveRecord
+class WidgetConfigPersonal extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return '{{%grom_widget_config}}';
+        return '{{%grom_widget_config_personal}}';
     }
 
     /**
@@ -79,7 +82,7 @@ class WidgetConfig extends \yii\db\ActiveRecord
             'valid' => Yii::t('gromver.platform', 'Valid'),
             'created_at' => Yii::t('gromver.platform', 'Created At'),
             'updated_at' => Yii::t('gromver.platform', 'Updated At'),
-            'created_by' => Yii::t('gromver.platform', 'Created By'),
+            'created_by' => Yii::t('gromver.platform', 'Owner'),
             'updated_by' => Yii::t('gromver.platform', 'Updated By'),
             'lock' => Yii::t('gromver.platform', 'Lock'),
         ];
@@ -96,6 +99,10 @@ class WidgetConfig extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getOwner()
+    {
+        return $this->hasOne(User::className(), ['id' => 'created_by']);
+    }
 
     /**
      * @return array|mixed

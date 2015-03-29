@@ -8,6 +8,8 @@
  */
 
 namespace gromver\platform\basic\widgets;
+use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
+use Yii;
 
 /**
  * Class WidgetPersonal
@@ -15,16 +17,24 @@ namespace gromver\platform\basic\widgets;
  * @author Gayazov Roman <gromver5@gmail.com>
  */
 class WidgetPersonal extends Widget {
-    protected function preInit()
+    /**
+     * @inheritdoc
+     */
+    protected $_configureRoute = '/grom/widget/backend/personal/configure';
+
+    /**
+     * @inheritdoc
+     */
+    protected function findWidgetConfig()
     {
-        if (!isset($this->context)) {
-            $this->context = \Yii::$app->request->getPathInfo();
+        $parts = empty($this->context) ? [''] : explode('/', '/' . $this->context);
+
+        $contexts = []; $context = '';
+        foreach ($parts as $part) {
+            $context .= strlen($context) ? '/' . $part : $part;
+            $contexts[] = $context;
         }
 
-        if (!\Yii::$app->user->getIsGuest()) {
-            $this->context .= '/u' . \Yii::$app->user->id;
-        }
-
-        parent::preInit();
+        return WidgetConfigPersonal::find()->orderBy('context desc')->where(['widget_id' => $this->id, 'language' => Yii::$app->language, 'context' => $contexts, 'created_by' => Yii::$app->user->id])->one();
     }
-} 
+}

@@ -33,7 +33,8 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
         $event->items[] = [
             'label' => Yii::t('gromver.platform', 'Widgets'),
             'items' => [
-                ['label' => Yii::t('gromver.platform', 'Widget\'s Settings'), 'url' => ['/grom/widget/backend/default/index']]
+                ['label' => Yii::t('gromver.platform', 'Widget\'s Settings'), 'url' => ['/grom/widget/backend/default/index']],
+                ['label' => Yii::t('gromver.platform', 'Widget\'s Personal Settings'), 'url' => ['/grom/widget/backend/personal/index']]
             ]
         ];
     }

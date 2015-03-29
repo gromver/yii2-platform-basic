@@ -11,7 +11,7 @@ namespace gromver\platform\basic\modules\widget\actions;
 
 
 use gromver\models\ObjectModel;
-use gromver\platform\basic\modules\widget\models\WidgetConfig;
+use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
 use gromver\widgets\ModalIFrame;
 use Yii;
 use yii\helpers\Json;
@@ -19,13 +19,13 @@ use yii\web\BadRequestHttpException;
 
 /**
  * Class ConfigureAction
- * Экшен для настройки виджетов.
+ * Экшен для настройки персональных виджетов.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class ConfigureAction extends \yii\base\Action
+class ConfigurePersonalAction extends \yii\base\Action
 {
-    public $view = '@gromver/platform/basic/modules/widget/views/actions/configure/form';
+    public $view = '@gromver/platform/basic/modules/widget/views/actions/configurePersonal/form';
 
     public function run($modal=null) {
         if (!($widget_id = Yii::$app->request->getBodyParam('widget_id'))) {
@@ -51,14 +51,14 @@ class ConfigureAction extends \yii\base\Action
 
         if ($task == 'delete') {
             if (Yii::$app->request->getBodyParam('bulk-method')) {
-                foreach (WidgetConfig::find()->where('widget_id=:widget_id AND context>=:context AND language=:language', [
+                foreach (WidgetConfigPersonal::find()->where('widget_id=:widget_id AND context>=:context AND language=:language', [
                     ':widget_id' => $widget_id,
                     ':context' => $selected_context,
                     ':language' => Yii::$app->language
                 ])->each() as $configModel) {
                     $configModel->delete();
                 }
-            } elseif ($configModel = WidgetConfig::findOne([
+            } elseif ($configModel = WidgetConfigPersonal::findOne([
                 'widget_id' => $widget_id,
                 'context' => $selected_context,
                 'language' => Yii::$app->language
@@ -82,11 +82,11 @@ class ConfigureAction extends \yii\base\Action
 
         if (($task == 'save' || $task == 'refresh') && $model->load(Yii::$app->request->post())) {
             if ($model->validate() && $task=='save') {
-                $configModel = WidgetConfig::findOne([
+                $configModel = WidgetConfigPersonal::findOne([
                     'widget_id' => $widget_id,
                     'context' => $selected_context,
                     'language' => Yii::$app->language
-                ]) or $configModel = new WidgetConfig;
+                ]) or $configModel = new WidgetConfigPersonal;
 
                 $configModel->loadDefaultValues();
                 $configModel->widget_id = $widget_id;
@@ -98,12 +98,12 @@ class ConfigureAction extends \yii\base\Action
                 $configModel->save();
 
                 if (Yii::$app->request->getBodyParam('bulk-method')) {
-                    foreach (WidgetConfig::find()->where('widget_id=:widget_id AND context>:context AND language=:language', [
+                    foreach (WidgetConfigPersonal::find()->where('widget_id=:widget_id AND context>:context AND language=:language', [
                         ':widget_id' => $widget_id,
                         ':context' => $selected_context,
                         ':language' => Yii::$app->language
                     ])->each() as $configModel) {
-                        /** @var $configModel WidgetConfig */
+                        /** @var $configModel WidgetConfigPersonal */
                         $configModel->delete();
                     }
                 }

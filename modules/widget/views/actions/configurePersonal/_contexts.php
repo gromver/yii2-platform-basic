@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use gromver\platform\basic\modules\widget\models\WidgetConfig;
+use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
 
 /**
  * @var yii\web\View $this
@@ -16,7 +16,7 @@ $context = '';
 foreach ($contexts as $i => $part) {
     $context .= strlen($context) ? '/'.$part : $part;
     $class = 'btn btn-link ';
-    $class .= WidgetConfig::find()->where(['widget_id' => $widget_id, 'context' => $context])->exists() ? 'defined' : 'undefined';
+    $class .= WidgetConfigPersonal::find()->where(['widget_id' => $widget_id, 'context' => $context])->exists() ? 'defined' : 'undefined';
     if ($loaded_context == $context) {
         $class .= ' loaded';
     }

@@ -68,7 +68,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      * Право доступа к кнопке настроек виджета
      * @var string
      */
-    private $_configureAccess = 'customize';
+    protected $_configureAccess = 'customize';
     /**
      * Компонент настройки виджетов, доступ к которому имеют пользователи с правом 'administrate'
      * Для настройки кастомных прав доступа к настройкам виджета нужно:
@@ -80,12 +80,12 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      *      ]);
      * @var string
      */
-    private $_configureRoute = '/grom/widget/backend/default/configure';
+    protected $_configureRoute = '/grom/widget/backend/default/configure';
     /**
      * Право доступа к тексту пойманного исключения
      * @var string
      */
-    private $_exceptionAccess = 'administrate';
+    protected $_exceptionAccess = 'administrate';
 
     public function __construct($config = [])
     {
@@ -129,29 +129,36 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             throw new WidgetMissedIdException('Specify widget ' . __CLASS__ . '::id.');
         }
 
-        if (!isset($this->context)) {
-            $this->context = Yii::$app->request->getPathInfo();
-        }
+        if ($model = $this->findWidgetConfig()) {
+            /** @var $model WidgetConfig */
+            if ($model->widget_class != $this->className()) {
+                throw new InvalidConfigException("DB's widget configuration is adjusted for a widget ". $model->widget_class . " that doesn't correspond to the current widget " . $this->className());
+            }
 
+            $this->_loadedContext = $model->context;
+
+            foreach ($model->getParamsArray() as $key => $value) {
+                if(!array_key_exists($key, $this->_config) && $this->hasProperty($key)) {
+                    $this->$key = $value;
+                }
+            }
+        }
+    }
+
+    /**
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    protected function findWidgetConfig()
+    {
         $parts = empty($this->context) ? [''] : explode('/', '/' . $this->context);
 
         $contexts = []; $context = '';
         foreach ($parts as $part) {
-            $context .= strlen($context) ? '/'.$part : $part;
+            $context .= strlen($context) ? '/' . $part : $part;
             $contexts[] = $context;
         }
 
-        if ($model = WidgetConfig::find()->orderBy('context desc')->where(['widget_id' => $this->id, 'language' => Yii::$app->language, 'context' => $contexts])->one()) {
-            /** @var $model WidgetConfig */
-            if($model->widget_class!=$this->className())
-                throw new InvalidConfigException("DB's widget configuration is adjusted for a widget ". $model->widget_class . " that doesn't correspond to the current widget " . $this->className());
-
-            $this->_loadedContext = $model->context;
-
-            foreach($model->getParamsArray() as $key=>$value)
-                if(!array_key_exists($key, $this->_config) && $this->hasProperty($key))
-                    $this->$key = $value;
-        }
+        return WidgetConfig::find()->orderBy('context desc')->where(['widget_id' => $this->id, 'language' => Yii::$app->language, 'context' => $contexts])->one();
     }
 
     /**
@@ -270,6 +277,10 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     public function getContext()
     {
+        if (!isset($this->_context)) {
+            $this->_context = Yii::$app->request->getPathInfo();
+        }
+
         return $this->_context;
     }
 
