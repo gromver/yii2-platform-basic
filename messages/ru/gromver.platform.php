@@ -103,6 +103,7 @@ return [
     'Menu Items' => 'Пункты меню',
     'Version Manager' => 'Менеджер версий',
     'Widget\'s Settings' => 'Настройки виджетов',
+    'Widget\'s Personal Settings' => 'Персональные настройки виджетов',
     'Search' => 'Поиск',
     'Contact' => 'Контакты',
     'Home' => 'Сайт',

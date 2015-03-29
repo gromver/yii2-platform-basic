@@ -7,7 +7,7 @@ use kartik\grid\GridView;
 /* @var $searchModel gromver\platform\basic\modules\widget\models\WidgetConfigSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('gromver.platform', 'Widget\'s Settings');
+$this->title = Yii::t('gromver.platform', 'Widget\'s Personal Settings');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="widget-config-index">
@@ -59,7 +59,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'language',
                 'hAlign' => GridView::ALIGN_CENTER,
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'width' => '60px',
+                'width' => '80px',
+                'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
                 'attribute' => 'context',
@@ -86,8 +87,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'type' => 'info',
             'before' => ' ',
             //'before' => Html::a('<i class="glyphicon glyphicon-plus"></i> Add', ['create'], ['class' => 'btn btn-success', 'data-pjax' => 0]),
+            'before' => Html::a('<i class="glyphicon glyphicon-globe"></i> ' . Yii::t('gromver.platform', 'Widget\'s Settings'), ['backend/default/index'], ['class' => 'btn btn-default', 'data-pjax' => 0]),
             'after' =>
-                Html::a('<i class="glyphicon glyphicon-trash"></i> ' . Yii::t('gromver.platform', 'Delete'), ['bulk-delete'], ['class' => 'btn btn-danger', 'data-pjax'=>'0', 'onclick'=>'processAction(this); return false']) . ' ' .
+                Html::a('<i class="glyphicon glyphicon-trash"></i> ' . Yii::t('gromver.platform', 'Delete'), ['bulk-delete'], ['class' => 'btn btn-danger', 'data-pjax' => 0, 'onclick' => 'processAction(this); return false']) . ' ' .
                 Html::a('<i class="glyphicon glyphicon-repeat"></i> ' . Yii::t('gromver.platform', 'Reset List'), ['index'], ['class' => 'btn btn-info']),
             'showFooter' => false
         ],

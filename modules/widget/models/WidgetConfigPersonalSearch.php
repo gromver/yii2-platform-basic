@@ -26,8 +26,8 @@ class WidgetConfigPersonalSearch extends WidgetConfigPersonal
     public function rules()
     {
         return [
-            [['id', 'valid', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lock'], 'integer'],
-            [['widget_id', 'widget_class', 'context', 'url', 'params', 'language'], 'safe'],
+            [['id', 'valid', 'created_at', 'updated_at', 'updated_by', 'lock'], 'integer'],
+            [['widget_id', 'widget_class', 'context', 'url', 'params', 'language', 'created_by'], 'safe'],
         ];
     }
 
@@ -51,20 +51,25 @@ class WidgetConfigPersonalSearch extends WidgetConfigPersonal
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'valid' => $this->valid,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'created_by' => $this->created_by,
-            'updated_by' => $this->updated_by,
-            'lock' => $this->lock,
+            '{{%grom_widget_config_personal}}.id' => $this->id,
+            '{{%grom_widget_config_personal}}.valid' => $this->valid,
+            '{{%grom_widget_config_personal}}.created_at' => $this->created_at,
+            '{{%grom_widget_config_personal}}.updated_at' => $this->updated_at,
+            //'{{%grom_widget_config_personal}}.created_by' => $this->created_by,
+            '{{%grom_widget_config_personal}}.updated_by' => $this->updated_by,
+            '{{%grom_widget_config_personal}}.lock' => $this->lock,
+            '{{%grom_widget_config_personal}}.language' => $this->language,
         ]);
 
-        $query->andFilterWhere(['like', 'widget_id', $this->widget_id])
-            ->andFilterWhere(['like', 'widget_class', $this->widget_class])
-            ->andFilterWhere(['like', 'context', $this->context])
-            ->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'params', $this->params]);
+        $query->andFilterWhere(['like', '{{%grom_widget_config_personal}}.widget_id', $this->widget_id])
+            ->andFilterWhere(['like', '{{%grom_widget_config_personal}}.widget_class', $this->widget_class])
+            ->andFilterWhere(['like', '{{%grom_widget_config_personal}}.context', $this->context])
+            ->andFilterWhere(['like', '{{%grom_widget_config_personal}}.url', $this->url])
+            ->andFilterWhere(['like', '{{%grom_widget_config_personal}}.params', $this->params]);
+
+        if ($this->created_by) {
+            $query->joinWith('owner')->andWhere(['or', ['{{%grom_widget_config_personal}}.created_by' => $this->created_by], ['like', '{{%grom_user}}.username', $this->created_by]]);
+        }
 
         return $dataProvider;
     }
