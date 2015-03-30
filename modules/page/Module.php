@@ -16,8 +16,8 @@ use gromver\platform\basic\widgets\Desktop;
 use gromver\platform\basic\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\page\components\MenuRouterPage;
 use gromver\platform\basic\modules\page\models\Page;
-use gromver\platform\basic\widgets\SearchResultsElasticsearch;
-use gromver\platform\basic\widgets\SearchResultsSql;
+use gromver\platform\basic\modules\search\modules\sql\widgets\SearchResultsFrontend as SqlSearchResults;
+use gromver\platform\basic\modules\search\modules\elastic\widgets\SearchResultsFrontend as ElasticSearchResults;
 use Yii;
 
 /**
@@ -59,7 +59,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuUrlRuleEvent
+     * @param $event \gromver\platform\basic\components\events\FetchRoutersEvent
      */
     public function addMenuRouter($event)
     {
@@ -75,8 +75,8 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
             Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
             MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
             MenuUrlRule::EVENT_FETCH_MODULE_ROUTERS => 'addMenuRouter',
-            SearchResultsSql::EVENT_BEFORE_SEARCH . Page::className()  => [Page::className(), 'sqlBeforeSearch'],
-            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Page::className() => [Page::className(), 'elasticsearchBeforeSearch'],
+            SqlSearchResults::EVENT_BEFORE_SEARCH . Page::className()  => [Page::className(), 'sqlBeforeFrontendSearch'],
+            ElasticSearchResults::EVENT_BEFORE_SEARCH . Page::className() => [Page::className(), 'elasticBeforeFrontendSearch'],
         ];
     }
 }

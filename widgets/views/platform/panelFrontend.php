@@ -22,16 +22,11 @@ $navBar = NavBar::begin(\yii\helpers\ArrayHelper::merge([
     ],
 ], $widget->options)); ?>
 
-<?= Html::beginForm([$this->context->searchRoute], 'get', ['class' => 'navbar-form navbar-left',  'role' => "search"]) ?>
-
-<div class="input-group">
-    <?= Html::textInput('q', null, ['class' => 'form-control', 'placeholder' => Yii::t('gromver.platform', 'Search ...')]) ?>
-    <span class="input-group-btn">
-            <?= Html::submitButton('<i class="glyphicon glyphicon-search"></i>', ['class' => 'btn btn-default']) ?>
-        </span>
-</div>
-
-<?= Html::endForm() ?>
+<?= \gromver\platform\basic\modules\search\widgets\SearchFormFrontend::widget([
+    'id' => 'fPanelForm',
+    'options' => ['class' => 'navbar-form navbar-left'],
+    'query' => ''
+]); ?>
 
 <?php if (Yii::$app->user->can('customize')) { ?>
     <div class="input-group navbar-left">

@@ -17,9 +17,9 @@ use gromver\platform\basic\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\news\components\MenuRouterNews;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\news\models\Post;
-use gromver\platform\basic\widgets\SearchResultsElasticsearch;
-use gromver\platform\basic\widgets\SearchResultsSql;
-use gromver\platform\basic\modules\elasticsearch\Module as ElasticsearchModule;
+use gromver\platform\basic\modules\search\modules\elastic\Module as ElasticModule;
+use gromver\platform\basic\modules\search\modules\elastic\widgets\SearchResultsFrontend as ElasticSearchResults;
+use gromver\platform\basic\modules\search\modules\sql\widgets\SearchResultsFrontend as SqlSearchResults;
 use Yii;
 
 /**
@@ -64,7 +64,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuUrlRuleEvent
+     * @param $event \gromver\platform\basic\components\events\FetchRoutersEvent
      */
     public function addMenuRouter($event)
     {
@@ -80,11 +80,11 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
             Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
             MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
             MenuUrlRule::EVENT_FETCH_MODULE_ROUTERS => 'addMenuRouter',
-            SearchResultsSql::EVENT_BEFORE_SEARCH . Post::className()  => [Post::className(), 'sqlBeforeSearch'],
-            SearchResultsSql::EVENT_BEFORE_SEARCH . Category::className()  => [Category::className(), 'sqlBeforeSearch'],
-            ElasticsearchModule::EVENT_BEFORE_CREATE_INDEX . Post::className() => [Post::className(), 'elasticsearchBeforeCreateIndex'],
-            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Post::className() => [Post::className(), 'elasticsearchBeforeSearch'],
-            SearchResultsElasticsearch::EVENT_BEFORE_SEARCH . Category::className() => [Category::className(), 'elasticsearchBeforeSearch'],
+            ElasticModule::EVENT_BEFORE_CREATE_INDEX . Post::className() => [Post::className(), 'elasticBeforeCreateIndex'],
+            ElasticSearchResults::EVENT_BEFORE_SEARCH . Post::className()  => [Post::className(), 'elasticBeforeFrontendSearch'],
+            ElasticSearchResults::EVENT_BEFORE_SEARCH . Category::className()  => [Category::className(), 'elasticBeforeFrontendSearch'],
+            SqlSearchResults::EVENT_BEFORE_SEARCH . Post::className() => [Post::className(), 'sqlBeforeFrontendSearch'],
+            SqlSearchResults::EVENT_BEFORE_SEARCH . Category::className() => [Category::className(), 'sqlBeforeFrontendSearch'],
         ];
     }
 }

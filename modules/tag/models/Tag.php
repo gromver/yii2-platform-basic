@@ -127,7 +127,7 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
     {
         return [
             TimestampBehavior::className(),
-            BlameableBehavior::className()
+            BlameableBehavior::className(),
         ];
     }
 

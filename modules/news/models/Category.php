@@ -476,42 +476,38 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
 
     // SqlSearch integration
     /**
-     * @param $event \gromver\platform\basic\widgets\events\SearchResultsSqlEvent
+     * @param $event \gromver\platform\basic\modules\search\modules\sql\widgets\events\SqlBeforeSearchEvent
      */
-    static public function sqlBeforeSearch($event)
+    static public function sqlBeforeFrontendSearch($event)
     {
-        if ($event->widget->frontendMode) {
-            $event->query->leftJoin('{{%grom_category}}', [
-                    'AND',
-                    ['=', 'model_class', self::className()],
-                    'model_id={{%grom_category}}.id',
-                    ['=', '{{%grom_category}}.status', self::STATUS_PUBLISHED],
-                    ['NOT IN', '{{%grom_category}}.parent_id', Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
-                ]
-            )->addSelect('{{%grom_category}}.id')
-                ->andWhere('model_class=:categoryClassName XOR {{%grom_category}}.id IS NULL', [':categoryClassName' => self::className()]);
-        }
+        $event->query->leftJoin('{{%grom_category}}', [
+                'AND',
+                ['=', 'model_class', self::className()],
+                'model_id={{%grom_category}}.id',
+                ['=', '{{%grom_category}}.status', self::STATUS_PUBLISHED],
+                ['NOT IN', '{{%grom_category}}.parent_id', Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
+            ]
+        )->addSelect('{{%grom_category}}.id')
+            ->andWhere('model_class=:categoryClassName XOR {{%grom_category}}.id IS NULL', [':categoryClassName' => self::className()]);
     }
 
     // ElasticSearch integration
     /**
-     * @param $event \gromver\platform\basic\widgets\events\SearchResultsElasticsearchEvent
+     * @param $event \gromver\platform\basic\modules\search\modules\elastic\widgets\events\ElasticBeforeSearchEvent
      */
-    static public function elasticsearchBeforeSearch($event)
+    static public function elasticBeforeFrontendSearch($event)
     {
-        if ($event->widget->frontendMode) {
-            $event->widget->filters[] = [
-                'not' => [
-                    'and' => [
-                        [
-                            'term' => ['model_class' => self::className()]
-                        ],
-                        [
-                            'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_category}}.id')->column()]
-                        ]
+        $event->sender->filters[] = [
+            'not' => [
+                'and' => [
+                    [
+                        'term' => ['model_class' => self::className()]
+                    ],
+                    [
+                        'terms' => ['model_id' => self::find()->unpublished()->select('{{%grom_category}}.id')->column()]
                     ]
                 ]
-            ];
-        }
+            ]
+        ];
     }
 }

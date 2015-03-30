@@ -20,7 +20,7 @@ if ($menu) {
 </div>
 
 <div class="container-fluid">
-    <?= \gromver\platform\basic\widgets\AuthSignup::widget([
+    <?= \gromver\platform\basic\modules\auth\widgets\AuthSignup::widget([
         'id' => 'auth-signup',
         'model' => $model
     ]) ?>

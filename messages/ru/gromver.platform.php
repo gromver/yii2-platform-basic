@@ -271,4 +271,5 @@ return [
     'Cache Component' => 'Компонент кеширования',
     'Cache Duration' => 'Время кеширования',
     'No cache' => 'Без кеша',
+    'Reindex' => 'Переиндексация',
 ];

@@ -15,6 +15,8 @@ use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
 use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\modules\search\widgets\SearchResultsBackend;
+use gromver\platform\basic\modules\search\widgets\SearchResultsFrontend;
 use gromver\platform\basic\modules\user\models\User;
 use gromver\platform\basic\widgets\Desktop;
 use gromver\platform\basic\widgets\MenuItemRoutes;
@@ -204,6 +206,30 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     }
 
     /**
+     * @param $event \gromver\platform\basic\modules\search\widgets\events\SearchableModelsEvent
+     */
+    public function addSearchableModelsBackend($event)
+    {
+        $event->items = array_merge($event->items, [
+            'gromver\platform\basic\modules\page\models\Page' => Yii::t('gromver.platform', 'Pages'),
+            'gromver\platform\basic\modules\news\models\Post' => Yii::t('gromver.platform', 'Posts'),
+            'gromver\platform\basic\modules\news\models\Category' => Yii::t('gromver.platform', 'Categories'),
+        ]);
+    }
+
+    /**
+     * @param $event \gromver\platform\basic\modules\search\widgets\events\SearchableModelsEvent
+     */
+    public function addSearchableModelsFrontend($event)
+    {
+        $event->items = array_merge($event->items, [
+            'gromver\platform\basic\modules\page\models\Page' => Yii::t('gromver.platform', 'Pages'),
+            'gromver\platform\basic\modules\news\models\Post' => Yii::t('gromver.platform', 'Posts'),
+            'gromver\platform\basic\modules\news\models\Category' => Yii::t('gromver.platform', 'Categories'),
+        ]);
+    }
+
+    /**
      * @param string $mode
      * @param bool $saveInSession
      */
@@ -285,6 +311,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
             User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave',
             Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
             MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
+            SearchResultsBackend::EVENT_FETCH_SEARCHABLE_MODELS => 'addSearchableModelsBackend',
+            SearchResultsFrontend::EVENT_FETCH_SEARCHABLE_MODELS => 'addSearchableModelsFrontend'
         ];
     }
 

@@ -4,3 +4,12 @@
 .popup.auth-popup {
     max-width: 500px;
 }
+
+#fPanelForm, #bPanelForm {
+    float: left;
+    min-height: auto;
+}
+#fPanelForm .widget-controls, #bPanelForm .widget-controls {
+    top: 8px;
+    right: 15px;
+}

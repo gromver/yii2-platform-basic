@@ -56,7 +56,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuUrlRuleEvent
+     * @param $event \gromver\platform\basic\components\events\FetchRoutersEvent
      */
     public function addMenuRouter($event)
     {

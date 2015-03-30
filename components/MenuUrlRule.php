@@ -12,7 +12,7 @@ namespace gromver\platform\basic\components;
 
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\menu\models\MenuItem;
-use gromver\platform\basic\components\events\MenuUrlRuleEvent;
+use gromver\platform\basic\components\events\FetchRoutersEvent;
 use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\base\Object;
@@ -77,8 +77,9 @@ class MenuUrlRule extends Object implements UrlRuleInterface
     protected function buildRules()
     {
         //нам нужно собрать все роутеры от модулей и вытащить из них инструкции по маршрутизации
-        $routers = ModuleEvent::trigger(self::EVENT_FETCH_MODULE_ROUTERS, new MenuUrlRuleEvent([
-            'routers' => []
+        $routers = ModuleEvent::trigger(self::EVENT_FETCH_MODULE_ROUTERS, new FetchRoutersEvent([
+            'routers' => [],
+            'sender' => $this,
         ]), 'routers');
 
         // вытаскиваем инструкции из всех роутеров

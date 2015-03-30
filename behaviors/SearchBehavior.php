@@ -11,15 +11,13 @@ namespace gromver\platform\basic\behaviors;
 
 
 use gromver\modulequery\ModuleEvent;
-use gromver\platform\basic\interfaces\model\SearchableInterface;
-use gromver\platform\basic\interfaces\model\ViewableInterface;
-use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 
 /**
  * Class SearchBehavior
  * Данное поведение инициирует соответсвующие модульные события [[ModuleEvent::trigger]] после удаления/записи модели
  * Эти события используют поисковые модули (Sql, Elasticsearch) для построения поискового индекса
+ * Важно: модель использующее данное поведение должна наследовать \gromver\platform\basic\interfaces\model\ViewableInterface и \gromver\platform\basic\interfaces\model\SearchableInterface
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
@@ -38,23 +36,6 @@ class SearchBehavior extends \yii\base\Behavior
             ActiveRecord::EVENT_AFTER_UPDATE => 'searchIndexPage',
             ActiveRecord::EVENT_AFTER_DELETE => 'searchDeletePage',
         ];
-    }
-
-    /**
-     * @param \yii\base\Component $owner
-     * @throws InvalidConfigException
-     */
-    public function attach($owner)
-    {
-        parent::attach($owner);
-
-        if (!$this->owner instanceof ViewableInterface) {
-            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\model\ViewableInterface');
-        }
-
-        if (!$this->owner instanceof SearchableInterface) {
-            throw new InvalidConfigException(__CLASS__ . '::owner must be an instance of \gromver\platform\basic\interfaces\model\ModelSearchableInterface');
-        }
     }
 
     /**

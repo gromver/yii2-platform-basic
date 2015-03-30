@@ -382,56 +382,52 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
 
     // SqlSearch integration
     /**
-     * @param $event \gromver\platform\basic\widgets\events\SearchResultsSqlEvent
+     * @param $event \gromver\platform\basic\modules\search\modules\sql\widgets\events\SqlBeforeSearchEvent
      */
-    static public function sqlBeforeSearch($event)
+    static public function sqlBeforeFrontendSearch($event)
     {
-        if ($event->widget->frontendMode) {
-            $event->query->leftJoin('{{%grom_post}}', [
-                    'AND',
-                    ['=', 'model_class', self::className()],
-                    'model_id={{%grom_post}}.id',
-                    ['=', '{{%grom_post}}.status', self::STATUS_PUBLISHED],
-                    ['IN', '{{%grom_post}}.category_id', Category::find()->published()->select('{{%grom_category}}.id')->column()]
-                ]
-            )->addSelect('{{%grom_post}}.id')
-                ->andWhere('model_class=:postClassName XOR {{%grom_post}}.id IS NULL', [':postClassName' => self::className()]);
-        }
+        $event->query->leftJoin('{{%grom_post}}', [
+                'AND',
+                ['=', 'model_class', self::className()],
+                'model_id={{%grom_post}}.id',
+                ['=', '{{%grom_post}}.status', self::STATUS_PUBLISHED],
+                ['IN', '{{%grom_post}}.category_id', Category::find()->published()->select('{{%grom_category}}.id')->column()]
+            ]
+        )->addSelect('{{%grom_post}}.id')
+            ->andWhere('model_class=:postClassName XOR {{%grom_post}}.id IS NULL', [':postClassName' => self::className()]);
     }
 
     // ElasticSearch integration
     /**
-     * @param $event \gromver\platform\basic\widgets\events\SearchResultsElasticsearchEvent
+     * @param $event \gromver\platform\basic\modules\search\modules\elastic\widgets\events\ElasticBeforeSearchEvent
      */
-    static public function elasticsearchBeforeSearch($event)
+    static public function elasticBeforeFrontendSearch($event)
     {
-        if ($event->widget->frontendMode) {
-            $event->widget->filters[] = [
-                'not' => [
-                    'and' => [
-                        [
-                            'term' => ['model_class' => self::className()]
-                        ],
-                        [
-                            'or' => [
-                                [
-                                    'term' => ['params.published' => false]
-                                ],
-                                [
-                                    'terms' => ['params.category_id' => Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
-                                ]
+        $event->sender->filters[] = [
+            'not' => [
+                'and' => [
+                    [
+                        'term' => ['model_class' => self::className()]
+                    ],
+                    [
+                        'or' => [
+                            [
+                                'term' => ['params.published' => false]
+                            ],
+                            [
+                                'terms' => ['params.category_id' => Category::find()->unpublished()->select('{{%grom_category}}.id')->column()]
                             ]
                         ]
                     ]
                 ]
-            ];
-        }
+            ]
+        ];
     }
 
     /**
-     * @param $event \gromver\platform\basic\modules\elasticsearch\events\ElasticModuleEvent
+     * @param $event \gromver\platform\basic\modules\search\modules\elastic\events\ElasticIndexEvent
      */
-    static public function elasticsearchBeforeCreateIndex($event)
+    static public function elasticBeforeCreateIndex($event)
     {
         $event->index->params = [
             'published' => $event->model->status == self::STATUS_PUBLISHED,

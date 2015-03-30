@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Json;
+use gromver\platform\basic\modules\search\modules\elastic\models\Index;
 
 class m140825_160749_grom_mapping extends \yii\db\Migration
 {
@@ -8,11 +8,11 @@ class m140825_160749_grom_mapping extends \yii\db\Migration
     {
         $connection = \yii\elasticsearch\ActiveRecord::getDb();
 
-        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\Index::index()) {
-            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\Index::className() . '::index must be set.');
+        if (!$index = Index::index()) {
+            throw new \yii\console\Exception(Index::className() . '::index must be set.');
         }
 
-        $type = \gromver\platform\basic\modules\elasticsearch\models\Index::type();
+        $type = Index::type();
 
         if ($connection->createCommand()->indexExists($index)) {
             $connection->createCommand()->deleteIndex($index);
@@ -82,80 +82,12 @@ class m140825_160749_grom_mapping extends \yii\db\Migration
         ]);
 
         echo "Index \"$index\" created.\n";
-
-        // todo вынести индексацию в бэкенд
-        /*$documents = [
-            'gromver\platform\basic\modules\page\models\PageElasticSearch',
-            'gromver\platform\basic\modules\news\models\PostElasticSearch',
-            'gromver\platform\basic\modules\news\models\CategoryElasticSearch',
-        ];
-
-        foreach ($documents as $documentClass) {
-            echo "Uploading {$documentClass} models.\n";
-            $completed = $this->upload($documentClass);
-            echo "{$completed} items uploaded.\n";
-        }*/
-    }
-
-    /**
-     * @param $documentClass \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument
-     * @return int
-     * @throws Exception
-     */
-    public function upload($documentClass)
-    {
-        $bulk = '';
-        /** @var \yii\db\ActiveRecord $modelClass */
-        $modelClass = $documentClass::model();
-        /** @var \gromver\platform\basic\modules\elasticsearch\models\ActiveDocument $document */
-        $document = new $documentClass;
-        $query = $modelClass::find();
-        //древовидные модели, не должны индексировать рутовый элемент
-        if ($query->hasMethod('noRoots')) {
-            $query->noRoots();
-        }
-        foreach ($query->each() as $model) {
-            /** @var \yii\db\ActiveRecord $model */
-            $action = Json::encode([
-                "index" => [
-                    "_id" => $model->getPrimaryKey(),
-                    "_type" => $documentClass::type(),
-                    "_index" => $documentClass::index(),
-                ],
-            ]);
-
-            $document->loadModel($model);
-            $data = Json::encode($document->toArray());
-            $bulk .= $action . "\n" . $data . "\n";
-        }
-
-        if (empty($bulk)) {
-            return 0;
-        }
-
-        //todo непонятный касяк с кодировкой, при сохранении через актив рекорд - норм, через пакетный способ - хрень
-        $url = [$documentClass::index(), $documentClass::type(), '_bulk'];
-        $response = \yii\elasticsearch\ActiveRecord::getDb()->post($url, [], $bulk);
-        $n = 0;
-        $errors = [];
-        foreach ($response['items'] as $item) {
-            if (isset($item['index']['status']) && in_array($item['index']['status'], [200, 201])) {
-                $n++;
-            } else {
-                $errors[] = $item['index'];
-            }
-        }
-        if (!empty($errors) || isset($response['errors']) && $response['errors']) {
-            throw new Exception(__METHOD__ . ' failed inserting '. $modelClass .' model records.', $errors);
-        }
-
-        return $n;
     }
 
     public function down()
     {
-        if (!$index = \gromver\platform\basic\modules\elasticsearch\models\Index::index()) {
-            throw new \yii\console\Exception(\gromver\platform\basic\modules\elasticsearch\models\Index::className() . '::index must be set.');
+        if (!$index = Index::index()) {
+            throw new \yii\console\Exception(Index::className() . '::index must be set.');
         }
 
         \yii\elasticsearch\ActiveRecord::getDb()->createCommand()->deleteIndex($index);//->deleteAllIndexes();//
