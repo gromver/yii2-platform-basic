@@ -317,15 +317,15 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     }
 
     /**
-     * @param $user User
+     * @param $event \gromver\platform\basic\modules\user\models\events\BeforeRolesSaveEvent
      * Всем пользователям всегда устанавливаем роль Authorized
      */
-    public function beforeUserRolesSave($user)
+    public function beforeUserRolesSave($event)
     {
-        $roles = $user->getRoles();
+        $roles = $event->sender->getRoles();
         if (!in_array('Authorized', $roles)) {
             $roles[] = 'Authorized';
-            $user->setRoles($roles);
+            $event->sender->setRoles($roles);
         }
     }
 }

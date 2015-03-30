@@ -7,11 +7,13 @@ use yii\bootstrap\ActiveForm;
  * @var yii\web\View $this
  * @var yii\bootstrap\ActiveForm $form
  * @var gromver\platform\basic\modules\user\models\User $model
+ * @var string|array|null $url
  */
 ?>
 
 <?php $form = ActiveForm::begin([
     'id' => 'reset-password-form',
+    'action' => $url,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
         'template' => "{input}",

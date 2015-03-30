@@ -3,15 +3,19 @@
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
  * @var gromver\platform\basic\modules\user\models\User $model
+ * @var string|array|null $url
  */
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
+
+\gromver\platform\basic\modules\auth\widgets\assets\AuthAsset::register($this);
 ?>
 
 <?php $form = ActiveForm::begin([
     'id' => 'login-form',
+    'action' => $url,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
         'template' => "{input}",
@@ -44,24 +48,3 @@ use yii\captcha\Captcha;
 </div>
 
 <?php ActiveForm::end(); ?>
-
-<style>
-    .captcha-group {
-        position: relative;
-    }
-    .captcha-group > img {
-        position: absolute;
-        top: 1px;
-        right: 5px;
-        z-index: 10;
-    }
-    .captcha-group .form-control {
-        padding-right: 90px!important;
-    }
-    #login-form .links {
-        margin-top: 2em;
-    }
-    #login-form .links a {
-        margin-right: 3em;
-    }
-</style>

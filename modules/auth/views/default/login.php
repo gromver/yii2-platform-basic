@@ -21,7 +21,6 @@ if ($menu) {
 
 <div class="container-fluid">
     <?= \gromver\platform\basic\modules\auth\widgets\AuthLogin::widget([
-        'id' => 'auth-login',
         'model' => $model
     ]) ?>
 </div>

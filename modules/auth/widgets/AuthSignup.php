@@ -11,7 +11,7 @@ namespace gromver\platform\basic\modules\auth\widgets;
 
 
 use gromver\platform\basic\modules\user\models\User;
-use gromver\platform\basic\widgets\Widget;
+use yii\base\Widget;
 
 /**
  * Class AuthSignup
@@ -21,26 +21,32 @@ use gromver\platform\basic\widgets\Widget;
 class AuthSignup extends Widget
 {
     /**
-     * @ignore
+     * @var string|array
+     */
+    public $url;
+    /**
      * @var User
      */
     public $model;
+    /**
+     * @var string
+     */
+    public $layout = 'signup';
 
     public function init()
     {
         parent::init();
-
-        $this->setConfigureAccess('none');
 
         if (!isset($this->model)) {
             $this->model = new User();
         }
     }
 
-    protected function launch()
+    public function run()
     {
-        echo $this->render('auth/signup', [
-            'model' => $this->model
+        echo $this->render($this->layout, [
+            'model' => $this->model,
+            'url' => $this->url,
         ]);
     }
 }

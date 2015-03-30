@@ -13,6 +13,7 @@ namespace gromver\platform\basic\modules\user\models;
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\news\models\Post;
 use gromver\platform\basic\modules\news\models\PostViewed;
+use gromver\platform\basic\modules\user\models\events\BeforeRolesSaveEvent;
 use Yii;
 use yii\base\ModelEvent;
 use yii\base\NotSupportedException;
@@ -314,9 +315,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         parent::afterSave($insert, $changedAttributes);
 
-        //$newRoles = $this->_roles;
         if(is_array($this->_roles)) {
-            ModuleEvent::trigger(self::EVENT_BEFORE_USER_ROLES_SAVE, [$this]);
+            ModuleEvent::trigger(self::EVENT_BEFORE_USER_ROLES_SAVE, new BeforeRolesSaveEvent([
+                'sender' => $this
+            ]));
             $newRoles = $this->_roles;
             $this->_roles = null;
         } else {

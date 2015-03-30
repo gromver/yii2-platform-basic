@@ -21,7 +21,6 @@ if ($menu) {
 
 <div class="container-fluid">
     <?= \gromver\platform\basic\modules\auth\widgets\AuthRequestPasswordResetToken::widget([
-        'id' => 'auth-token',
         'model' => $model
     ]) ?>
 </div>

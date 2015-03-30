@@ -11,7 +11,7 @@ namespace gromver\platform\basic\modules\auth\widgets;
 
 
 use gromver\platform\basic\modules\auth\models\LoginForm;
-use gromver\platform\basic\widgets\Widget;
+use yii\base\Widget;
 
 /**
  * Class AuthLogin
@@ -21,26 +21,32 @@ use gromver\platform\basic\widgets\Widget;
 class AuthLogin extends Widget
 {
     /**
-     * @ignore
+     * @var string|array
+     */
+    public $url;
+    /**
      * @var LoginForm
      */
     public $model;
+    /**
+     * @var string
+     */
+    public $layout = 'login';
 
     public function init()
     {
         parent::init();
-
-        $this->setConfigureAccess('none');
 
         if (!isset($this->model)) {
             $this->model = new LoginForm();
         }
     }
 
-    protected function launch()
+    public function run()
     {
-        echo $this->render('auth/login', [
-            'model' => $this->model
+        echo $this->render($this->layout, [
+            'model' => $this->model,
+            'url' => $this->url,
         ]);
     }
 }

@@ -7,10 +7,12 @@ use yii\captcha\Captcha;
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
  * @var gromver\platform\basic\modules\user\models\User $model
+ * @var string|array|null $url
  */
 ?>
 <?php $form = ActiveForm::begin([
     'id' => 'signup-form',
+    'action' => $url,
     'options' => ['class' => 'form-horizontal'],
     'fieldConfig' => [
         'template' => "{input}",

@@ -21,7 +21,6 @@ if ($menu) {
 
 <div class="container-fluid">
     <?= \gromver\platform\basic\modules\auth\widgets\AuthResetPassword::widget([
-        'id' => 'auth-pass',
         'model' => $model
     ]) ?>
 </div>

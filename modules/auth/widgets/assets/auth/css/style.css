@@ -1,0 +1,18 @@
+.captcha-group {
+    position: relative;
+}
+.captcha-group > img {
+    position: absolute;
+    top: 1px;
+    right: 5px;
+    z-index: 10;
+}
+.captcha-group .form-control {
+    padding-right: 90px!important;
+}
+#login-form .links {
+    margin-top: 2em;
+}
+#login-form .links a {
+    margin-right: 3em;
+}
