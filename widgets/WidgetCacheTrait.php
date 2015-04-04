@@ -15,6 +15,23 @@ use yii\di\Instance;
 
 /**
  * Class WidgetCacheTrait
+ * Использование
+ * class MyWidget extends \gromver\platform\basic\widgets\Widget {
+ *      use WidgetCacheTrait
+ *
+ *      protected function launch()
+ *      {
+ *          $cache = $this->ensureCache();
+ *          if ($cache) {
+ *              if (($result = $cache->get($id)) === false) {
+ *                  $result = $this->getResultMethod();
+ *                  $cache->set($id, $result, $this->cacheDuration, $this->cacheDependency);
+ *              }
+ *          } else {
+ *              $result = $this->getResultMethod();
+ *          }
+ *      }
+ * }
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
@@ -40,20 +57,20 @@ trait WidgetCacheTrait {
      */
     public $cacheDependency;
 
+    /**
+     * @return null|Cache
+     * @throws \yii\base\InvalidConfigException
+     */
     protected function ensureCache()
     {
-        if (isset($this->cache)) {
-            $this->cache = $this->cache ? Instance::ensure($this->cache, Cache::className()) : null;
-        }
-
-        return $this->cache;
+        return $this->cache ? Instance::ensure($this->cache, Cache::className()) : null;
     }
 
     public static function caches()
     {
         return [
             \Yii::t('gromver.platform', 'No cache'),
-            'cache' => 'cache'
+            'cache' => 'cache',
         ];
     }
 } 

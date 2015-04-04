@@ -474,7 +474,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
      */
     public static function frontendViewLink($model)
     {
-        if ($model['link_type']==self::LINK_ROUTE) {
+        if ($model['link_type'] == self::LINK_ROUTE) {
             return ['/' . $model['path'], UrlManager::LANGUAGE_PARAM => $model['language']];
         } else {
             return $model['link'];

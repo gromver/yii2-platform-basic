@@ -24,6 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('<i class="glyphicon glyphicon-th-list"></i> ' . Yii::t('gromver.platform', 'Menu Items'), ['/grom/menu/backend/item/index', 'MenuItemSearch' => ['menu_type_id' => (int)$model->id]], ['class' => 'btn btn-default']) ?>
     </p>
 
     <?= DetailView::widget([

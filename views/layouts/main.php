@@ -42,8 +42,8 @@ AppAsset::register($this);
                         'activeCssClass' => 'active',
                         'firstItemCssClass' => 'first',
                         'lastItemCssClass' => 'last',
-                        //'activateItems'=>true,
-                        'activateParents' => true,
+                        'activateItems' => false,
+                        'activateParents' => false,
                         'options' => ['class' => 'level-1']
                     ]
                 ]) ?>

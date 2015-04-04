@@ -62,6 +62,7 @@ class User extends \yii\web\User
 	}
 
     /**
+     * Если пользователь неавторизован - всегда false, иначе yii не кеширует и начинает спамить одни и теже запросы в бд
      * @inheritdoc
      */
     public function can($permissionName, $params = [], $allowCaching = true)
@@ -70,6 +71,6 @@ class User extends \yii\web\User
         if ($this->getIsSuperAdmin()) {
             return true;
         }
-        return parent::can($permissionName, $params, $allowCaching);
+        return $this->getIsGuest() ? false : parent::can($permissionName, $params, $allowCaching);
     }
 }

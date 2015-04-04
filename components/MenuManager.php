@@ -67,6 +67,11 @@ class MenuManager extends \yii\base\Object
         return $this->_activeMenu;
     }
 
+    public function addActiveMenuId($value)
+    {
+        $this->_activeMenuIds[] = $value;
+    }
+
     public function setActiveMenuIds($value)
     {
         $this->_activeMenuIds = $value;

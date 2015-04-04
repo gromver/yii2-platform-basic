@@ -143,7 +143,7 @@ class MenuUrlRule extends Object implements UrlRuleInterface
             // устанавливаем найденный пункт меню в качестве активного
             $this->menuManager->setActiveMenu($menu);
             // добавляем данный пункт в список активных пунктов меню
-            $this->menuManager->getActiveMenuIds()[] = $menu->id;
+            $this->menuManager->addActiveMenuId($menu->id);
             // помечаем пункт меню как "правильный"
             $menu->setContext(MenuItem::CONTEXT_PROPER);
             //при полном совпадении метаданные меню перекрывают метаднные контроллера
@@ -154,7 +154,7 @@ class MenuUrlRule extends Object implements UrlRuleInterface
             // устанавливаем найденный пункт меню в качестве активного
             $this->menuManager->setActiveMenu($menu);
             // добавляем данный пункт в список активных пунктов меню
-            $this->menuManager->getActiveMenuIds()[] = $menu->id;
+            $this->menuManager->addActiveMenuId($menu->id);
             // помечаем пункт меню как "подходящий"
             $menu->setContext(MenuItem::CONTEXT_APPLICABLE);
             $this->menuManager->applyMetaData();

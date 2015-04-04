@@ -15,6 +15,7 @@ use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\page\models\Page;
 use yii\base\InvalidConfigException;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * Class PageGuide
@@ -79,55 +80,17 @@ class PageGuide extends Widget
         if ($this->useHighlights) {
             CkeditorHighlightAsset::register($this->getView());
         }
-
-        $this->ensureCache();
     }
 
     protected function launch()
     {
-
-        if (!$this->cache || (list($items, $prevModel, $nextModel) = Yii::$app->cache->get([__CLASS__, $this->rootPage->id, $this->page->id])) === false) {
-            /** items list */
-            if (($this->page->level - $this->rootPage->level) > 1) {
-                $listRoot = $this->page->parents($this->page->isLeaf() ? 2 : 1)->one();
-            } else {
-                $listRoot = $this->rootPage;
+        if ($cache = $this->ensureCache()) {
+            if ((list($items, $prevModel, $nextModel) = $cache->get([__CLASS__, $this->rootPage->id, $this->page->id])) === false) {
+                list($items, $prevModel, $nextModel) = $this->getViewData();
+                $cache->set([__CLASS__, $this->rootPage->id, $this->page->id], [$items, $prevModel, $nextModel], $this->cacheDuration, ($this->cacheDependency ? $this->cacheDependency : DbState::dependency(Page::tableName())));
             }
-            /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
-            $items = $listRoot->children(2)->published()->all();
-            if (count($items)) {
-                $hasActiveChild = false;
-                $items = $this->prepareItems($items, $items[0]->level, $hasActiveChild);
-            }
-
-            /** nav */
-            $model = $this->page;
-            $prevModel = $nextModel = null;
-            // предыдущая страница
-            if (!$this->rootPage->equals($this->page)) {
-                if ($prevModel = $model->prev()->published()->one()) {
-                    //пытаемся найти лист(правый)
-                    if ($rgtLeaf = $prevModel->leaves()->published()->orderBy(['lft' => SORT_DESC])->one()) {
-                        $prevModel = $rgtLeaf;
-                    }
-                } else {
-                    $prevModel = $model->parent;
-                }
-            }
-            // следущая страница
-            if ($this->rootPage->equals($this->page)) {
-                $nextModel = $model->children(1)->published()->one();
-            } else {
-                if (!($nextModel = $model->children(1)->published()->one() or $nextModel = $model->next()->published()->one())) {
-                    //пытаемся выйти наверх
-                    while(($parentModel = $model->parent) && !$parentModel->equals($this->rootPage)) {
-                        if ($nextModel = $parentModel->next()->one()) break;
-                        $model = $parentModel;
-                    }
-                }
-            }
-
-            Yii::$app->cache->set([__CLASS__, $this->rootPage->id, $this->page->id], [$items, $prevModel, $nextModel], $this->cacheDuration, ($this->cacheDependency ? $this->cacheDependency : DbState::dependency(Page::tableName())));
+        } else {
+            list($items, $prevModel, $nextModel) = $this->getViewData();
         }
 
         echo $this->render($this->layout, [
@@ -137,6 +100,50 @@ class PageGuide extends Widget
             'prevModel' => $prevModel,
             'nextModel' => $nextModel
         ]);
+    }
+
+    protected function getViewData()
+    {
+        /** items list */
+        if (($this->page->level - $this->rootPage->level) > 1) {
+            $listRoot = $this->page->parents($this->page->isLeaf() ? 2 : 1)->one();
+        } else {
+            $listRoot = $this->rootPage;
+        }
+        /** @var $items \gromver\platform\basic\modules\page\models\Page[] */
+        $items = $listRoot->children(2)->published()->all();
+        if (count($items)) {
+            $items = $this->prepareItems($items, $items[0]->level, $hasActiveChild);
+        }
+
+        /** nav */
+        $model = $this->page;
+        $prevModel = $nextModel = null;
+        // предыдущая страница
+        if (!$this->rootPage->equals($this->page)) {
+            if ($prevModel = $model->prev()->published()->one()) {
+                //пытаемся найти лист(правый)
+                if ($rgtLeaf = $prevModel->leaves()->published()->orderBy(['lft' => SORT_DESC])->one()) {
+                    $prevModel = $rgtLeaf;
+                }
+            } else {
+                $prevModel = $model->parent;
+            }
+        }
+        // следущая страница
+        if ($this->rootPage->equals($this->page)) {
+            $nextModel = $model->children(1)->published()->one();
+        } else {
+            if (!($nextModel = $model->children(1)->published()->one() or $nextModel = $model->next()->published()->one())) {
+                //пытаемся выйти наверх
+                while(($parentModel = $model->parent) && !$parentModel->equals($this->rootPage)) {
+                    if ($nextModel = $parentModel->next()->one()) break;
+                    $model = $parentModel;
+                }
+            }
+        }
+
+        return [$items, $prevModel, $nextModel];
     }
 
     /**
@@ -158,7 +165,7 @@ class PageGuide extends Widget
                 $items[] = [
                     'id' => $model->id,
                     'label' => $model->title,
-                    'url' => $model->getFrontendViewLink(),
+                    'url' => Url::toRoute($model->getFrontendViewLink()),
                     'active' => $isActive,
                 ];
             } elseif ($level < $model->level) {
