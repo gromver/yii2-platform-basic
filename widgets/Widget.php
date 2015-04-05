@@ -31,6 +31,7 @@ use yii\helpers\Json;
  *
  * @property $context string
  * @property $realContext string
+ * @property $wrapperOptions array
  */
 class Widget extends \yii\base\Widget implements SpecificationInterface
 {
@@ -64,6 +65,12 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      * @var bool
      */
     private $_debug = false;
+    /**
+     * Аттрибуты врапера виджета
+     * @var array
+     */
+    private $_wrapperOptions = [];
+
     /**
      * Право доступа к кнопке настроек виджета
      * @var string
@@ -168,7 +175,10 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     public function run()
     {
-        echo Html::beginTag('div', ['id' => $this->id, 'class' => 'widget-wrapper' . (Yii::$app->grom->getIsEditMode() ? ' edit-mode' : '')]);
+        $tag = ArrayHelper::remove($this->_wrapperOptions, 'tag', 'div');
+        $this->_wrapperOptions['id'] = $this->id;
+        Html::addCssClass($this->_wrapperOptions, 'widget-wrapper' . (Yii::$app->grom->getIsEditMode() ? ' edit-mode' : ''));
+        echo Html::beginTag($tag, $this->_wrapperOptions);
 
         if ($this->_exception === null) {
             try {
@@ -186,7 +196,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             $this->renderControls();
         }
 
-        echo Html::endTag('div');
+        echo Html::endTag($tag);
 
         WidgetAsset::register($this->getView());
     }
@@ -381,6 +391,22 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
     public function setConfigureRoute($configureRoute)
     {
         $this->_configureRoute = $configureRoute;
+    }
+
+    /**
+     * @return array
+     */
+    public function getWrapperOptions()
+    {
+        return $this->_wrapperOptions;
+    }
+
+    /**
+     * @param array $wrapperOptions
+     */
+    public function setWrapperOptions($wrapperOptions)
+    {
+        $this->_wrapperOptions = $wrapperOptions;
     }
 
     /**

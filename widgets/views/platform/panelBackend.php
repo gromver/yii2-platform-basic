@@ -20,7 +20,8 @@ $navBar = NavBar::begin(\yii\helpers\ArrayHelper::merge([
 
 <?= \gromver\platform\basic\modules\search\widgets\SearchFormBackend::widget([
     'id' => 'bPanelForm',
-    'options' => ['class' => 'navbar-form navbar-left'],
+    'options' => ['class' => 'navbar-form'],
+    'wrapperOptions' => ['class' => 'navbar-left'],
     'query' => ''
 ]); ?>
 

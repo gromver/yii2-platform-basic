@@ -6,10 +6,15 @@
 }
 
 #fPanelForm, #bPanelForm {
-    float: left;
     min-height: auto;
 }
 #fPanelForm .widget-controls, #bPanelForm .widget-controls {
-    top: 8px;
-    right: 15px;
+    top: 11px;
+    right: 0;
+}
+@media (min-width: 768px) {
+    #fPanelForm .widget-controls, #bPanelForm .widget-controls {
+        top: 8px;
+        right: 15px;
+    }
 }
