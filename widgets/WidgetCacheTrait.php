@@ -40,7 +40,7 @@ trait WidgetCacheTrait {
      * @var Cache|string
      * @field list
      * @items caches
-     * @before <h3>Caching</h3>
+     * @before <h3 class="col-sm-offset-3 col-sm-9">Caching</h3>
      * @label Cache Component
      * @translation gromver.platform
      */

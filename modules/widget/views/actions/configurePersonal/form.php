@@ -15,12 +15,15 @@ use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
  * @var string $url
  */
 
-?>
+\gromver\platform\basic\modules\widget\assets\WidgetConfigureAsset::register($this); ?>
 
 <div class="config-form col-sm-12">
 
     <?php $form = \yii\bootstrap\ActiveForm::begin([
         'layout' => 'horizontal',
+        'options' => [
+            'class' => 'form-configure'
+        ],
         'fieldConfig' => [
             'horizontalCssClasses' => [
                 'label' => 'col-sm-1',
@@ -72,40 +75,3 @@ $this->registerJs('$("#'.$form->getId().'").on("refresh.form", function(){
     $(this).find("button[value=\'refresh\']").click()
 })');
 ?>
-
-<style>
-    form.form-horizontal {
-        padding-top: 70px;
-    }
-
-    .controls-bar {
-        position: fixed;
-        z-index: 100;
-        left: 15px;
-        right: 15px;
-        top: 0;
-        height: 50px;
-        background-color: #ffffff;
-        border-bottom: 2px solid #999;
-    }
-    .controls-bar .context-info {
-        margin-top: 8px;
-    }
-
-    .context-bar .separator {
-        line-height: 34px;
-    }
-    .context-bar .undefined {
-        color: #999999;
-    }
-    .context-bar .loaded {
-        font-weight: bold;
-    }
-    .context-bar .selected {
-        margin: 0 12px;
-        border: 1px solid #999999;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-    }
-</style>

@@ -1,0 +1,36 @@
+.controls-bar {
+    overflow: hidden;
+    background-color: #ffffff;
+    border-bottom: 2px solid #999;
+}
+.controls-bar > * {
+    margin-bottom: 10px;
+}
+.controls-bar .context-info {
+    margin-top: 8px;
+}
+
+.context-bar {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+.context-bar .separator {
+    line-height: 34px;
+}
+.context-bar .undefined {
+    color: #999999;
+}
+.context-bar .loaded {
+    font-weight: bold;
+}
+.context-bar .selected {
+    margin: 0 12px;
+    border: 1px solid #999999;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.form-configure .form-group > h3 {
+    margin-top: 0;
+}

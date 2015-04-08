@@ -267,7 +267,7 @@ return [
     'Back' => 'Назад',
     'Action' => 'Действие',
     'Configure widget' => 'Настроить виджет',
-    '<h3>Caching</h3>' => '<h3>Кеширование</h3>',
+    '<h3 class="col-sm-offset-3 col-sm-9">Caching</h3>' => '<h3 class="col-sm-offset-3 col-sm-9">Кеширование</h3>',
     'Cache Component' => 'Компонент кеширования',
     'Cache Duration' => 'Время кеширования',
     'No cache' => 'Без кеша',
