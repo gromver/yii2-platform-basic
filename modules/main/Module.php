@@ -186,6 +186,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
                 ['label' => Yii::t('gromver.platform', 'Desktop'), 'url' => ['/grom/backend/default/index']],
                 ['label' => Yii::t('gromver.platform', 'System Configuration'), 'url' => ['/grom/backend/default/params']],
                 ['label' => Yii::t('gromver.platform', 'Flush Cache'), 'url' => ['/grom/backend/default/flush-cache']],
+                ['label' => Yii::t('gromver.platform', 'Flush Assets'), 'url' => ['/grom/backend/default/flush-assets']],
             ]
         ];
     }

@@ -10,7 +10,6 @@
 namespace gromver\platform\basic\modules\main\controllers\backend;
 
 
-use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\modules\main\models\PlatformParams;
 use gromver\models\ObjectModel;
 use gromver\widgets\ModalIFrame;
@@ -36,7 +35,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['params', 'flush-cache'],  //todo contact-gromver
+                        'actions' => ['params', 'flush-cache', 'flush-assets'],  //todo contact-gromver
                         'roles' => ['update'],
                     ],
                     [
@@ -46,7 +45,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['mode'],  //todo contact-gromver
+                        'actions' => ['mode'],
                         'roles' => ['customize'],
                     ],
                 ]
@@ -118,6 +117,29 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         $cache->flush();
 
         Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Cache flushed.'));
+
+        return $this->redirect(['index']);
+    }
+
+    public function actionFlushAssets()
+    {
+        $assetsPath = Yii::getAlias(Yii::$app->assetManager->basePath);
+
+        if (!($handle = opendir($assetsPath))) {
+            return;
+        }
+        while (($file = readdir($handle)) !== false) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+            $path = $assetsPath . DIRECTORY_SEPARATOR . $file;
+            if (is_dir($path)) {
+                FileHelper::removeDirectory($path);
+            }
+        }
+        closedir($handle);
+
+        Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Assets flushed.'));
 
         return $this->redirect(['index']);
     }

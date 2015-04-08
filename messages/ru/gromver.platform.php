@@ -76,6 +76,8 @@ return [
     '{name} robot' => '{name} робот',
     'Configuration saved.' => 'Настройки сохранены.',
     'Cache flushed.' => 'Кеш очищен.',
+    'Flush Assets' => 'Очистить статику',
+    'Assets flushed.' => 'Статика очищена.',
     'Email is sent.' => 'Email отправлен.',
     'It\'s impossible to remove menu item ID:{id} so far it contains descendants.' => 'Нельзя удалить пункт меню ID:{id}, пока он содержит подпункты.',
     'The requested page does not exist.' => 'Страница не найдена.',
