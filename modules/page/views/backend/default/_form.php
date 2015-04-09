@@ -42,19 +42,18 @@ use yii\bootstrap\ActiveForm;
                 'attribute' => 'detail_text'
             ]) ?>
 
-            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
+            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
 
             <?= $form->field($model, 'parent_id')->widget(\kartik\widgets\DepDrop::className(), [
                 'pluginOptions' => [
                     //'initialize' => true,
-                    'depends' => ['language'],
+                    'depends' => [Html::getInputId($model, 'language')],
                     'placeholder' => Yii::t('gromver.platform', 'Select ...'),
                     'url' => \yii\helpers\Url::to(['pages', 'update_item_id' => $model->isNewRecord ? null : $model->id, 'selected' => $model->parent_id]),
                 ]
             ]) ?>
 
             <?= $form->field($model, 'status')->dropDownList($model->statusLabels()) ?>
-
         </div>
 
         <div id="advanced-options" class="tab-pane">
@@ -90,4 +89,4 @@ use yii\bootstrap\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-<?php $this->registerJs('$("#language").change()', \yii\web\View::POS_READY);
+<?php $this->registerJs('$("#' . Html::getInputId($model, 'language') . '").change()', \yii\web\View::POS_READY);
