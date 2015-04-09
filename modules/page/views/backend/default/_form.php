@@ -30,17 +30,17 @@ use yii\bootstrap\ActiveForm;
     <br/>
     <div class="tab-content">
         <div id="main-options" class="tab-pane active">
-            <div class="form-group container">
-                <?= Html::activeLabel($model, 'detail_text') ?>
-                <div>
-                    <?= \gromver\platform\basic\widgets\HtmlEditor::widget([
-                        'id' => 'backend-editor',
-                        'context' => Yii::$app->controller->getUniqueId(),
-                        'model' => $model,
-                        'attribute' => 'detail_text'
-                    ]) ?>
-                </div>
-            </div>
+            <?= $form->field($model, 'detail_text', [
+                'horizontalCssClasses' => [
+                    'label' => 'col-xs-12',
+                    'wrapper' => 'col-xs-12'
+                ]
+            ])->widget(\gromver\platform\basic\widgets\HtmlEditor::className(), [
+                'id' => 'backend-editor',
+                'context' => Yii::$app->controller->getUniqueId(),
+                'model' => $model,
+                'attribute' => 'detail_text'
+            ]) ?>
 
             <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...'), 'id' => 'language']) ?>
 

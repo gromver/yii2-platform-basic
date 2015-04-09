@@ -1,9 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: roman
- * Date: 07.03.15
- * Time: 12:08
+ * @link https://github.com/gromver/yii2-platform-basic.git#readme
+ * @copyright Copyright (c) Gayazov Roman, 2014
+ * @license https://github.com/gromver/yii2-platform-basic/blob/master/LICENSE
+ * @package yii2-platform-basic
+ * @version 1.0.0
  */
 
 namespace gromver\platform\basic\widgets;
@@ -14,6 +15,11 @@ use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\Html;
 
+/**
+ * Class HtmlEditor
+ * @package yii2-platform-basic
+ * @author Gayazov Roman <gromver5@gmail.com>
+ */
 class HtmlEditor extends WidgetPersonal {
     const EDITOR_CKEDITOR_BASIC = 'ckeditor_basic';
     const EDITOR_CKEDITOR_STANDARD = 'ckeditor_standard';
