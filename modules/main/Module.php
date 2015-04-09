@@ -10,9 +10,11 @@
 namespace gromver\platform\basic\modules\main;
 
 
+use gromver\modulequery\ModuleEvent;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\components\MenuManager;
+use gromver\platform\basic\modules\main\events\ListItemsModuleEvent;
 use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\search\widgets\SearchResultsBackend;
@@ -22,6 +24,7 @@ use gromver\platform\basic\widgets\Desktop;
 use gromver\platform\basic\widgets\MenuItemRoutes;
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\base\Event;
 use yii\caching\ExpressionDependency;
 use yii\helpers\ArrayHelper;
 
@@ -39,6 +42,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
 
     const MODE_EDIT = 'edit';
     const MODE_VIEW = 'view';
+
+    const EVENT_FETCH_LIST_ITEMS = 'mainFetchListItems';
 
     public $controllerNamespace = '\gromver\platform\basic\modules\main\controllers';
     public $defaultRoute = 'frontend/default';
@@ -127,6 +132,14 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         $app->urlManager->addRules($rules, false); //вставляем в начало списка
 
         $app->set('menuManager', \Yii::createObject(MenuManager::className()));
+
+        // пропускаем \gromver\models\fields\events\ListItemsEvent событие, через ModuleEvent - не факт, что нужно, но почему бы и нет
+        Event::on('\gromver\models\fields\ListField', 'fetchItems', function($event){
+            /** @var $event \gromver\models\fields\events\ListItemsEvent */
+            ModuleEvent::trigger(self::EVENT_FETCH_LIST_ITEMS, new ListItemsModuleEvent([
+                'sender' => $event
+            ]));
+        });
 
         ModuleQuery::instance()->implement('\gromver\platform\common\interfaces\BootstrapInterface')->invoke('bootstrap', [$app]);
     }
