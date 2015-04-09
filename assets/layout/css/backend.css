@@ -1,3 +1,7 @@
 .form-horizontal .control-label.col-xs-12 {
     text-align: left;
 }
+.form-group h3 {
+    margin-top: .6em;
+    margin-bottom: .6em;
+}

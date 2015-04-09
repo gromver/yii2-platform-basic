@@ -38,7 +38,7 @@ class PlatformParams extends  \yii\base\Object
      */
     public $supportEmail;
     /**
-     * @before <h3 class="col-sm-12">Metadata</h3>
+     * @before <h3 class="col-sm-offset-3 col-sm-9">Metadata</h3>
      * @translation gromver.platform
      * @label Meta description
      */
