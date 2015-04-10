@@ -274,4 +274,5 @@ return [
     'Cache Duration' => 'Время кеширования',
     'No cache' => 'Без кеша',
     'Reindex' => 'Переиндексация',
+    'Navigation' => 'Навигация',
 ];

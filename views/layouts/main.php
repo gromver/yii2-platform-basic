@@ -7,8 +7,8 @@ use app\assets\AppAsset;
  * @var \yii\web\View $this
  * @var string $content
  */
-AppAsset::register($this);
-?>
+AppAsset::register($this); ?>
+
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
@@ -37,7 +37,7 @@ AppAsset::register($this);
                 <?= \gromver\platform\basic\widgets\Menu::widget([
                     'id' => 'top-menu',
                     'widgetConfig' => [
-                        'heading' => 'Navigation',
+                        'heading' => Yii::t('gromver.platform', 'Navigation'),
                         'class' => \kartik\widgets\SideNav::className(),
                         'activeCssClass' => 'active',
                         'firstItemCssClass' => 'first',
