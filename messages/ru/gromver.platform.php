@@ -275,4 +275,20 @@ return [
     'No cache' => 'Без кеша',
     'Reindex' => 'Переиндексация',
     'Navigation' => 'Навигация',
+    // widget control tooltips
+    'Create Menu Item' => 'Добавить пункт меню',
+    'Update Menu Item' => 'Редактировать пункт меню',
+    'Menu Items list' => 'Пункты меню',
+    'Update Page' => 'Редактировать страницу',
+    'Pages list' => 'Страницы',
+    'Update Category' => 'Редактировать категорию',
+    'Create Category' => 'Добавить категорию',
+    'Categories list' => 'Категории',
+    'Create Post' => 'Добавить статью',
+    'Posts list' => 'Статьи',
+    'Update Post' => 'Редактировать статью',
+    'Create Tag' => 'Добавить тег',
+    'Tags list' => 'Теги',
+    'Update Tag' => 'Редактировать тег',
+
 ];
