@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'status',
             [
                 'attribute' => 'language',
-                'value' => \gromver\platform\basic\widgets\Translator::widget(['model' => $model]),
+                'value' => \gromver\platform\basic\widgets\TranslationsBackend::widget(['model' => $model]),
                 'format' => 'raw'
             ],
             'title',

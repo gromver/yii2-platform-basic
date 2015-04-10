@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'width' => '80px',
                 'value' => function($model) {
                         /** @var \gromver\platform\basic\modules\news\models\Category $model */
-                        return \gromver\platform\basic\widgets\Translator::widget(['model' => $model]);
+                        return \gromver\platform\basic\widgets\TranslationsBackend::widget(['model' => $model]);
                     },
                 'format' => 'raw',
                 'filter' => Yii::$app->getAcceptedLanguagesList()

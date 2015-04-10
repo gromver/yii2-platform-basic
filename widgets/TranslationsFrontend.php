@@ -15,12 +15,12 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
- * Class Translations
- * Translations применяется во фронте для отображения списка локализаций, относящихся к указанной модели.
+ * Class TranslationsFrontend
+ * TranslationsFrontend применяется во фронте для отображения списка локализаций, относящихся к указанной модели.
  * @package yii2-platform-basic
  * @author Gayazov Roman <gromver5@gmail.com>
  */
-class Translations extends \yii\bootstrap\Widget
+class TranslationsFrontend extends \yii\bootstrap\Widget
 {
     public $model;
     public $options;

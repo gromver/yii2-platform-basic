@@ -20,7 +20,7 @@ $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PageAsset::cla
     <div class="col-md-8">
         <div class="page-detail">
             <?php if ($this->context->showTranslations) {
-                echo \gromver\platform\basic\widgets\Translations::widget([
+                echo \gromver\platform\basic\widgets\TranslationsFrontend::widget([
                     'model' => $model,
                     'options' => [
                         'class' => 'pull-right'
