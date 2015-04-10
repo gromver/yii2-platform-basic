@@ -192,14 +192,16 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         $model = new MenuItem();
         $model->loadDefaultValues();
         $model->status = MenuItem::STATUS_PUBLISHED;
-        $model->language = Yii::$app->language;
+        $model->language = $language ? $language : Yii::$app->language;
 
         if (isset($menuTypeId)) $model->menu_type_id = $menuTypeId;
 
         if (isset($parentId)) {
             $parentCategory = $this->findModel($parentId);
             $model->parent_id = $parentCategory->id;
-            $model->language = $parentCategory->language;
+            if ($parentCategory->language) {
+                $model->language = $parentCategory->language;
+            }
         }
 
         if (isset($sourceId) && $language) {

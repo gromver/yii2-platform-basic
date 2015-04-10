@@ -120,14 +120,15 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionCreate($language = null, $sourceId = null, $category_id = null, $backUrl = null)
+    public function actionCreate($sourceId = null, $category_id = null, $language = null, $backUrl = null)
     {
         $model = new Post();
         $model->loadDefaultValues();
         $model->status = Post::STATUS_PUBLISHED;
-        $model->language = Yii::$app->language;
+        $model->language = $language ? $language : Yii::$app->language;
 
         if (isset($category_id) && $category = Category::findOne($category_id)) {
+            /** @var Category $category */
             $model->category_id = $category->id;
             $model->language = $category->language;
         }

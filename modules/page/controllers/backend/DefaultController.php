@@ -132,17 +132,19 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionCreate($language = null, $sourceId = null, $parentId = null, $backUrl = null)
+    public function actionCreate($sourceId = null, $parentId = null, $language = null, $backUrl = null)
     {
         $model = new Page();
         $model->loadDefaultValues();
         $model->status = Page::STATUS_PUBLISHED;
-        $model->language = Yii::$app->language;
+        $model->language = $language ? $language : Yii::$app->language;
 
         if (isset($parentId)) {
             $parentCategory = $this->findModel($parentId);
             $model->parent_id = $parentCategory->id;
-            $model->language = $parentCategory->language;
+            if ($parentCategory->language) {
+                $model->language = $parentCategory->language;
+            }
         }
 
         if($sourceId && $language) {

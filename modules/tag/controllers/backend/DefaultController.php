@@ -115,11 +115,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionCreate($language = null, $sourceId = null, $backUrl = null)
+    public function actionCreate($sourceId = null, $language = null, $backUrl = null)
     {
         $model = new Tag();
         $model->loadDefaultValues();
-        $model->language = Yii::$app->language;
+        $model->language = $language ? $language : Yii::$app->language;
         $model->status = Tag::STATUS_PUBLISHED;
 
         if ($sourceId && $language) {
