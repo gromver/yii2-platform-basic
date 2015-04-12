@@ -284,7 +284,8 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      */
     public function hit()
     {
-        return $this->updateAttributes(['hits' => $this->hits + 1]);
+        // todo любую статистику приложения собирать через логи
+        return 1;//return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
     /**

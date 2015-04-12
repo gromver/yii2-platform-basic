@@ -19,6 +19,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use yii\helpers\Inflector;
 use yii\helpers\Json;
 
 /**
@@ -66,6 +67,13 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      */
     private $_debug = false;
     /**
+     * Отключение фазы self::init() во время создания объекта. Этот параметр используется при настройке виджетов,
+     * для того чтобы отключить ненужную инициализацию виджета, во время которой могут быть искажены первоначальные настройки виджета,
+     * это не критично при настройке виджета, но нежелательно. см. [[\gromver\platform\basic\modules\widget\actions\ConfigureAction::run]]
+     * @var bool
+     */
+    private $_skipInit = false;
+    /**
      * Аттрибуты врапера виджета
      * @var array
      */
@@ -103,7 +111,9 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
                 Yii::configure($this, $config);
             }
             $this->preInit();
-            $this->init();
+            if (!$this->_skipInit) {
+                $this->init();
+            }
         } catch(WidgetMissedIdException $e) {
             throw $e;
         } catch(\Exception $e) {
@@ -229,7 +239,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
     public function renderControls()
     {
         echo Html::tag('div', $this->normalizeControls(array_merge($this->customControls(), [$this->widgetConfigControl()])), ['class' => 'widget-controls btn-group']);
-        echo Html::tag('div', Yii::t('gromver.platform', 'Widget "{name}" (ID: {id})', ['name' => $this->className(), 'id' => $this->id]), ['class' => 'widget-description']);
+        echo Html::tag('div', Yii::t('gromver.platform', 'Widget "{name}" (ID: {id})', ['name' => $this->name(), 'id' => $this->id]), ['class' => 'widget-description']);
     }
 
     /**
@@ -327,6 +337,14 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
             $this->_debug = !!YII_DEBUG;
 
         return $this->_debug;
+    }
+
+    /**
+     * @param boolean $value
+     */
+    public function setSkipInit($value)
+    {
+        $this->_skipInit = $value;
     }
 
     /**
@@ -471,5 +489,17 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
                 ]
             ]
         ]);
+    }
+
+    public function name()
+    {
+        $reflector = new \ReflectionClass($this);
+
+        return Inflector::titleize($reflector->getShortName());
+    }
+
+    public function description()
+    {
+        return $this->className();
     }
 }

@@ -1,10 +1,26 @@
 .controls-bar {
     overflow: hidden;
-    background-color: #ffffff;
-    border-bottom: 2px solid #999;
 }
-.controls-bar > * {
-    margin-bottom: 10px;
+.controls-bar.well {
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.controls-bar__actions {
+    float: right;
+}
+.controls-bar__method {
+    float: left;
+}
+.controls-bar__method label {
+    margin: 6px 0 0 0;
+}
+@media (max-width: 768px) {
+    .controls-bar__actions {
+        float: left;
+    }
+    .controls-bar__method {
+        clear: both;
+    }
 }
 .controls-bar .context-info {
     margin-top: 8px;
@@ -20,7 +36,7 @@
 .context-bar .undefined {
     color: #999999;
 }
-.context-bar .loaded {
+.context-bar .defined.loaded {
     font-weight: bold;
 }
 .context-bar .selected {
@@ -33,4 +49,7 @@
 
 .form-configure .form-group > h3 {
     margin-top: 0;
+}
+.form-configure .controls {
+    margin-bottom: 1em;
 }

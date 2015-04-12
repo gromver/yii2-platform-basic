@@ -319,7 +319,7 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
      */
     public function hit()
     {
-        return $this->updateAttributes(['hits' => $this->hits + 1]);
+        return 1;//return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
     /**

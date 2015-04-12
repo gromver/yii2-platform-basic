@@ -75,6 +75,7 @@ class ConfigurePersonalAction extends \yii\base\Action
         $widgetConfig = Json::decode($widget_config);
         $widgetConfig['id'] = $widget_id;
         $widgetConfig['context'] = $selected_context;
+        $widgetConfig['skipInit'] = true;
         /** @var \gromver\platform\basic\widgets\Widget $widget */
         $widget = new $widget_class($widgetConfig);
 
