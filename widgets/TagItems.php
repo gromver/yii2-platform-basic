@@ -64,7 +64,7 @@ class TagItems extends Widget
             'dataProvider' => new ActiveDataProvider([
                     'query' => $this->tag->getTagToItems(),
                     'pagination' => [
-                        'pageSize' => $this->pageSize
+                        'pageSize' => $this->pageSize,
                     ]
                 ]),
             'itemLayout' => $this->itemLayout,

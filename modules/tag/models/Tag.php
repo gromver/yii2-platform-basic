@@ -201,7 +201,8 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
      */
     public function hit()
     {
-        return $this->updateAttributes(['hits' => $this->hits + 1]);
+        // todo любую статистику приложения собирать через логи
+        return 1;//return $this->updateAttributes(['hits' => $this->hits + 1]);
     }
 
     //http://www.slideshare.net/edbond/tagging-and-folksonomy-schema-design-for-scalability-and-performance?related=2

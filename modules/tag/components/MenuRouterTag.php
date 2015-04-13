@@ -67,9 +67,24 @@ class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
     public function createTagItems($requestInfo)
     {
         if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/tag/frontend/default/index')) {
-            $path .= '/' . (isset($requestInfo->requestParams['alias']) ? $requestInfo->requestParams['alias'] : $requestInfo->requestParams['id']);
+            $path .= '/' . (isset($requestInfo->requestParams['alias']) ? $requestInfo->requestParams['alias'] : $this->findTagAlias($requestInfo->requestParams['id']));
             unset($requestInfo->requestParams['id'], $requestInfo->requestParams['alias']);
             return MenuItem::toRoute($path, $requestInfo->requestParams);
         }
+    }
+
+    private $_tagAliases = [];
+
+    /**
+     * @param integer $tagId
+     * @return string
+     */
+    private function findTagAlias($tagId)
+    {
+        if (!isset($this->_tagAliases[$tagId])) {
+            $this->_tagAliases[$tagId] = Tag::find()->select('alias')->where(['id' => $tagId])->scalar();
+        }
+
+        return $this->_tagAliases[$tagId];
     }
 }
