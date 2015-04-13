@@ -17,7 +17,7 @@ use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
 
 \gromver\platform\basic\modules\widget\assets\WidgetConfigureAsset::register($this); ?>
 
-    <h2><?= $widget->name() ?> <small><?= $widget->description() ?></small></h2>
+    <h2><?= $widget->name() ?> <small><?= "(ID: {$widget->id}), " . $widget->description() ?></small></h2>
 
 <?php $form = \yii\bootstrap\ActiveForm::begin([
     'layout' => 'horizontal',
