@@ -20,6 +20,9 @@ use gromver\platform\basic\modules\tag\models\Tag;
  */
 class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
 {
+    /**
+     * @inheritdoc
+     */
     public function parseUrlRules()
     {
         return [
@@ -31,7 +34,7 @@ class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function createUrlRules()
     {
@@ -44,15 +47,23 @@ class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
         ];
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return array
+     */
     public function parseTagCloud($requestInfo)
     {
         if (preg_match('/^\d+$/', $requestInfo->requestRoute)) {
             return ['grom/tag/frontend/default/view', ['id' => $requestInfo->requestRoute]];
         } else {
-            return ['grom/tag/frontend/default/view', ['id' => Tag::find()->select('id')->where(['alias' => $requestInfo->requestRoute])->scalar()]];
+            return ['grom/tag/frontend/default/view', ['id' => Tag::find()->select('id')->where(['alias' => $requestInfo->requestRoute, 'language' => $requestInfo->menuMap->language])->scalar()]];
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createTagItems($requestInfo)
     {
         if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/tag/frontend/default/index')) {

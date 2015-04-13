@@ -20,6 +20,9 @@ use gromver\platform\basic\modules\page\models\Page;
  */
 class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
 {
+    /**
+     * @inheritdoc
+     */
     public function parseUrlRules()
     {
         return [
@@ -31,7 +34,7 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function createUrlRules()
     {
@@ -49,6 +52,10 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
         ];
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return array
+     */
     public function parsePageGuide($requestInfo)
     {
         if ($menuPage = Page::findOne($requestInfo->menuParams['id'])) {
@@ -61,6 +68,10 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createPageView($requestInfo)
     {
         //пытаемся найти пункт меню ссылющийся на данный пост
@@ -72,6 +83,10 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
         return $this->createPageGuide($requestInfo);
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createPageGuide($requestInfo)
     {
         //ищем пункт меню ссылающийся на категорию данного поста либо ее предков

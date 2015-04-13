@@ -24,6 +24,9 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
 {
     public $postSuffix = 'html';
 
+    /**
+     * @inheritdoc
+     */
     public function parseUrlRules()
     {
         return [
@@ -39,7 +42,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function createUrlRules()
     {
@@ -74,6 +77,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         ];
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return array
+     */
     public function parseCategory($requestInfo)
     {
         if (preg_match("#((.*)/)?(rss)$#", $requestInfo->requestRoute, $matches)) {
@@ -143,6 +150,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return array
+     */
     public function parseAllPosts($requestInfo)
     {
         if ($requestInfo->requestRoute == 'rss') {
@@ -172,6 +183,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
 
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createPost($requestInfo)
     {
         //пытаемся найти пункт меню ссылющийся на данный пост
@@ -196,6 +211,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createCategory($requestInfo)
     {
         if ($path = $this->findCategoryMenuPath($requestInfo->requestParams['id'], $requestInfo->menuMap)) {
@@ -204,6 +223,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createDayPosts($requestInfo)
     {
         if ($requestInfo->requestParams['category_id']) {
@@ -219,6 +242,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createAllPosts($requestInfo)
     {
         if ($path = $requestInfo->menuMap->getMenuPathByRoute('grom/news/frontend/post/index')) {
@@ -226,6 +253,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createTag($requestInfo)
     {
         //строим ссылку на основе пункта меню на категорию
@@ -244,6 +275,10 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
         }
     }
 
+    /**
+     * @param \gromver\platform\basic\components\MenuRequestInfo $requestInfo
+     * @return mixed|null|string
+     */
     public function createRss($requestInfo)
     {
         if (isset($requestInfo->requestParams['category_id'])) {
