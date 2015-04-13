@@ -24,3 +24,10 @@
 .viewed a {
     font-weight: normal;
 }
+
+.translations {
+    float: right;
+}
+#post-view.edit-mode .translations {
+    margin-right: 85px;
+}

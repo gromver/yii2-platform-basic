@@ -23,7 +23,7 @@ use yii\helpers\Html;
 class TranslationsFrontend extends \yii\bootstrap\Widget
 {
     public $model;
-    public $options;
+    public $options = ['class' => 'translations'];
     public $linkTemplate = '<a class="btn btn-default" href="{url}">{label}</a>';
     public $labelTemplate = '<button type="button" class="btn btn-primary">{label}</button>';
 

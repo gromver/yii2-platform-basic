@@ -21,6 +21,7 @@
 }
 .widget-wrapper.edit-mode {
     min-height: 80px;
+    min-width: 200px;
 }
 .widget-wrapper .widget-controls:hover {
     z-index: 1070;

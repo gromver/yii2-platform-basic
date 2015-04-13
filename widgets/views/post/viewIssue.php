@@ -11,9 +11,6 @@ use yii\helpers\Html;
 if ($this->context->showTranslations) {
     echo \gromver\platform\basic\widgets\TranslationsFrontend::widget([
         'model' => $model,
-        'options' => [
-            'class' => 'pull-right'
-        ]
     ]);
 } ?>
 

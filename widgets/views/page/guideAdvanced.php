@@ -22,9 +22,6 @@ $this->registerAssetBundle(\gromver\platform\basic\widgets\assets\PageAsset::cla
             <?php if ($this->context->showTranslations) {
                 echo \gromver\platform\basic\widgets\TranslationsFrontend::widget([
                     'model' => $model,
-                    'options' => [
-                        'class' => 'pull-right'
-                    ]
                 ]);
             } ?>
             <?= $model->detail_text ?>
