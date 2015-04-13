@@ -51,7 +51,7 @@ class HtmlEditor extends WidgetPersonal {
      * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      * @ignore
      */
-    public $options = [];
+    public $options = ['style' => 'width: 100%; height: 300px;'];
     /**
      * @var string
      * @field list
