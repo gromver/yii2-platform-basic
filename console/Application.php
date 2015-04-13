@@ -58,7 +58,15 @@ class Application extends \yii\console\Application
             ],
             'modules' => [
                 'grom' => [
-                    'class' => 'gromver\platform\basic\console\modules\main\Module'
+                    'class' => 'gromver\platform\basic\console\modules\main\Module',
+                    'modules' => [
+                        'search' => [
+                            'class' => 'gromver\platform\basic\modules\search\Module',
+                            'modules' => [
+                                'sql' => ['class' => 'gromver\platform\basic\modules\search\modules\sql\Module']
+                            ]
+                        ]
+                    ]
                 ]
             ]
         ], $config);
