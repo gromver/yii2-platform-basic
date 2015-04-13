@@ -71,14 +71,18 @@ class TaggableBehavior extends \yii\base\Behavior
                 $toRemove = array_diff($oldTags, $newTags);
 
                 foreach($toAppend as $id) {
-                    $tag = Tag::findOne($id);
-                    $this->owner->link('tags', $tag, ['item_class'=>$this->owner->className()]);
-                }
-                if($event->name==BaseActiveRecord::EVENT_AFTER_UPDATE)
-                    foreach($toRemove as $id) {
-                        $tag = Tag::findOne($id);
-                        $this->owner->unlink('tags', $tag, true);
+                    if ($tag = Tag::findOne($id)) {
+                        $this->owner->link('tags', $tag, ['item_class' => $this->owner->className()]);
                     }
+                }
+
+                if($event->name==BaseActiveRecord::EVENT_AFTER_UPDATE) {
+                    foreach($toRemove as $id) {
+                        if ($tag = Tag::findOne($id)) {
+                            $this->owner->unlink('tags', $tag, true);
+                        }
+                    }
+                }
             }
         });
     }
