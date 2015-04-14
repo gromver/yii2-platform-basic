@@ -11,7 +11,7 @@ use kartik\icons\Icon;
 Icon::map($this, Icon::EL);
 \gromver\platform\basic\widgets\assets\PostAsset::register($this);
 
-echo \yii\helpers\Html::a(Icon::show('rss', [], Icon::EL), $category ? ['/grom/news/frontend/post/rss', 'category_id' => $category->id] : ['/grom/news/post/rss'], ['class' => 'btn btn-warning btn-xs pull-right']);
+echo \yii\helpers\Html::a(Icon::show('rss', [], Icon::EL), $category ? ['/grom/news/frontend/post/rss', 'category_id' => $category->id] : ['/grom/news/frontend/post/rss'], ['class' => 'btn btn-warning btn-xs pull-right']);
 
 echo \yii\widgets\ListView::widget(array_merge([
     'dataProvider' => $dataProvider,

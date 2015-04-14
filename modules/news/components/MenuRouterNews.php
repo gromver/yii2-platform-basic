@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\modules\news\components;
 
 
+use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\modules\news\models\Category;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\news\models\Post;
@@ -120,7 +121,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
                     'language' => $menuCategory->language
                 ]);
                 if ($category && $postId = Post::find()->select('id')->where(['alias' => $postAlias, 'category_id' => $category->id])->scalar()) {
-                    return ['grom/news/frontend/post/view', ['id' => $postId]];
+                    return ['grom/news/frontend/post/view', ['id' => $postId, 'alias' => $postAlias, UrlManager::LANGUAGE_PARAM => $requestInfo->menuMap->language]];
                 }
             }
         } elseif (preg_match("#((.*)/)?(tag/([^/]+))$#", $requestInfo->requestRoute, $matches)) {
@@ -128,13 +129,13 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
                 $categoryPath = $matches[2];
                 $tagAlias = $matches[4];
+                /** @var Category $category */
                 $category = empty($categoryPath) ? $menuCategory : Category::findOne([
                     'path' => $menuCategory->path . '/' . $categoryPath,
                     'language' => $menuCategory->language
                 ]);
                 if ($category && $tagId = Tag::find()->select('id')->where(['alias' => $tagAlias, 'language' => $category->language])->scalar()) {
-                    //return ['grom/tag/frontend/default/posts', ['tag_id' => $tagId, 'category_id' => $category->id]];
-                    return ['grom/news/frontend/post/tag', ['tag_id' => $tagId, 'category_id' => $category->id]];
+                    return ['grom/news/frontend/post/tag', ['tag_id' => $tagId, 'tag_alias' => $tagAlias, 'category_id' => $category->id, UrlManager::LANGUAGE_PARAM => $requestInfo->menuMap->language]];
                 }
             }
         } else {

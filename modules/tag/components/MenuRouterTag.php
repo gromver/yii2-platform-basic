@@ -10,6 +10,7 @@
 namespace gromver\platform\basic\modules\tag\components;
 
 
+use gromver\platform\basic\components\UrlManager;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\tag\models\Tag;
 
@@ -56,7 +57,10 @@ class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
         if (preg_match('/^\d+$/', $requestInfo->requestRoute)) {
             return ['grom/tag/frontend/default/view', ['id' => $requestInfo->requestRoute]];
         } else {
-            return ['grom/tag/frontend/default/view', ['id' => Tag::find()->select('id')->where(['alias' => $requestInfo->requestRoute, 'language' => $requestInfo->menuMap->language])->scalar()]];
+            /** @var Tag $tag */
+            if ($tag = Tag::findOne(['alias' => $requestInfo->requestRoute, 'language' => $requestInfo->menuMap->language])) {
+                return ['grom/tag/frontend/default/view', ['id' => $tag->id, 'alias' => $tag->alias, UrlManager::LANGUAGE_PARAM => $requestInfo->menuMap->language]];
+            }
         }
     }
 
@@ -67,24 +71,9 @@ class MenuRouterTag extends \gromver\platform\basic\components\MenuRouter
     public function createTagItems($requestInfo)
     {
         if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/tag/frontend/default/index')) {
-            $path .= '/' . (isset($requestInfo->requestParams['alias']) ? $requestInfo->requestParams['alias'] : $this->findTagAlias($requestInfo->requestParams['id']));
+            $path .= '/' . (isset($requestInfo->requestParams['alias']) ? $requestInfo->requestParams['alias'] : $requestInfo->requestParams['id']);
             unset($requestInfo->requestParams['id'], $requestInfo->requestParams['alias']);
             return MenuItem::toRoute($path, $requestInfo->requestParams);
         }
-    }
-
-    private $_tagAliases = [];
-
-    /**
-     * @param integer $tagId
-     * @return string
-     */
-    private function findTagAlias($tagId)
-    {
-        if (!isset($this->_tagAliases[$tagId])) {
-            $this->_tagAliases[$tagId] = Tag::find()->select('alias')->where(['id' => $tagId])->scalar();
-        }
-
-        return $this->_tagAliases[$tagId];
     }
 }
