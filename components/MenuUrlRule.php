@@ -132,7 +132,7 @@ class MenuUrlRule extends Object implements UrlRuleInterface
      */
     public function parseRequest($manager, $request)
     {
-        if (!($pathInfo = $request->getPathInfo() or $pathInfo = $this->menuManager->getMenuMap()->getMainPagePath())) {
+        if (!($pathInfo = $request->getPathInfo() or $pathInfo = @$this->menuManager->getMenuMap()->getMainMenu()['path'])) {
             return false;
         }
         // помечаем как активные все пункты меню которые ссылаются на тотже урл что в запросе

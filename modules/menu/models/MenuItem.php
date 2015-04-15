@@ -427,24 +427,6 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
         return Yii::t('gromver.platform', self::$_linkTypes[$type]);
     }
 
-    public static function layoutLabels()
-    {
-        return [
-            '' => Yii::t('gromver.platform', 'Default')
-        ];
-    }
-
-    public function getLayoutLabels()
-    {
-        $labels = self::layoutLabels();
-
-        if ($this->layout_path && !array_key_exists($this->layout_path, $labels)) {
-            $labels[$this->layout_path] = $this->layout_path;
-        }
-
-        return $labels;
-    }
-
     /**
      * @return array    [path, params]
      */

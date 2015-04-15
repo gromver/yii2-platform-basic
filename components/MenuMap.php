@@ -44,7 +44,11 @@ class MenuMap extends \yii\base\Object
     private $_routes = [];
     private $_paths = [];
     private $_links = [];
-    private $_mainPagePath;
+    /**
+     * Пункт меню со статусом главной старницы, $mainMenu->toArray()
+     * @var array
+     */
+    private $_mainMenu;
 
     public function init()
     {
@@ -56,14 +60,14 @@ class MenuMap extends \yii\base\Object
             /** @var Cache $cache */
             $this->cache = Instance::ensure($this->cache, Cache::className());
             $cacheKey = $this->language . self::CACHE_KEY;
-            if ((list($paths, $routes, $links, $mainPagePath) = $this->cache->get($cacheKey)) === false) {
+            if ((list($paths, $routes, $links, $mainMenu) = $this->cache->get($cacheKey)) === false) {
                 $this->createMap();
-                $this->cache->set($cacheKey, [$this->_paths, $this->_routes, $this->_links, $this->_mainPagePath], $this->cacheDuration, $this->cacheDependency);
+                $this->cache->set($cacheKey, [$this->_paths, $this->_routes, $this->_links, $this->_mainMenu], $this->cacheDuration, $this->cacheDependency);
             } else {
                 $this->_paths = $paths;
                 $this->_routes = $routes;
                 $this->_links = $links;
-                $this->_mainPagePath = $mainPagePath;
+                $this->_mainMenu = $mainMenu;
             }
         } else {
             $this->createMap();
@@ -78,19 +82,20 @@ class MenuMap extends \yii\base\Object
             if ($item['link_type'] == MenuItem::LINK_ROUTE) {
                 $this->_paths[$item['id']] = $item['path'];
                 $this->_routes[$item['id']] = $item['link'];
-                if ($item['status'] == MenuItem::STATUS_MAIN_PAGE) {
-                    $this->_mainPagePath = $item['path'];
-                }
             } else {
                 $this->_links[$item['id']] = $item['link'];
             }
-
         }
+
+        $this->_mainMenu = MenuItem::find()->language($this->language)->andWhere(['status' => MenuItem::STATUS_MAIN_PAGE])->asArray()->one();
     }
 
-    public function getMainPagePath()
+    /**
+     * @return array
+     */
+    public function getMainMenu()
     {
-        return $this->_mainPagePath;
+        return $this->_mainMenu;
     }
     /**
      * @param $path
@@ -171,16 +176,25 @@ class MenuMap extends \yii\base\Object
         return $menu;
     }
 
+    /**
+     * @return array
+     */
     public function getLinks()
     {
         return $this->_links;
     }
 
+    /**
+     * @return array
+     */
     public function getPaths()
     {
         return $this->_paths;
     }
 
+    /**
+     * @return array
+     */
     public function getRoutes()
     {
         return $this->_routes;
