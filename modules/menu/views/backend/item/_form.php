@@ -44,7 +44,7 @@ use yii\bootstrap\ActiveForm;
 
             <?//= $form->field($model, 'path')->textInput(['maxlength' => 2048]) ?>
 
-            <?= $form->field($model, 'link_type')->dropDownList($model->getLinkTypes()) ?>
+            <?= $form->field($model, 'link_type')->dropDownList(\gromver\platform\basic\modules\menu\models\MenuItem::linkTypeLabels()) ?>
 
             <?php $this->registerJs("$('#" . Html::getInputId($model, 'link_type') . "').change(function (event){
                 if($(this).val() === '" . \gromver\platform\basic\modules\menu\models\MenuItem::LINK_ROUTE . "') {
@@ -84,7 +84,22 @@ use yii\bootstrap\ActiveForm;
 
             <?= $form->field($model, 'ordering')->textInput() ?>
 
-            <?= $form->field($model, 'layout_path')->textInput(['maxlength' => 1024]) ?>
+            <?php
+            // формируем список шаблонов пункта меню
+            $layouts = Yii::$app->controller->module->menuItemLayouts;
+            $layouts[''] = Yii::t('gromver.platform', 'Default');
+            if ($model->layout_path && !array_key_exists($model->layout_path, $layouts)) {
+                // если шаблона пункта меню нету в списке(кастомный шаблон), добавляем его в список
+                $layouts[$model->layout_path] = $model->layout_path;
+            }
+
+            echo $form->field($model, 'layout_path')->widget(\dosamigos\selectize\SelectizeDropDownList::className(), [
+                'items' => $layouts,
+                'clientOptions' => [
+                    'create' => true,
+                    'maxItems' => 1,
+                ]
+            ]); ?>
 
             <?= $form->field($model, 'access_rule')->dropDownList(\yii\helpers\ArrayHelper::map(Yii::$app->authManager->getRoles(), 'name', 'name'), [
                     'prompt' => 'Не выбрано'

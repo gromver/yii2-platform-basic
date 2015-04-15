@@ -10,10 +10,10 @@
 namespace gromver\platform\basic\modules\menu\controllers\backend;
 
 
-use gromver\modulequery\ModuleQuery;
 use gromver\platform\basic\modules\main\models\DbState;
 use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\menu\models\MenuItemSearch;
+use gromver\platform\basic\modules\menu\models\MenuLinkParams;
 use kartik\widgets\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
@@ -193,6 +193,9 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         $model->loadDefaultValues();
         $model->status = MenuItem::STATUS_PUBLISHED;
         $model->language = $language ? $language : Yii::$app->language;
+        // по дефолту выставляем ендпоинт на "временную старницу"
+        $model->link_type = MenuItem::LINK_ROUTE;
+        $model->link = 'grom/frontend/default/dummy-page';
 
         if (isset($menuTypeId)) $model->menu_type_id = $menuTypeId;
 
@@ -228,7 +231,8 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
             $sourceModel = null;
         }
 
-        $linkParamsModel = $model->getLinkParamsModel();
+        $linkParamsModel = new MenuLinkParams();
+        $linkParamsModel->setAttributes($model->getLinkParams());
 
         if ($model->load(Yii::$app->request->post()) && $linkParamsModel->load(Yii::$app->request->post()) && $model->validate() && $linkParamsModel->validate()) {
             $model->setLinkParams($linkParamsModel->toArray());
@@ -254,7 +258,9 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     public function actionUpdate($id, $backUrl = null)
     {
         $model = $this->findModel($id);
-        $linkParamsModel = $model->getLinkParamsModel();
+
+        $linkParamsModel = new MenuLinkParams();
+        $linkParamsModel->setAttributes($model->getLinkParams());
 
         if ($model->load(Yii::$app->request->post()) && $linkParamsModel->load(Yii::$app->request->post()) && $model->validate() && $linkParamsModel->validate()) {
             $model->setLinkParams($linkParamsModel->toArray());

@@ -326,7 +326,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             $this->normalizePath();
         }
 
-        // ранжируем категории ели нужно
+        // ранжируем категории если нужно
         if (array_key_exists('ordering', $changedAttributes)) {
             $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }

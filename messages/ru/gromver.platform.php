@@ -171,6 +171,8 @@ return [
     'Add Menu Item' => 'Добавить пункт меню',
     'Update Menu Item: {title}' => 'Редактировать пункт меню: {title}',
     'Select Menu Item' => 'Выберите пункт меню',
+    'Component route' => 'Ссылка на компонент',
+    'Link as is' => 'Ссылка как есть',
     //version manager
     'Item ID' => 'ID ресурса',
     'Item Class' => 'Класс ресурса',

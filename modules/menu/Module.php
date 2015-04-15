@@ -10,7 +10,9 @@
 namespace gromver\platform\basic\modules\menu;
 
 
+use gromver\modulequery\ModuleEvent;
 use gromver\modulequery\ModuleEventsInterface;
+use gromver\platform\basic\modules\menu\events\MenuItemLayoutsModuleEvent;
 use gromver\platform\basic\widgets\Desktop;
 use Yii;
 
@@ -21,9 +23,13 @@ use Yii;
  */
 class Module extends \yii\base\Module implements ModuleEventsInterface
 {
+    const EVENT_MENU_ITEM_LAYOUTS = 'menuItemLayouts';
+
     public $controllerNamespace = 'gromver\platform\basic\modules\menu\controllers';
     public $defaultRoute = 'backend/item';
     public $desktopOrder = 4;
+
+    private $_menuItemLayouts = [];
 
     /**
      * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
@@ -47,5 +53,21 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
         return [
             Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem'
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getMenuItemLayouts()
+    {
+        return ModuleEvent::trigger(self::EVENT_MENU_ITEM_LAYOUTS, new MenuItemLayoutsModuleEvent(['items' => $this->_menuItemLayouts]), 'items');
+    }
+
+    /**
+     * @param array $items
+     */
+    public function setMenuItemLayouts($items)
+    {
+        $this->_menuItemLayouts = $items;
     }
 }

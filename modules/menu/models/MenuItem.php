@@ -13,6 +13,7 @@ namespace gromver\platform\basic\modules\menu\models;
 use dosamigos\transliterator\TransliteratorHelper;
 use gromver\platform\basic\behaviors\NestedSetsBehavior;
 use gromver\platform\basic\components\UrlManager;
+use gromver\platform\basic\interfaces\model\TranslatableInterface;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
 use gromver\platform\basic\modules\widget\models\WidgetConfig;
 use Yii;
@@ -59,11 +60,13 @@ use yii\helpers\Json;
  * @property string $lock
  *
  * @property string $linkTitle
+ * @property array $linkParams
  * @property MenuType $menuType
  * @property MenuItem $parent
  * @property MenuItem[] $translations
+ * @property array $layoutLabels
  */
-class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
+class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, TranslatableInterface
 {
     const STATUS_UNPUBLISHED = 0;
     const STATUS_PUBLISHED = 1;
@@ -208,6 +211,13 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
     }
 
     /**
+     * @return MenuItemQuery
+     */
+    public function getParent() {
+        return $this->hasOne(self::className(), ['id' => 'parent_id']);
+    }
+
+    /**
      * @inheritdoc
      * @return MenuItemQuery
      */
@@ -221,32 +231,6 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
         return [
             self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
-    }
-
-    private static $_statuses = [
-        self::STATUS_PUBLISHED => 'Published',
-        self::STATUS_UNPUBLISHED => 'Unpublished',
-        self::STATUS_MAIN_PAGE => 'Main Page',
-    ];
-
-    public static function statusLabels()
-    {
-        return array_map(function($label) {
-                return Yii::t('gromver.platform', $label);
-            }, self::$_statuses);
-    }
-
-    public function getStatusLabel($status=null)
-    {
-        if ($status === null) {
-            return Yii::t('gromver.platform', self::$_statuses[$this->status]);
-        }
-        return Yii::t('gromver.platform', self::$_statuses[$status]);
-    }
-
-    public function getTranslations()
-    {
-        return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->indexBy('language');
     }
 
     public function optimisticLock()
@@ -301,12 +285,15 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
             $this->normalizeWidgets($oldPath);
         }
 
-        // ранжируем категории ели нужно
+        // ранжируем категории если нужно
         if (array_key_exists('ordering', $changedAttributes)) {
-            $this->ordering ? $this->getParent()->reorderNode('ordering') : $this->getParent()->reorderNode('lft');
+            $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }
     }
 
+    /**
+     * @return string
+     */
     private function calculatePath()
     {
         $aliases = $this->parents()->noRoots()->select('alias')->column();
@@ -355,60 +342,107 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
     }
 
     /**
-     * @return static | null
+     * @return array
      */
-    public function getParent() {
-        return $this->parents(1)->one();
-    }
-
     public function getLinkParams()
     {
         return Json::decode($this->link_params);
     }
 
+    /**
+     * @param array $value
+     */
     public function setLinkParams($value)
     {
         $this->link_params = Json::encode($value);
     }
 
     /**
-     * @return MenuLinkParams
+     * Тайтл для ссылок в меню
+     * @return string
      */
-    public function getLinkParamsModel()
+    public function getLinkTitle()
     {
-        $model = new MenuLinkParams();
-        $model->setAttributes($this->getLinkParams());
-        return $model;
+        $linkParams = $this->getLinkParams();
+        return empty($linkParams['title']) ? $this->title : $linkParams['title'];
     }
 
-
-    static public function getLinkTypes()
-    {
-        return [
-            self::LINK_ROUTE => 'Ссылка на компонент',
-            self::LINK_HREF => 'Обычная ссылка',
-        ];
-    }
-
-
-    private static $_linkTypes = [
-        self::LINK_ROUTE => 'Ссылка на компонент',
-        self::LINK_HREF => 'Обычная ссылка',
+    /**
+     * @var array
+     */
+    private static $_statuses = [
+        self::STATUS_PUBLISHED => 'Published',
+        self::STATUS_UNPUBLISHED => 'Unpublished',
+        self::STATUS_MAIN_PAGE => 'Main Page',
     ];
 
+    /**
+     * @return array
+     */
+    public static function statusLabels()
+    {
+        return array_map(function($label) {
+            return Yii::t('gromver.platform', $label);
+        }, self::$_statuses);
+    }
+
+    /**
+     * @param null|integer $status
+     * @return string
+     */
+    public function getStatusLabel($status = null)
+    {
+        if ($status === null) {
+            return Yii::t('gromver.platform', self::$_statuses[$this->status]);
+        }
+        return Yii::t('gromver.platform', self::$_statuses[$status]);
+    }
+
+    private static $_linkTypes = [
+        self::LINK_ROUTE => 'Component route',
+        self::LINK_HREF => 'Link as is',
+    ];
+
+    /**
+     * Список типов ссылки
+     * @return array
+     */
     public static function linkTypeLabels()
     {
         return array_map(function($label) {
                 return Yii::t('gromver.platform', $label);
-            }, self::$_statuses);
+            }, self::$_linkTypes);
     }
 
-    public function getLinkTypeLabel($type=null)
+    /**
+     * Возвращает локализованную метку
+     * @param null|integer $type
+     * @return string
+     */
+    public function getLinkTypeLabel($type = null)
     {
         if ($type === null) {
             return Yii::t('gromver.platform', self::$_linkTypes[$this->link_type]);
         }
         return Yii::t('gromver.platform', self::$_linkTypes[$type]);
+    }
+
+    public static function layoutLabels()
+    {
+        return [
+            '' => Yii::t('gromver.platform', 'Default')
+        ];
+    }
+
+    public function getLayoutLabels()
+    {
+        $labels = self::layoutLabels();
+
+        if ($this->layout_path && !array_key_exists($this->layout_path, $labels)) {
+            $labels[$this->layout_path] = $this->layout_path;
+        }
+
+        return $labels;
     }
 
     /**
@@ -423,7 +457,12 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
         return [trim($arUrl['path'], '/'), $params];
     }
 
-    public static function toRoute($route, $params=null)
+    /**
+     * @param string|array $route
+     * @param null $params
+     * @return mixed|null|string
+     */
+    public static function toRoute($route, $params = null)
     {
         if (is_array($route)) {
             $_route = $route;
@@ -431,30 +470,63 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
             $params = array_merge($_route, (array)$params);
         }
 
-        return !empty($params) ? $route . '?' . http_build_query($params):$route;
+        return !empty($params) ? $route . '?' . http_build_query($params) : $route;
     }
 
+    /**
+     * @var integer
+     */
     private $_context;
 
+    /**
+     * @param integer $value
+     */
     public function setContext($value)
     {
         $this->_context = $value;
     }
 
+    /**
+     * @return integer
+     */
     public function getContext()
     {
         return $this->_context;
     }
 
+    /**
+     * @return bool
+     */
     public function isProperContext()
     {
         return $this->_context === self::CONTEXT_PROPER;
     }
 
+    /**
+     * @return bool
+     */
     public function isApplicableContext()
     {
         return $this->_context === self::CONTEXT_APPLICABLE;
     }
+
+    //TranslatableInterface
+    /**
+     * @inheritdoc
+     */
+    public function getTranslations()
+    {
+        return self::hasMany(self::className(), ['translation_id' => 'translation_id'])->indexBy('language');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
 
     // ViewableInterface
     /**
@@ -514,15 +586,5 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface
                 ];
             }, $path);
         }
-    }
-
-    /**
-     * Тайтл для ссылок в меню
-     * @return string
-     */
-    public function getLinkTitle()
-    {
-        $linkParams = $this->getLinkParams();
-        return empty($linkParams['title']) ? $this->title : $linkParams['title'];
     }
 }
