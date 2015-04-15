@@ -98,7 +98,7 @@ class Menu extends Widget
     {
         if (!isset($this->_items)) {
             if ($cache = $this->ensureCache()) {
-                $cacheKey = [__CLASS__, $this->type, $this->activateItems, $this->activateParents];
+                $cacheKey = [__CLASS__, $this->type, $this->activateItems, $this->activateParents, $this->language];
                 if (($this->_items = $cache->get($cacheKey)) === false) {
                     $this->_items = $this->items();
                     $cache->set($cacheKey, $this->_items, $this->cacheDuration, $this->cacheDependency ? $this->cacheDependency : DbState::dependency(MenuItem::tableName()));
