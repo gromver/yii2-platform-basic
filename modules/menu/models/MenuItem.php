@@ -61,6 +61,7 @@ use yii\helpers\Json;
  *
  * @property string $linkTitle
  * @property array $linkParams
+ * @property integer $context
  * @property MenuType $menuType
  * @property MenuItem $parent
  * @property MenuItem[] $translations

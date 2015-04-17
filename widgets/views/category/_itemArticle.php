@@ -8,7 +8,6 @@
  */
 
 use yii\helpers\Html;
-use backend\modules\news\models\Category;
 
 echo '<h3>' . Html::a(Html::encode($model->title), $model->getFrontendViewLink()) . '</h3>';
 

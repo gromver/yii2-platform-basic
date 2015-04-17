@@ -49,5 +49,5 @@ echo \gromver\platform\basic\widgets\PostDay::widget([
     'year' => $year,
     'month' => $month,
     'day' => $day,
-    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
+    'context' =>  $menu ? $menu->path : null,
 ]);

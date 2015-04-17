@@ -19,5 +19,5 @@ echo Html::tag('h2', Html::encode($this->title));
 
 echo \gromver\platform\basic\widgets\PostList::widget([
     'id' => 'post-index',
-    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null,
+    'context' =>  $menu ? $menu->path : null,
 ]);

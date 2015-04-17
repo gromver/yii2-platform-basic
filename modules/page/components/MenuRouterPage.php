@@ -58,7 +58,9 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
      */
     public function parsePageGuide($requestInfo)
     {
+        /** @var Page $menuPage */
         if ($menuPage = Page::findOne($requestInfo->menuParams['id'])) {
+            /** @var Page $page */
             if ($page = Page::findOne([
                 'path' => $menuPage->path . '/' . $requestInfo->requestRoute,
                 'language' => $menuPage->language
@@ -110,6 +112,7 @@ class MenuRouterPage extends \gromver\platform\basic\components\MenuRouter
      */
     private function findPageMenuPath($pageId, $menuMap)
     {
+        /** @var Page $page */
         if (!isset($this->_pagePaths[$menuMap->language][$pageId])) {
             if ($path = $menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/page/frontend/default/guide', ['id' => $pageId]))) {
                 $this->_pagePaths[$menuMap->language][$pageId] = $path;

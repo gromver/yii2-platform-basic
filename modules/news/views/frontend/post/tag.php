@@ -40,5 +40,7 @@ echo \gromver\platform\basic\widgets\TagPosts::widget([
     'id' => 'tag-posts',
     'tag' => $model,
     'categoryId' => $category ? $category->id : null,
-    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null,
+    'context' =>  $menu ? $menu->path : null,
 ]);
+
+$model->hit();

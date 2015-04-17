@@ -88,6 +88,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             //rss лента
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
                 $categoryPath = $matches[2];
+                /** @var Category $category */
                 $category = empty($categoryPath) ? $menuCategory : Category::findOne([
                     'path' => $menuCategory->path . '/' . $categoryPath,
                     'language' => $menuCategory->language
@@ -98,11 +99,13 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             }
         } elseif (preg_match("#((.*)/)?(\d{4})/(\d{1,2})/(\d{1,2})$#", $requestInfo->requestRoute, $matches)) {
             //новости за определенную дату
+            /** @var Category $menuCategory */
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
                 $categoryPath = $matches[2];
                 $year = $matches[3];
                 $month = $matches[4];
                 $day = $matches[5];
+                /** @var Category $category */
                 $category = empty($categoryPath) ? $menuCategory : Category::findOne([
                     'path' => $menuCategory->path . '/' . $categoryPath,
                     'language' => $menuCategory->language
@@ -116,6 +119,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
                 $categoryPath = $matches[2];
                 $postAlias = $matches[4];
+                /** @var Category $category */
                 $category = empty($categoryPath) ? $menuCategory : Category::findOne([
                     'path' => $menuCategory->path . '/' . $categoryPath,
                     'language' => $menuCategory->language
@@ -126,6 +130,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             }
         } elseif (preg_match("#((.*)/)?(tag/([^/]+))$#", $requestInfo->requestRoute, $matches)) {
             //ищем тэг
+            /** @var Category $menuCategory */
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
                 $categoryPath = $matches[2];
                 $tagAlias = $matches[4];
@@ -140,7 +145,9 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             }
         } else {
             //ищем категорию
+            /** @var Category $menuCategory */
             if ($menuCategory = Category::findOne($requestInfo->menuParams['id'])) {
+                /** @var Category $category */
                 if ($category = Category::findOne([
                     'path' => $menuCategory->path . '/' . $requestInfo->requestRoute,
                     'language' => $menuCategory->language
@@ -166,6 +173,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
             //ищем пост
             $categoryPath = $matches[2];    //путь категории поста
             $postAlias = $matches[4];       //алиас поста
+            /** @var Category $category */
             $category = Category::findOne([
                 'path' => $categoryPath,
                 'language' => $requestInfo->menuMap->language
@@ -305,6 +313,7 @@ class MenuRouterNews extends \gromver\platform\basic\components\MenuRouter
      */
     private function findCategoryMenuPath($categoryId, $menuMap)
     {
+        /** @var Category $category */
         if (!isset($this->_categoryPaths[$menuMap->language][$categoryId])) {
             if ($path = $menuMap->getMenuPathByRoute(MenuItem::toRoute('grom/news/frontend/category/view', ['id' => $categoryId]))) {
                 $this->_categoryPaths[$menuMap->language][$categoryId] = $path;

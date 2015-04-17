@@ -25,8 +25,6 @@ use yii\caching\Cache;
  */
 class MenuMap extends \yii\base\Object
 {
-    const CACHE_KEY = __CLASS__;
-
     public $language;
     /**
      * @var Cache|string
@@ -44,10 +42,6 @@ class MenuMap extends \yii\base\Object
     private $_routes = [];
     private $_paths = [];
     private $_links = [];
-    /**
-     * Пункт меню со статусом главной старницы, $mainMenu->toArray()
-     * @var array
-     */
     private $_mainMenu;
 
     public function init()
@@ -59,15 +53,14 @@ class MenuMap extends \yii\base\Object
         if ($this->cache) {
             /** @var Cache $cache */
             $this->cache = Instance::ensure($this->cache, Cache::className());
-            $cacheKey = $this->language . self::CACHE_KEY;
-            if ((list($paths, $routes, $links, $mainMenu) = $this->cache->get($cacheKey)) === false) {
+            $cacheKey = [__CLASS__, $this->language];
+            if ((list($paths, $routes, $links) = $this->cache->get($cacheKey)) === false) {
                 $this->createMap();
-                $this->cache->set($cacheKey, [$this->_paths, $this->_routes, $this->_links, $this->_mainMenu], $this->cacheDuration, $this->cacheDependency);
+                $this->cache->set($cacheKey, [$this->_paths, $this->_routes, $this->_links], $this->cacheDuration, $this->cacheDependency);
             } else {
                 $this->_paths = $paths;
                 $this->_routes = $routes;
                 $this->_links = $links;
-                $this->_mainMenu = $mainMenu;
             }
         } else {
             $this->createMap();
@@ -85,20 +78,24 @@ class MenuMap extends \yii\base\Object
             } else {
                 $this->_links[$item['id']] = $item['link'];
             }
-        }
 
-        $this->_mainMenu = MenuItem::find()->language($this->language)->andWhere(['status' => MenuItem::STATUS_MAIN_PAGE])->asArray()->one();
+        }
     }
 
     /**
-     * @return array
+     * @return MenuItem
      */
     public function getMainMenu()
     {
+        if (!isset($this->_mainMenu)) {
+            $this->_mainMenu = MenuItem::findOne(['language' => $this->language, 'status' => MenuItem::STATUS_MAIN_PAGE]);
+        }
+
         return $this->_mainMenu;
     }
+
     /**
-     * @param $path
+     * @param string $path
      * @return MenuItem
      */
     public function getMenuByPath($path)
@@ -108,7 +105,22 @@ class MenuMap extends \yii\base\Object
     }
 
     /**
-     * @param $route
+     * @param string $path
+     * @return MenuItem
+     */
+    public function getMenuByPathRecursive($path)
+    {
+        $segments = explode('/', $path);
+        $menu = null;
+        while(count($segments) && !$menu = $this->getMenuByPath(implode('/', $segments))) {
+            array_pop($segments);
+        }
+        return $menu;
+    }
+
+
+    /**
+     * @param string $route
      * @return MenuItem
      */
     public function getMenuByRoute($route)
@@ -118,7 +130,7 @@ class MenuMap extends \yii\base\Object
     }
 
     /**
-     * @param $route
+     * @param string $route
      * @return string
      */
     public function getMenuPathByRoute($route)
@@ -137,7 +149,7 @@ class MenuMap extends \yii\base\Object
     }
 
     /**
-     * @param $link
+     * @param string $link
      * @return MenuItem
      */
     public function getMenuByLink($link)
@@ -146,34 +158,13 @@ class MenuMap extends \yii\base\Object
         return $menuId ? MenuItem::findOne($menuId) : null;
     }
 
-
     /**
-     * @param $path
-     * @return MenuItem
+     * @param string $link
+     * @return integer[]
      */
-    public function getApplicableMenuByPath($path)
+    public function getMenuIdsByLink($link)
     {
-        $segments = explode('/', $path);
-        $menu = null;
-        do {
-            array_pop($segments);
-        } while(count($segments) && !$menu=$this->getMenuByPath(implode('/', $segments)));
-
-        return $menu;
-    }
-
-    /**
-     * @param $path
-     * @return MenuItem
-     */
-    public function getMenuByPathRecursive($path)
-    {
-        $segments = explode('/', $path);
-        $menu = null;
-        while(count($segments) && !$menu=$this->getMenuByPath(implode('/', $segments))) {
-            array_pop($segments);
-        }
-        return $menu;
+        return array_keys($this->_links, $link);
     }
 
     /**

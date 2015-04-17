@@ -132,32 +132,28 @@ class MenuUrlRule extends Object implements UrlRuleInterface
      */
     public function parseRequest($manager, $request)
     {
-        if (!($pathInfo = $request->getPathInfo() or $pathInfo = @$this->menuManager->getMenuMap()->getMainMenu()['path'])) {
+        $menuMap = $this->menuManager->getMenuMap();
+        if (!($pathInfo = $request->getPathInfo() or $pathInfo = ($mainMenu = $menuMap->getMainMenu()) ? $mainMenu->path : null)) {
             return false;
         }
         // помечаем как активные все пункты меню которые ссылаются на тотже урл что в запросе
-        $this->menuManager->setActiveMenuIds(array_keys($this->menuManager->getMenuMap()->getLinks(), $request->getUrl()));
+        $this->menuManager->setActiveMenuIds($menuMap->getMenuIdsByLink($request->getUrl()));
 
         // ищем пункт меню, чей путь совпадает с путем в запросе
-        if ($menu = $this->menuManager->getMenuMap()->getMenuByPath($pathInfo)) {
+        if ($menu = $menuMap->getMenuByPathRecursive($pathInfo)) {
+            // определяем в каком контексте ("Точный" или "Подходящий") рассматривать активное меню
+            $menu->setContext($menu->path === $pathInfo ? MenuItem::CONTEXT_PROPER : MenuItem::CONTEXT_APPLICABLE);
             // устанавливаем найденный пункт меню в качестве активного
             $this->menuManager->setActiveMenu($menu);
             // добавляем данный пункт в список активных пунктов меню
             $this->menuManager->addActiveMenuId($menu->id);
-            // помечаем пункт меню как "правильный"
-            $menu->setContext(MenuItem::CONTEXT_PROPER);
-            //при полном совпадении метаданные меню перекрывают метаднные контроллера
-            Yii::$app->getView()->on(View::EVENT_BEGIN_PAGE, [$this->menuManager, 'applyMetaData']);
-        }
-        // ищем пункт меню который имеет в пути общее начало с путем из запроса
-        elseif($menu = $this->menuManager->getMenuMap()->getApplicableMenuByPath($pathInfo)) {
-            // устанавливаем найденный пункт меню в качестве активного
-            $this->menuManager->setActiveMenu($menu);
-            // добавляем данный пункт в список активных пунктов меню
-            $this->menuManager->addActiveMenuId($menu->id);
-            // помечаем пункт меню как "подходящий"
-            $menu->setContext(MenuItem::CONTEXT_APPLICABLE);
-            $this->menuManager->applyMetaData();
+            if ($menu->getContext() === MenuItem::CONTEXT_PROPER) {
+                //при "точном" совпадении, метаданные меню перекрывают метаднные контроллера
+                Yii::$app->getView()->on(View::EVENT_BEGIN_PAGE, [$this->menuManager, 'applyMetaData']);
+            } else {
+                //при "подходящем" устанавливаются по умолчанию
+                $this->menuManager->applyMetaData();
+            }
         } else {
             return false;
         }
@@ -175,12 +171,17 @@ class MenuUrlRule extends Object implements UrlRuleInterface
         }
 
         if ($menu->getContext() === MenuItem::CONTEXT_PROPER) {
+            // при "точном" контексте пункта меню, возвращаем роут на компонент
             return $menu->parseUrl();
         } else {
+            /*
+             * при "подходящем" контексте пункта меню, необходимо на основании оставшейся части пути
+             * и информации из пункта меню маршрутизировать приложение
+             */
             $requestRoute = substr($pathInfo, mb_strlen($menu->path) + 1);
             list($menuRoute, $menuParams) = $menu->parseUrl();
             $requestInfo = new MenuRequestInfo([
-                'menuMap' => $this->menuManager->getMenuMap(),
+                'menuMap' => $menuMap,
                 'menuRoute' => $menuRoute,
                 'menuParams' => $menuParams,
                 'requestRoute' => $requestRoute,
@@ -207,13 +208,14 @@ class MenuUrlRule extends Object implements UrlRuleInterface
     public function createUrl($manager, $route, $params)
     {
         $language = $manager->getLanguageContext();
+        $menuMap = $this->menuManager->getMenuMap($language);
 
-        if ($path = $this->menuManager->getMenuMap($language)->getMenuPathByRoute(MenuItem::toRoute($route, $params))) {
+        if ($path = $menuMap->getMenuPathByRoute(MenuItem::toRoute($route, $params))) {
             return $path;
         }
 
         $requestInfo = new MenuRequestInfo([
-            'menuMap' => $this->menuManager->getMenuMap($language),
+            'menuMap' => $menuMap,
             'requestRoute' => $route,
             'requestParams' => $params,
         ]);

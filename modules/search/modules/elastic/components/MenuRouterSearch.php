@@ -11,6 +11,7 @@ namespace gromver\platform\basic\modules\search\modules\elastic\components;
 
 
 use gromver\platform\basic\modules\menu\models\MenuItem;
+use gromver\platform\basic\components\MenuRequestInfo;
 
 /**
  * Class MenuRouterSearch
@@ -20,7 +21,7 @@ use gromver\platform\basic\modules\menu\models\MenuItem;
 class MenuRouterSearch extends \gromver\platform\basic\components\MenuRouter
 {
     /**
-     * @return array
+     * @inheritdoc
      */
     public function createUrlRules()
     {
@@ -32,6 +33,10 @@ class MenuRouterSearch extends \gromver\platform\basic\components\MenuRouter
         ];
     }
 
+    /**
+     * @param $requestInfo MenuRequestInfo;
+     * @return mixed|null|string
+     */
     public function createSearch($requestInfo)
     {
         if($path = $requestInfo->menuMap->getMenuPathByRoute('grom/search/default/index')) {

@@ -38,7 +38,7 @@ if ($model->metadesc) {
 echo \gromver\platform\basic\widgets\PostView::widget([
     'id' => 'post-view',
     'post' => $model,
-    'context' =>  Yii::$app->menuManager->activeMenu ? Yii::$app->menuManager->activeMenu->path : null
+    'context' =>  $menu ? $menu->path : null,
 ]);
 
 $model->hit();
