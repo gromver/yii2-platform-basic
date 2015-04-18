@@ -81,25 +81,4 @@ class MenuManager extends \yii\base\Object
     {
         return $this->_activeMenuIds;
     }
-
-    public function applyMetaData()
-    {
-        if ($this->_activeMenu->metakey) {
-            Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $this->_activeMenu->metakey], 'keywords');
-        }
-        if ($this->_activeMenu->metadesc) {
-            Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $this->_activeMenu->metadesc], 'description');
-        }
-        if ($this->_activeMenu->robots) {
-            Yii::$app->getView()->registerMetaTag(['name' => 'robots', 'content' => $this->_activeMenu->robots], 'robots');
-        }
-    }
-
-    public function applyLayout()
-    {
-        if ($this->_activeMenu->layout_path) {
-            // если в пункте меню установлен шаблон приложения, применяем его
-            Yii::$app->controller->layout = $this->_activeMenu->layout_path;
-        }
-    }
 }

@@ -54,6 +54,9 @@ class MenuUrlRule extends Object implements UrlRuleInterface
      */
     private $_parseUrlRules = [];
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         Instance::ensure($this->menuManager, MenuManager::className());
@@ -74,6 +77,10 @@ class MenuUrlRule extends Object implements UrlRuleInterface
         }
     }
 
+    /**
+     * Собирает правила маршрутизации со всех маршрутизаторов модулей
+     * @throws InvalidConfigException
+     */
     protected function buildRules()
     {
         //нам нужно собрать все роутеры от модулей и вытащить из них инструкции по маршрутизации
@@ -149,17 +156,17 @@ class MenuUrlRule extends Object implements UrlRuleInterface
             $this->menuManager->addActiveMenuId($menu->id);
             if ($menu->getContext() === MenuItem::CONTEXT_PROPER) {
                 //при "точном" совпадении, метаданные меню перекрывают метаднные контроллера
-                Yii::$app->getView()->on(View::EVENT_BEGIN_PAGE, [$this->menuManager, 'applyMetaData']);
+                Yii::$app->getView()->on(View::EVENT_BEGIN_PAGE, [$this, 'applyMetaData']);
             } else {
                 //при "подходящем" устанавливаются по умолчанию
-                $this->menuManager->applyMetaData();
+                $this->applyMetaData();
             }
         } else {
             return false;
         }
 
         // устанавливаем макет приложению
-        Event::on(Controller::className(), Controller::EVENT_BEFORE_ACTION, [$this->menuManager, 'applyLayout']);
+        Event::on(Controller::className(), Controller::EVENT_BEFORE_ACTION, [$this, 'applyLayout']);
 
         // Проверка на доступ к пунтку меню
         if (!empty($menu->access_rule) && !Yii::$app->user->can($menu->access_rule)) {
@@ -229,4 +236,96 @@ class MenuUrlRule extends Object implements UrlRuleInterface
         return false;
     }
 
+    /**
+     * Установка метаданных пункта меню (учитываются предки и главное меню)
+     */
+    public function applyMetaData()
+    {
+        $metaData = $this->activeMenuMetaData();
+        if (!empty($metaData['keywords'])) {
+            Yii::$app->getView()->registerMetaTag(['name' => 'keywords', 'content' => $metaData['keywords']], 'keywords');
+        }
+        if (!empty($metaData['description'])) {
+            Yii::$app->getView()->registerMetaTag(['name' => 'description', 'content' => $metaData['description']], 'description');
+        }
+        if (!empty($metaData['robots'])) {
+            Yii::$app->getView()->registerMetaTag(['name' => 'robots', 'content' => $metaData['robots']], 'robots');
+        }
+    }
+
+    /**
+     * Установка шаблона пункта меню (учитываются предки и главное меню)
+     */
+    public function applyLayout()
+    {
+        $metaData = $this->activeMenuMetaData();
+        if (!empty($metaData['layout'])) {
+            Yii::$app->controller->layout = $metaData['layout'];
+        }
+    }
+
+    /**
+     * @var array
+     */
+    private $_metaData;
+    /**
+     * @return array
+     */
+    protected function activeMenuMetaData()
+    {
+        if (!isset($this->_metaData)) {
+            $menu = $this->menuManager->getActiveMenu();
+            if ($this->cache) {
+                $cacheKey = [__CLASS__, $menu->id];
+                if (($this->_metaData = $this->cache->get($cacheKey)) === false) {
+                    $this->_metaData = $this->buildMenuMetaData($menu);
+                    $this->cache->set($cacheKey, $this->_metaData, $this->cacheDuration, $this->menuManager->getMenuMap()->cacheDependency);
+                }
+            } else {
+                $this->_metaData = $this->buildMenuMetaData($menu);
+            }
+        }
+
+        return $this->_metaData;
+    }
+
+    /**
+     * Мерджит метаданые пункта меню в порядке
+     * - Пункт меню, помеченный как главная страница (если есть)
+     * - Все предки пункта меню
+     * - Пункт меню
+     * @param $menu MenuItem
+     * @return array
+     */
+    protected function buildMenuMetaData($menu)
+    {
+        $chain = [];
+
+        if ($this->menuManager->getMenuMap()->getMainMenu()) {
+            $chain[] = $this->menuManager->getMenuMap()->getMainMenu();
+        }
+
+        $chain = array_merge($chain, $menu->parents()->noRoots()->all(), [$menu]);
+        $metaDataChain = array_map(function ($value) {
+            /** @var $value MenuItem */
+            $metaData = [];
+
+            if (!empty($value->metakey)) {
+                $metaData['keywords'] = $value->metakey;
+            }
+            if (!empty($value->metadesc)) {
+                $metaData['description'] = $value->metadesc;
+            }
+            if (!empty($value->robots)) {
+                $metaData['robots'] = $value->robots;
+            }
+            if (!empty($value->layout_path)) {
+                $metaData['layout'] = $value->layout_path;
+            }
+
+            return $metaData;
+        }, $chain);
+
+        return call_user_func_array('yii\helpers\ArrayHelper::merge', $metaDataChain);
+    }
 } 
