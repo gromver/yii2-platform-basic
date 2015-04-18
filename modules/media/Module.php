@@ -28,7 +28,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
      * @see \mihaildev\elfinder\Controller
      */
     public $elFinderConfig;
-    public $desktopOrder = 3;
 
     public function init()
     {
@@ -56,7 +55,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
                 ]
             ];
         }
-        // custom initialization code goes here
 
         $this->controllerMap = [
             'manager' => array_merge(['class' => 'mihaildev\elfinder\Controller'], $this->elFinderConfig)

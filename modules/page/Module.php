@@ -29,7 +29,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\page\controllers';
     public $defaultRoute = 'frontend/default';
-    public $desktopOrder = 5;
 
     /**
      * @param $event \gromver\platform\basic\widgets\events\DesktopEvent

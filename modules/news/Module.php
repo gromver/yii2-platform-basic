@@ -31,7 +31,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
 {
     public $controllerNamespace = 'gromver\platform\basic\modules\news\controllers';
     public $defaultRoute = 'backend/post';
-    public $desktopOrder = 4;
     public $rssPageSize = 50;
 
     /**

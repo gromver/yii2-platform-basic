@@ -65,11 +65,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         'grom/tag/frontend<path:(/.*)?>',
         'grom/user/frontend<path:(/.*)?>',
     ];
-    /**
-     * @var int
-     * Unused
-     */
-    public $desktopOrder = 1;
     public $errorLayout = '@gromver/platform/basic/modules/main/views/layouts/error';
     public $modalLayout = '@gromver/platform/basic/modules/main/views/layouts/modal';
     public $backendLayout = '@gromver/platform/basic/modules/main/views/layouts/backend';

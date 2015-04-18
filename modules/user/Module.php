@@ -26,7 +26,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     public $defaultRoute = 'frontend/default';
     public $allowDelete = true;   //позволяет удалять пользователей из БД, при условии что они уже имеют статус User::STATUS_DELETED
     public $userParamsClass = 'gromver\platform\basic\modules\user\models\UserParams';
-    public $desktopOrder = 8;
 
     /**
      * @param $event \gromver\platform\basic\widgets\events\DesktopEvent

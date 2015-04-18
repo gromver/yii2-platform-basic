@@ -36,7 +36,6 @@ class Module extends \gromver\platform\basic\modules\search\Module implements Mo
 
     public $controllerNamespace = 'gromver\platform\basic\modules\search\modules\elastic\controllers';
     public $defaultRoute = 'frontend/default';
-    public $desktopOrder = 6;
     public $elasticsearchIndex;
 
     public function init()

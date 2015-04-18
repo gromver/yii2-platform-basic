@@ -15,7 +15,6 @@ use gromver\platform\basic\behaviors\SearchBehavior;
 use gromver\platform\basic\interfaces\model\SearchableInterface;
 use gromver\platform\basic\interfaces\model\ViewableInterface;
 use yii\base\InvalidConfigException;
-//use yii\base\InvalidParamException;
 
 /**
  * Class Module

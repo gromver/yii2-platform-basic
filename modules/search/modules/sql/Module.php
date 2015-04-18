@@ -22,7 +22,6 @@ use gromver\platform\basic\modules\search\modules\sql\events\SqlIndexEvent;
 use gromver\platform\basic\modules\search\modules\sql\models\Index;
 use kartik\widgets\Alert;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * Class Module
@@ -36,7 +35,6 @@ class Module extends \gromver\platform\basic\modules\search\Module implements Mo
 
     public $controllerNamespace = 'gromver\platform\basic\modules\search\modules\sql\controllers';
     public $defaultRoute = 'frontend/default';
-    public $desktopOrder = 6;
 
     /**
      * @param $event \gromver\platform\basic\widgets\events\DesktopEvent

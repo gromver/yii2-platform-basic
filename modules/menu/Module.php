@@ -27,7 +27,6 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
 
     public $controllerNamespace = 'gromver\platform\basic\modules\menu\controllers';
     public $defaultRoute = 'backend/item';
-    public $desktopOrder = 4;
 
     private $_menuItemLayouts = [];
 
