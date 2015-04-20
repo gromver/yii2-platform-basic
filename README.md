@@ -65,7 +65,9 @@ php composer.phar require --prefer-dist gromver/yii2-platform-basic "*"
  * /web/upload  - для хранения изображений прикрепляемых к статьям и категориям
  * /web/files   - для хранения файлов медиа менеджера
 
-#### Подключение поиска(опционально)
+## Поиск
+По умолчанию используется mysql поиск, но можно подключить альтернативные поисковые модули
+#### Подключение Elasticsearch поиска (опционально)
 * Установить [Elasticsearch](http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_installation.html)
 * Подключаем поисковые модули еластиксерча. Настрайваем консольное приложение, правим /config/console.php
 ```
