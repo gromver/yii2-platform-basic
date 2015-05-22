@@ -15,8 +15,8 @@ use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\components\MenuUrlRule;
 use gromver\platform\basic\modules\search\widgets\SearchFormBackend;
 use gromver\platform\basic\modules\search\widgets\SearchFormFrontend;
-use gromver\platform\basic\widgets\Desktop;
-use gromver\platform\basic\widgets\MenuItemRoutes;
+use gromver\platform\basic\modules\main\widgets\Desktop;
+use gromver\platform\basic\modules\menu\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\search\modules\elastic\components\MenuRouterSearch;
 use gromver\platform\basic\modules\search\modules\elastic\events\ElasticIndexEvent;
 use gromver\platform\basic\modules\search\modules\elastic\models\Index;
@@ -48,7 +48,7 @@ class Module extends \gromver\platform\basic\modules\search\Module implements Mo
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {
@@ -62,7 +62,7 @@ class Module extends \gromver\platform\basic\modules\search\Module implements Mo
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
+     * @param $event \gromver\platform\basic\modules\menu\widgets\events\MenuItemRoutesEvent
      */
     public function addMenuItemRoutes($event)
     {

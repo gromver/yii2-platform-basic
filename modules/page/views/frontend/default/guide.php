@@ -31,7 +31,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\PageGuide::widget([
+echo \gromver\platform\basic\modules\page\widgets\PageGuide::widget([
     'id' => 'page-guide',
     'rootPage' => $rootModel,
     'page' => $model,

@@ -32,7 +32,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\PostList::widget([
+echo \gromver\platform\basic\modules\news\widgets\PostList::widget([
     'id' => 'cat-posts',
     'category' => $model,
     'context' =>  $menu ? $menu->path : null,

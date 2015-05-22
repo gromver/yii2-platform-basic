@@ -12,7 +12,7 @@ namespace gromver\platform\basic\modules\search\widgets;
 
 use gromver\modulequery\ModuleEvent;
 use gromver\platform\basic\modules\search\widgets\events\SearchEndpointsEvent;
-use gromver\platform\basic\widgets\Widget;
+use gromver\platform\basic\modules\widget\widgets\Widget;
 use Yii;
 
 /**

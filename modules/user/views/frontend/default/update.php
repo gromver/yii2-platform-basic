@@ -18,7 +18,7 @@ if ($menu) {
 
 echo \yii\helpers\Html::tag('h2', $this->title);
 
-echo \gromver\platform\basic\widgets\UserProfile::widget([
+echo \gromver\platform\basic\modules\user\widgets\UserProfile::widget([
     'id' => 'user-profile',
     'model' => $model
 ]);

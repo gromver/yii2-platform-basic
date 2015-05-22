@@ -43,7 +43,7 @@ if ($model) {
 
 echo Html::tag('h2', Html::encode($this->title));
 
-echo \gromver\platform\basic\widgets\PostDay::widget([
+echo \gromver\platform\basic\modules\news\widgets\PostDay::widget([
     'id' => 'day-posts',
     'category' => $model,
     'year' => $year,

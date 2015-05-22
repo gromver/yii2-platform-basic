@@ -21,7 +21,7 @@ AppAsset::register($this); ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
-<?= \gromver\platform\basic\widgets\PlatformPanel::widget() ?>
+<?= \gromver\platform\basic\modules\main\widgets\PlatformPanel::widget() ?>
 <div class="wrap">
     <div class="container">
         <?= \yii\widgets\Breadcrumbs::widget([
@@ -34,7 +34,7 @@ AppAsset::register($this); ?>
             ]) ?>
         <div class="row">
             <div class="col-md-3 col-sm-4">
-                <?= \gromver\platform\basic\widgets\Menu::widget([
+                <?= \gromver\platform\basic\modules\menu\widgets\Menu::widget([
                     'id' => 'top-menu',
                     'widgetConfig' => [
                         'heading' => Yii::t('gromver.platform', 'Navigation'),

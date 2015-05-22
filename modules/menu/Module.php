@@ -13,7 +13,7 @@ namespace gromver\platform\basic\modules\menu;
 use gromver\modulequery\ModuleEvent;
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\modules\menu\events\MenuItemLayoutsModuleEvent;
-use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\modules\main\widgets\Desktop;
 use Yii;
 
 /**
@@ -31,7 +31,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     private $_menuItemLayouts = [];
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {

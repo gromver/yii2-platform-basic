@@ -12,8 +12,8 @@ namespace gromver\platform\basic\modules\page;
 
 use gromver\modulequery\ModuleEventsInterface;
 use gromver\platform\basic\components\MenuUrlRule;
-use gromver\platform\basic\widgets\Desktop;
-use gromver\platform\basic\widgets\MenuItemRoutes;
+use gromver\platform\basic\modules\main\widgets\Desktop;
+use gromver\platform\basic\modules\menu\widgets\MenuItemRoutes;
 use gromver\platform\basic\modules\page\components\MenuRouterPage;
 use gromver\platform\basic\modules\page\models\Page;
 use gromver\platform\basic\modules\search\modules\sql\widgets\SearchResultsFrontend as SqlSearchResults;
@@ -31,7 +31,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     public $defaultRoute = 'frontend/default';
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {
@@ -44,7 +44,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
+     * @param $event \gromver\platform\basic\modules\menu\widgets\events\MenuItemRoutesEvent
      */
     public function addMenuItemRoutes($event)
     {

@@ -20,8 +20,8 @@ use gromver\platform\basic\modules\menu\models\MenuItem;
 use gromver\platform\basic\modules\search\widgets\SearchResultsBackend;
 use gromver\platform\basic\modules\search\widgets\SearchResultsFrontend;
 use gromver\platform\basic\modules\user\models\User;
-use gromver\platform\basic\widgets\Desktop;
-use gromver\platform\basic\widgets\MenuItemRoutes;
+use gromver\platform\basic\modules\main\widgets\Desktop;
+use gromver\platform\basic\modules\menu\widgets\MenuItemRoutes;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\Event;
@@ -110,7 +110,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
             'cache' => $app->cache,
             'cacheDependency' => $this->_moduleConfigDependency
         ]);
-        Yii::$container->set('gromver\platform\basic\widgets\Desktop', [
+        Yii::$container->set('gromver\platform\basic\modules\main\widgets\Desktop', [
             'cache' => $app->cache,
             'cacheDependency' => $this->_moduleConfigDependency
         ]);
@@ -184,7 +184,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {
@@ -200,7 +200,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
+     * @param $event \gromver\platform\basic\modules\menu\widgets\events\MenuItemRoutesEvent
      */
     public function addMenuItemRoutes($event)
     {

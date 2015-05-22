@@ -35,7 +35,7 @@ if ($model->metadesc) {
     $this->registerMetaTag(['name' => 'description', 'content' => $model->metadesc], 'description');
 }
 
-echo \gromver\platform\basic\widgets\PostView::widget([
+echo \gromver\platform\basic\modules\news\widgets\PostView::widget([
     'id' => 'post-view',
     'post' => $model,
     'context' =>  $menu ? $menu->path : null,

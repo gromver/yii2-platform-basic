@@ -17,7 +17,7 @@ if ($menu) {
 
 echo Html::tag('h2', Html::encode($this->title));
 
-echo \gromver\platform\basic\widgets\PostList::widget([
+echo \gromver\platform\basic\modules\news\widgets\PostList::widget([
     'id' => 'post-index',
     'context' =>  $menu ? $menu->path : null,
 ]);

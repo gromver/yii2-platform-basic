@@ -37,7 +37,7 @@ use yii\bootstrap\ActiveForm;
                         'label' => 'col-xs-12',
                         'wrapper' => 'col-xs-12'
                     ]
-                ])->widget(\gromver\platform\basic\widgets\HtmlEditor::className(), [
+                ])->widget(\gromver\platform\basic\modules\main\widgets\HtmlEditor::className(), [
                     'id' => 'backend-editor',
                     'context' => Yii::$app->controller->getUniqueId(),
                     'model' => $model,

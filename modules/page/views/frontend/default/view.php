@@ -22,7 +22,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\PageView::widget([
+echo \gromver\platform\basic\modules\page\widgets\PageView::widget([
     'id' => 'page-view',
     'page' => $model,
 ]);

@@ -20,7 +20,7 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-<?= \gromver\platform\basic\widgets\PlatformPanel::widget() ?>
+<?= \gromver\platform\basic\modules\main\widgets\PlatformPanel::widget() ?>
 <div class="wrap">
     <div class="container">
         <?= \yii\widgets\Breadcrumbs::widget([

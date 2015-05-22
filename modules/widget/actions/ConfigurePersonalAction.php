@@ -76,7 +76,7 @@ class ConfigurePersonalAction extends \yii\base\Action
         $widgetConfig['id'] = $widget_id;
         $widgetConfig['context'] = $selected_context;
         $widgetConfig['skipInit'] = true;
-        /** @var \gromver\platform\basic\widgets\Widget $widget */
+        /** @var \gromver\platform\basic\modules\widget\widgets\Widget $widget */
         $widget = new $widget_class($widgetConfig);
 
         $model = new ObjectModel($widget);

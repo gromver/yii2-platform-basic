@@ -10,7 +10,7 @@ if ($menu) {
     $this->title = Yii::t('gromver.platform', 'Contact form');
 }
 
-echo \gromver\platform\basic\widgets\Contact::widget([
+echo \gromver\platform\basic\modules\main\widgets\Contact::widget([
     'id' => 'contact-form'
 ]);
 

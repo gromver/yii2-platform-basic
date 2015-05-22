@@ -36,7 +36,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\TagPosts::widget([
+echo \gromver\platform\basic\modules\tag\widgets\TagPosts::widget([
     'id' => 'tag-posts',
     'tag' => $model,
     'categoryId' => $category ? $category->id : null,

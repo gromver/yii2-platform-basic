@@ -11,8 +11,8 @@ namespace gromver\platform\basic\modules\auth;
 
 
 use gromver\modulequery\ModuleEventsInterface;
-use gromver\platform\basic\widgets\Desktop;
-use gromver\platform\basic\widgets\MenuItemRoutes;
+use gromver\platform\basic\modules\main\widgets\Desktop;
+use gromver\platform\basic\modules\menu\widgets\MenuItemRoutes;
 use Yii;
 
 /**
@@ -42,7 +42,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\MenuItemRoutesEvent
+     * @param $event \gromver\platform\basic\modules\menu\widgets\events\MenuItemRoutesEvent
      */
     public function addMenuItemRoutes($event)
     {
@@ -58,7 +58,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     }
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {

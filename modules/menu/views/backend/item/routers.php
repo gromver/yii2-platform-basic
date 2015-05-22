@@ -4,4 +4,4 @@
  * @var yii\web\View $this
  */
 
-echo \gromver\platform\basic\widgets\MenuItemRoutes::widget();
+echo \gromver\platform\basic\modules\menu\widgets\MenuItemRoutes::widget();

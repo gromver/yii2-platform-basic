@@ -23,7 +23,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\TagItems::widget([
+echo \gromver\platform\basic\modules\tag\widgets\TagItems::widget([
     'id' => 'tag-items',
     'tag' => $model,
 ]);

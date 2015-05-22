@@ -6,7 +6,7 @@ use gromver\platform\basic\modules\widget\models\WidgetConfigPersonal;
 /**
  * @var yii\web\View $this
  * @var gromver\models\ObjectModel $model
- * @var gromver\platform\basic\widgets\Widget $widget
+ * @var gromver\platform\basic\modules\widget\widgets\Widget $widget
  * @var string $widget_id
  * @var string $widget_class
  * @var string $widget_config

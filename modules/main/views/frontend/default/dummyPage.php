@@ -15,6 +15,6 @@ if ($menu) {
 //$this->params['breadcrumbs'][] = $this->title;
 $this->registerMetaTag(['name' => 'robots', 'content' => 'noindex, nofollow'], 'robots');
 
-echo \gromver\platform\basic\widgets\DummyPage::widget([
+echo \gromver\platform\basic\modules\main\widgets\DummyPage::widget([
     'id' => 'dummy-page'
 ]);

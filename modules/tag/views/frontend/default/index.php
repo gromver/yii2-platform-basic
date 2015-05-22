@@ -16,7 +16,7 @@ if ($menu) {
 
 echo \yii\helpers\Html::tag('h2', \yii\helpers\Html::encode($this->title));
 
-echo \gromver\platform\basic\widgets\TagCloud::widget([
+echo \gromver\platform\basic\modules\tag\widgets\TagCloud::widget([
     'id' => 'tag-cloud',
     'language' => Yii::$app->language
 ]);

@@ -32,7 +32,7 @@ if ($model->metadesc) {
 }
 
 
-echo \gromver\platform\basic\widgets\CategoryView::widget([
+echo \gromver\platform\basic\modules\news\widgets\CategoryView::widget([
     'id' => 'cat-view',
     'category' => $model,
     'context' => $menu ? $menu->path : null,

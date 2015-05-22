@@ -11,7 +11,7 @@ namespace gromver\platform\basic\modules\version;
 
 
 use gromver\modulequery\ModuleEventsInterface;
-use gromver\platform\basic\widgets\Desktop;
+use gromver\platform\basic\modules\main\widgets\Desktop;
 use Yii;
 
 /**
@@ -25,7 +25,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
     public $defaultRoute = 'backend/default';
 
     /**
-     * @param $event \gromver\platform\basic\widgets\events\DesktopEvent
+     * @param $event \gromver\platform\basic\modules\main\widgets\events\DesktopEvent
      */
     public function addDesktopItem($event)
     {
