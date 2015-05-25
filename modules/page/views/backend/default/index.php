@@ -53,18 +53,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'parent_id',
+                'width' => '150px',
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                     /** @var \gromver\platform\basic\modules\page\models\Page $model */
                     return $model->parent->title;
                 },
-                'filterType' => \dosamigos\selectize\SelectizeDropDownList::className(),
+                'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\page\models\Page::find()->where(['id' => $searchModel->parent_id])->all(), 'id', 'title'),
-                    'clientOptions' => [
-                        'maxItems' => 1
+                    'data' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\page\models\Page::find()->where(['id' => $searchModel->parent_id])->all(), 'id', 'title'),
+                    'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['page-list']),
+                        ],
                     ],
-                    'loadUrl' => ['/grom/page/backend/default/page-list']
                 ]
             ],
             [
@@ -76,7 +81,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'html'
             ],
-            //'title',
             //'alias',
             [
                 'attribute' => 'status',
@@ -92,19 +96,23 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             [
                 'attribute' => 'tags',
+                'width' => '120px',
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'width' => '100px',
                 'value' => function($model){
-                        /** @var $model \gromver\platform\basic\modules\page\models\Page */
-                        return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
-                    },
-                'filterType' => \dosamigos\selectize\SelectizeDropDownList::className(),
+                    /** @var $model \gromver\platform\basic\modules\page\models\Page */
+                    return implode(', ', \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'));
+                },
+                'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [
-                    'items' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title', 'group'),
-                    'clientOptions' => [
-                        'maxItems' => 1
+                    'data' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->where(['id' => $searchModel->tags])->all(), 'id', 'title'),
+                    'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                        'ajax' => [
+                            'url' => \yii\helpers\Url::to(['/grom/tag/backend/default/tag-list']),
+                        ],
                     ],
-                    'loadUrl' => ['/grom/tag/backend/default/tag-list']
                 ]
             ],
             [
