@@ -39,9 +39,9 @@ use yii\bootstrap\ActiveForm;
                         'options' => [
                             'class' => 'input-group-addon',
                             'title' => \Yii::t('gromver.platform', 'Select Page'),
-                            'onclick' => '$(this).data({form: {params: {"PageSearch[language]": $("#' . $idLanguage . '").val()}}})'
+                            'onclick' => '$(this).data({form: {params: {"PageSearch[language]": $("#' . $idLanguage . '").val(), modal: true}}})'
                         ],
-                        'label' => '<i class="glyphicon glyphicon-search"></i>',
+                        'label' => '<i class="glyphicon glyphicon-folder-open"></i>',
                         'url' => ['/grom/page/backend/default/select', 'modal' => true, 'PageSearch[excludePage]' => $model->isNewRecord ? null : $model->id],
                         'handler' =>
 <<<JS
@@ -94,9 +94,9 @@ JS;
                         'options' => [
                             'class' => 'input-group-addon',
                             'title' => \Yii::t('gromver.platform', 'Select Tag'),
-                            'onclick' => '$(this).data({form: {params: {"TagSearch[language]": $("#' . $idLanguage . '").val()}}})'
+                            'onclick' => '$(this).data({form: {params: {"TagSearch[language]": $("#' . $idLanguage . '").val(), modal: true}}})'
                         ],
-                        'label' => '<i class="glyphicon glyphicon-search"></i>',
+                        'label' => '<i class="glyphicon glyphicon-folder-open"></i>',
                         'url' => ['/grom/tag/backend/default/select', 'modal' => true],
                         'handler' => $handlerJs
 
