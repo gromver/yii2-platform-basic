@@ -28,6 +28,12 @@ class Versions extends \yii\base\Widget
      * @var \yii\db\ActiveRecord
      */
     public $model;
+    /**
+     * @var array
+     */
+    public $options = [
+        'class'=>'btn btn-default'
+    ];
 
     public function init()
     {
@@ -38,15 +44,10 @@ class Versions extends \yii\base\Widget
 
     public function run()
     {
-        return ModalIFrame::widget([
-            'modalOptions' => [
-                'header' => Yii::t('gromver.platform', 'Item Versions Manager - "{title}" (ID:{id})', ['title' => $this->model->title, 'id' => $this->model->getPrimaryKey()]),  //todo возможно ввести какойнибуть интерфейс для тайтла
-                'size' => Modal::SIZE_LARGE,
-            ],
-            'buttonContent' => Html::a('<i class="glyphicon glyphicon-hdd"></i> ' . Yii::t('gromver.platform', 'Versions'),
-                ['/grom/version/backend/default/item', 'item_id' => $this->model->getPrimaryKey(), 'item_class' => $this->model->className()], [
-                    'class'=>'btn btn-default btn-sm',
-                ]),
+        return \gromver\widgets\ModalIFrame::widget([
+            'options' => $this->options,
+            'label' => '<i class="glyphicon glyphicon-hdd"></i> ' . Yii::t('gromver.platform', 'Versions'),
+            'url' => ['/grom/version/backend/default/item', 'item_id' => $this->model->getPrimaryKey(), 'item_class' => $this->model->className()]
         ]);
     }
 } 

@@ -226,7 +226,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
         if ($this->isRoot()) {
             return [];
         } else {
-            $path = $this->parents()->noRoots()->all();
+            $path = $this->parents()->excludeRoots()->all();
             if ($includeSelf) {
                 $path[] = $this;
             }
@@ -337,7 +337,7 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
      */
     private function calculatePath()
     {
-        $aliases = $this->parents()->noRoots()->select('alias')->column();
+        $aliases = $this->parents()->excludeRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 

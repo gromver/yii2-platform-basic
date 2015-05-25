@@ -8,7 +8,7 @@ use yii\widgets\DetailView;
 
 $this->title = $model->title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('gromver.platform', 'Pages'), 'url' => ['index']];
-foreach ($model->parents()->noRoots()->all() as $parent) {
+foreach ($model->parents()->excludeRoots()->all() as $parent) {
     $this->params['breadcrumbs'][] = ['label' => $parent->title, 'url' => ['index', 'PageSearch' => ['parent_id' => $parent->id]]];
 }
 $this->params['breadcrumbs'][] = $this->title;

@@ -10,6 +10,7 @@ use yii\widgets\Breadcrumbs;
  */
 AppAsset::register($this);
 \gromver\platform\basic\assets\BackendAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>

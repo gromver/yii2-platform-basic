@@ -45,6 +45,9 @@ return [
     'Main' => 'Основное',
     'Advanced' => 'Дополнительно',
     'Metadata' => 'Мета данные',
+    'Description' => 'Описание',
+    'Detail' => 'Детально',
+    'Preview' => 'Превью',
     '<h3 class="col-sm-offset-3 col-sm-9">Metadata</h3>' => '<h3 class="col-sm-offset-3 col-sm-9">Мета данные</h3>',
     'Media Manager' => 'Медиа менеджер',
     'Global' => 'Общее',
@@ -152,6 +155,7 @@ return [
     //tag manager
     'Select Tag' => 'Выберите тег',
     'Add Tag' => 'Добавить тег',
+    'Find Tag' => 'Найти тег',
     'Update Tag: {title}' => 'Редактировать тег: {title}',
     //menu manager
     'Main Page' => 'Главная страница',

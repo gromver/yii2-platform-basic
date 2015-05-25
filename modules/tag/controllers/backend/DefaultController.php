@@ -12,12 +12,13 @@ namespace gromver\platform\basic\modules\tag\controllers\backend;
 
 use gromver\platform\basic\modules\tag\models\Tag;
 use gromver\platform\basic\modules\tag\models\TagSearch;
+use gromver\widgets\ModalIFrame;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
-use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * Class DefaultController implements the CRUD actions for Tag model.
@@ -112,10 +113,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * @param string|null $language
      * @param string|null $sourceId
      * @param string|null $backUrl
+     * @param bool|null $modal
      * @return mixed
      * @throws NotFoundHttpException
      */
-    public function actionCreate($sourceId = null, $language = null, $backUrl = null)
+    public function actionCreate($sourceId = null, $language = null, $backUrl = null, $modal = null)
     {
         $model = new Tag();
         $model->loadDefaultValues();
@@ -134,8 +136,21 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             $sourceModel = null;
         }
 
+        if ($modal) {
+            Yii::$app->grom->applyModalLayout();
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            if ($modal) {
+                ModalIFrame::postData([
+                    'id' => $model->id,
+                    'title' => $model->title,
+                    'description' => Yii::t('gromver.platform', 'Tag: {title}', ['title' => $model->title]),
+                    'link' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),
+                    'value' => $model->id . ':' . $model->alias
+                ]);
+            }
+
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -215,13 +230,21 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     /**
      * Отдает список тегов для Selectize виджета
-     * @param null $query
-     * @param null $language
+     * @param string|null $q
+     * @param string|null $language
+     * @return array
      */
-    public function actionTagList($query = null, $language = null) {
+    /*public function actionTagList($query = null, $language = null) {
         $result = Tag::find()->select('id AS value, title AS text, group AS optgroup')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
 
         echo Json::encode($result);
+    }*/
+    public function actionTagList($q = null, $language = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $results = Tag::find()->select('id, title AS text')->andFilterWhere(['like', 'title', urldecode($q)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        return ['results' => $results];
     }
 
     /**

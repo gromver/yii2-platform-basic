@@ -73,7 +73,7 @@ use yii\bootstrap\ActiveForm;
 
             <?= $form->field($model, 'ordering')->textInput() ?>
 
-            <?= $form->field($model, 'tags')->widget(\dosamigos\selectize\SelectizeDropDownList::className(), [
+            <?/*= $form->field($model, 'tags')->widget(\dosamigos\selectize\SelectizeDropDownList::className(), [
                 'options' => [
                     'multiple' => true
                 ],
@@ -82,7 +82,9 @@ use yii\bootstrap\ActiveForm;
                     'maxItems' => 'NaN'
                 ],
                 'loadUrl' => ['/grom/tag/backend/default/tag-list']
-            ]) ?>
+            ])*/ ?>
+
+            <?= $form->field($model, 'tags')->widget(\gromver\platform\basic\modules\tag\widgets\TagField::className()) ?>
 
             <?= $form->field($model, 'detail_image')->widget(\kartik\file\FileInput::classname(), [
                 'options' => ['accept' => 'image/*'],

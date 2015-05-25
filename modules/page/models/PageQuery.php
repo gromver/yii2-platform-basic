@@ -55,7 +55,7 @@ class PageQuery extends \yii\db\ActiveQuery
 
     /**
      * Фильтр по категории
-     * @param $id
+     * @param integer $id
      * @return $this
      */
     public function parent($id)
@@ -64,7 +64,7 @@ class PageQuery extends \yii\db\ActiveQuery
     }
 
     /**
-     * @param $language
+     * @param string $language
      * @return static
      */
     public function language($language)
@@ -75,8 +75,18 @@ class PageQuery extends \yii\db\ActiveQuery
     /**
      * @return static
      */
-    public function noRoots()
+    public function excludeRoots()
     {
         return $this->andWhere('{{%grom_page}}.lft!=1');
+    }
+
+    /**
+     * Исключает из выборки страницу $page и все ее подстраницы
+     * @param Page $page
+     * @return static
+     */
+    public function excludePage($page)
+    {
+        return $this->andWhere('{{%grom_page}}.lft < :excludeLft OR {{%grom_page}}.lft > :excludeRgt', [':excludeLft' => $page->lft, ':excludeRgt' => $page->rgt]);
     }
 } 

@@ -20,6 +20,7 @@ use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * Class DefaultController implements the CRUD actions for Page model.
@@ -87,7 +88,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      */
     public function actionSelect($route = 'grom/page/frontend/default/view')
     {
-        $searchModel = new PageSearch;
+        $searchModel = new PageSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         Yii::$app->grom->applyModalLayout();
@@ -101,13 +102,34 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     /**
      * Отдает список страниц для Selectize виджета
-     * @param null $query
-     * @param null $language
+     * @param string|null $q
+     * @param string|null $language
+     * @param integer|null $exclude
+     * @return array
      */
-    public function actionPageList($query = null, $language = null) {
-        $result = Page::find()->select('id AS value, title AS text')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+    /*public function actionPageList($query = null, $language = null, $exclude = null) {
+        $q = Page::find()->excludeRoots();
+        if ($exclude && $page = Page::findOne($exclude)) {
+            /** @var $page Page /
+            $q->excludePage($page);
+        }
+
+        $result = $q->select('id AS value, title AS text')->andFilterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
 
         echo Json::encode($result);
+    }*/
+
+    public function actionPageList($q = null, $language = null, $exclude = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $query = Page::find()->excludeRoots();
+        if ($exclude && $page = Page::findOne($exclude)) {
+            /** @var $page Page */
+            $query->excludePage($page);
+        }
+
+        $results = $query->select('id, title AS text')->andFilterWhere(['like', 'title', urldecode($q)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        return ['results' => $results];
     }
 
     /**
@@ -290,7 +312,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                         'id' => $value['id'],
                         'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
                     ];
-                }, Page::find()->noRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
+                }, Page::find()->excludeRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
                 /** @var Page $root */
                 $root = Page::find()->roots()->one();
                 array_unshift($out, [

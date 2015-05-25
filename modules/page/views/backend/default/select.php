@@ -86,6 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'btn btn-primary btn-xs',
                         'onclick' => \gromver\widgets\ModalIFrame::postDataJs([
                             'id' => $model->id,
+                            'title' => $model->title,
                             'description' => Yii::t('gromver.platform', 'Page: {title}', ['title' => $model->title]),
                             'route' => \gromver\platform\basic\modules\menu\models\MenuItem::toRoute($route, ['id' => $model->id]),
                             'link' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),
