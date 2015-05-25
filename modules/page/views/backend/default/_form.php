@@ -30,7 +30,8 @@ use yii\bootstrap\ActiveForm;
             <?= $form->field($model, 'language', ['wrapperOptions' => ['class' => 'col-sm-9']])->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
         </div>
         <div class="col-sm-6">
-            <?php $idLanguage = Html::getInputId($model, 'language');
+            <?php
+            $idLanguage = Html::getInputId($model, 'language');
             $idParent_id = Html::getInputId($model, 'parent_id');
             echo $form->field($model, 'parent_id', [
                 'wrapperOptions' => ['class' => 'col-sm-9'],
@@ -62,9 +63,6 @@ JS
                     ],
                 ],
             ]) ?>
-            <?/*= $form->field($model, 'parent_id', ['wrapperOptions' => ['class' => 'col-sm-9']])->widget(\gromver\platform\basic\modules\page\widgets\PageField::className(), [
-                'excludePageId' => $model->isNewRecord ? null : $model->id
-            ])*/ ?>
         </div>
     </div>
 
@@ -79,8 +77,8 @@ JS
 
     <div class="row">
         <div class="col-sm-6">
-            <?//= $form->field($model, 'tags', ['wrapperOptions' => ['class' => 'col-sm-9']])->widget(\gromver\platform\basic\modules\tag\widgets\TagField::className()) ?>
-            <?php $idTags = Html::getInputId($model, 'tags');
+            <?php
+            $idTags = Html::getInputId($model, 'tags');
             $handlerJs = <<<JS
 function(data) {
     var select = $("#{$idTags}").append('<option value="' + data.id + '">' + data.title + '</option>'),
