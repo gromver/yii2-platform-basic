@@ -101,24 +101,12 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     }
 
     /**
-     * Отдает список страниц для Selectize виджета
+     * Отдает список страниц для Select2 виджета
      * @param string|null $q
      * @param string|null $language
      * @param integer|null $exclude
      * @return array
      */
-    /*public function actionPageList($query = null, $language = null, $exclude = null) {
-        $q = Page::find()->excludeRoots();
-        if ($exclude && $page = Page::findOne($exclude)) {
-            /** @var $page Page /
-            $q->excludePage($page);
-        }
-
-        $result = $q->select('id AS value, title AS text')->andFilterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
-
-        echo Json::encode($result);
-    }*/
-
     public function actionPageList($q = null, $language = null, $exclude = null) {
         \Yii::$app->response->format = Response::FORMAT_JSON;
         $query = Page::find()->excludeRoots();
@@ -294,6 +282,12 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * deprecated
+     * todo remove
+     * @param null $update_item_id
+     * @param string $selected
+     */
     public function actionPages($update_item_id = null, $selected = '')
     {
         if (isset($_POST['depdrop_parents'])) {

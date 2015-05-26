@@ -39,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model){
                     return @$model->category->title;
                 },
-                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\news\models\Category::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
+                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\news\models\Category::find()->excludeRoots()->orderBy('lft')->all(), 'id', function($model){
                     return str_repeat(" • ", max($model->level-2, 0)) . $model->title;
                 })
             ],

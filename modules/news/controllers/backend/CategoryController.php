@@ -17,10 +17,10 @@ use kartik\widgets\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * Class CategoryController implements the CRUD actions for Category model.
@@ -90,8 +90,8 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
-        $dataProvider->query->noRoots();
-
+        $dataProvider->query->excludeRoots();
+var_dump(Yii::$app->request->queryParams);
         Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
@@ -102,16 +102,25 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     }
 
     /**
-     * Отдает список категорий для Selectize виджета
-     * @param null $query
-     * @param null $language
+     * Отдает список категорий для Select2 виджета
+     * @param string|null $q
+     * @param string|null $language
+     * @param integer|null $exclude
+     * @return array
      */
-    public function actionCategoryList($query = null, $language = null) {
-        $result = Category::find()->select('id AS value, title AS text')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+    public function actionCategoryList($q = null, $language = null, $exclude = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $query = Category::find()->excludeRoots();
+        if ($exclude && $category = Category::findOne($exclude)) {
+            /** @var $category Category */
+            $query->excludeCategory($category);
+        }
 
-        echo Json::encode($result);
+        $results = $query->select('id, title AS text')->andFilterWhere(['like', 'title', urldecode($q)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        return ['results' => $results];
     }
-
+    
     /**
      * Displays a single Category model.
      * @param integer $id
@@ -291,6 +300,12 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         }
     }
 
+    /**
+     * deprecated
+     * todo remove
+     * @param null $update_item_id
+     * @param string $selected
+     */
     public function actionCategories($update_item_id = null, $selected = '')
     {
         if (isset($_POST['depdrop_parents'])) {
@@ -309,7 +324,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                         'id' => $value['id'],
                         'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
                     ];
-                }, Category::find()->noRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
+                }, Category::find()->excludeRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
                 /** @var Category $root */
                 $root = Category::find()->roots()->one();
                 array_unshift($out, [

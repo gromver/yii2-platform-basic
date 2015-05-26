@@ -75,8 +75,18 @@ class CategoryQuery extends \yii\db\ActiveQuery
     /**
      * @return static
      */
-    public function noRoots()
+    public function excludeRoots()
     {
         return $this->andWhere('{{%grom_category}}.lft!=1');
+    }
+
+    /**
+     * Исключает из выборки категорию $category и все ее подкатегории
+     * @param Category $category
+     * @return static
+     */
+    public function excludeCategory($category)
+    {
+        return $this->andWhere('{{%grom_category}}.lft < :excludeLft OR {{%grom_category}}.lft > :excludeRgt', [':excludeLft' => $category->lft, ':excludeRgt' => $category->rgt]);
     }
 } 

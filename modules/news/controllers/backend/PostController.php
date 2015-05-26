@@ -264,7 +264,7 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
                         'id' => $value['id'],
                         'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
                     ];
-                }, Category::find()->noRoots()->language($language)->orderBy('lft')->asArray()->all());
+                }, Category::find()->excludeRoots()->language($language)->orderBy('lft')->asArray()->all());
 
                 echo Json::encode(['output' => $out, 'selected' => $selected ? $selected : '']);
                 return;

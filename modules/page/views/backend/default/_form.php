@@ -6,7 +6,9 @@ use yii\bootstrap\ActiveForm;
 /* @var $this yii\web\View */
 /* @var $model gromver\platform\basic\modules\page\models\Page */
 /* @var $sourceModel gromver\platform\basic\modules\page\models\Page */
-/* @var $form yii\bootstrap\ActiveForm */?>
+/* @var $form yii\bootstrap\ActiveForm */
+
+\gromver\widgets\ParseUrlAsset::register($this); ?>
 
 <div class="page-form">
 
@@ -39,7 +41,6 @@ use yii\bootstrap\ActiveForm;
                         'options' => [
                             'class' => 'input-group-addon',
                             'title' => \Yii::t('gromver.platform', 'Select Page'),
-                            'onclick' => '$(this).data({form: {params: {"PageSearch[language]": $("#' . $idLanguage . '").val(), modal: true}}})'
                         ],
                         'label' => '<i class="glyphicon glyphicon-folder-open"></i>',
                         'url' => ['/grom/page/backend/default/select', 'modal' => true, 'PageSearch[excludePage]' => $model->isNewRecord ? null : $model->id],
@@ -50,6 +51,8 @@ function(data) {
     $("#{$idParent_id}").html('<option value="' + data.id + '">' + data.title + '</option>').val(data.id).trigger('change');
 }
 JS
+                        ,
+                        'actionHandler' => 'function(url) {return (new URI(url)).addSearch("PageSearch[language]", $("#' . $idLanguage . '").val())}'
                     ]) . '</div>',
             ])->widget(\kartik\select2\Select2::className(), [
                 'initValueText' => $model->parent ? $model->parent->title : null,
@@ -94,21 +97,20 @@ JS;
                         'options' => [
                             'class' => 'input-group-addon',
                             'title' => \Yii::t('gromver.platform', 'Select Tag'),
-                            'onclick' => '$(this).data({form: {params: {"TagSearch[language]": $("#' . $idLanguage . '").val(), modal: true}}})'
                         ],
                         'label' => '<i class="glyphicon glyphicon-folder-open"></i>',
                         'url' => ['/grom/tag/backend/default/select', 'modal' => true],
-                        'handler' => $handlerJs
-
+                        'handler' => $handlerJs,
+                        'actionHandler' => 'function(url) {return (new URI(url)).addSearch("TagSearch[language]", $("#' . $idLanguage . '").val())}'
                     ]) . \gromver\widgets\ModalIFrame::widget([
                         'options' => [
                             'class' => 'input-group-addon',
                             'title' => \Yii::t('gromver.platform', 'Add Tag'),
-                            'onclick' => '$(this).data({form: {params: {language: $("#' . $idLanguage . '").val(), modal: true}}})'
                         ],
                         'label' => '<i class="glyphicon glyphicon-plus"></i>',
                         'url' => ['/grom/tag/backend/default/create', 'modal' => true],
-                        'handler' => $handlerJs
+                        'handler' => $handlerJs,
+                        'actionHandler' => 'function(url) {return (new URI(url)).addSearch("language", $("#' . $idLanguage . '").val())}'
                     ]) . '</div>',
             ])->widget(\kartik\select2\Select2::className(), [
                 'data' => \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'),

@@ -20,15 +20,35 @@ use yii\data\ActiveDataProvider;
  */
 class CategorySearch extends Category
 {
+    /**
+     * @var integer[]
+     */
     public $tags;
+    /**
+     * @var string
+     */
     public $published_at_to;
+    /**
+     * @var integer
+     */
     public $published_at_to_timestamp;
+    /**
+     * @var integer
+     */
     public $published_at_timestamp;
+    /**
+     * @var bool
+     */
+    public $excludeRoots = true;
+    /**
+     * @var integer
+     */
+    public $excludeCategory;
 
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['id', 'parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock', 'excludeCategory'], 'integer'],
             [['language', 'title', 'alias', 'path', 'preview_text', 'preview_image', 'detail_text', 'detail_image', 'metakey', 'metadesc', 'tags', 'versionNote'], 'safe'],
             [['published_at'], 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at_timestamp'],
             [['published_at_to'], 'date', 'format' => 'dd.MM.yyyy', 'timestampAttribute' => 'published_at_to_timestamp'],
@@ -37,12 +57,16 @@ class CategorySearch extends Category
 
     /**
      * @param $params
-     * @param bool $excludeRoots
      * @return ActiveDataProvider
      */
-    public function search($params, $excludeRoots = true)
+    public function search($params)
     {
-        $query = $excludeRoots ? Category::find()->noRoots() : Category::find();
+        $query = Category::find();
+
+        if ($this->excludeRoots) {
+            $query->excludeRoots();
+        }
+
         $query->with(['tags', 'translations', 'parent']);
 
         $dataProvider = new ActiveDataProvider([
@@ -92,8 +116,14 @@ class CategorySearch extends Category
             ->andFilterWhere(['like', '{{%grom_category}}.metakey', $this->metakey])
             ->andFilterWhere(['like', '{{%grom_category}}.metadesc', $this->metadesc]);
 
-        if($this->tags)
+        if ($this->excludeCategory && $category = Category::findOne($this->excludeCategory)) {
+            /** @var $category Category */
+            $query->excludeCategory($category);
+        }
+
+        if($this->tags) {
             $query->innerJoinWith('tags')->andFilterWhere(['{{%grom_tag}}.id' => $this->tags]);
+        }
 
         return $dataProvider;
     }

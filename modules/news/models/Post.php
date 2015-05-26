@@ -94,7 +94,7 @@ class Post extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             [['published_at'], 'integer', 'enableClientValidation' => false],
             [['category_id'], 'exist', 'targetClass' => Category::className(), 'targetAttribute' => 'id', 'filter' => function($query) {
                 /** @var $query \gromver\platform\basic\modules\news\models\CategoryQuery */
-                $query->noRoots();
+                $query->excludeRoots();
             }],
             [['alias'], 'filter', 'filter' => 'trim'],
             [['alias'], 'filter', 'filter' => function ($value) {
