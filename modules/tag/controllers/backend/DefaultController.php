@@ -54,7 +54,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'tag-list'],
+                        'actions' => ['index', 'view', 'select', 'tag-list', 'tag-group-list'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -229,20 +229,28 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     }
 
     /**
-     * Отдает список тегов для Selectize виджета
+     * Отдает список тегов для Select2 виджета
      * @param string|null $q
      * @param string|null $language
      * @return array
      */
-    /*public function actionTagList($query = null, $language = null) {
-        $result = Tag::find()->select('id AS value, title AS text, group AS optgroup')->filterWhere(['like', 'title', urldecode($query)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
-
-        echo Json::encode($result);
-    }*/
     public function actionTagList($q = null, $language = null) {
         \Yii::$app->response->format = Response::FORMAT_JSON;
 
         $results = Tag::find()->select('id, title AS text')->andFilterWhere(['like', 'title', urldecode($q)])->andFilterWhere(['language' => $language])->limit(20)->asArray()->all();
+
+        return ['results' => $results];
+    }
+
+    /**
+     * Отдает список групп тегов для Select2 виджета
+     * @param string|null $q
+     * @return array
+     */
+    public function actionTagGroupList($q = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+
+        $results = Tag::find()->select('group AS id, group AS text')->andFilterWhere(['like', 'group', urldecode($q)])->groupBy('group')->limit(20)->asArray()->all();
 
         return ['results' => $results];
     }

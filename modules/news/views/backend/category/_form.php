@@ -122,9 +122,11 @@ JS;
                     ]) . '</div>',
             ])->widget(\kartik\select2\Select2::className(), [
                 'data' => \yii\helpers\ArrayHelper::map($model->tags, 'id', 'title'),
+                'options' => [
+                    'multiple' => true
+                ],
                 'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
                 'pluginOptions' => [
-                    'tags' => true,
                     'multiple' => true,
                     'placeholder' => Yii::t('gromver.platform', 'Select ...'),
                     'ajax' => [
@@ -199,9 +201,19 @@ JS;
             ]) ?>
         </div>
         <div id="meta-options" class="tab-pane">
-            <?= $form->field($model, 'metakey')->textarea(['maxlength' => 255]) ?>
+            <?= $form->field($model, 'metakey', [
+                'horizontalCssClasses' => [
+                    'label' => 'col-xs-12',
+                    'wrapper' => 'col-xs-12'
+                ],
+            ])->textInput(['maxlength' => 255]) ?>
 
-            <?= $form->field($model, 'metadesc')->textarea(['maxlength' => 2000]) ?>
+            <?= $form->field($model, 'metadesc', [
+                'horizontalCssClasses' => [
+                    'label' => 'col-xs-12',
+                    'wrapper' => 'col-xs-12'
+                ],
+            ])->textarea(['maxlength' => 2048]) ?>
         </div>
     </div>
 

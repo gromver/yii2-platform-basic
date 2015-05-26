@@ -76,6 +76,10 @@ class Tag extends \yii\db\ActiveRecord implements ViewableInterface, Translatabl
             [['status', 'created_at', 'updated_at', 'created_by', 'updated_by', 'hits', 'lock'], 'integer'],
             [['language'], 'string', 'max' => 7],
             [['title'], 'string', 'max' => 100],
+            [['group'], 'filter', 'filter' => function($value) {
+                // если во вьюхе используется select2, отфильтровываем значение из массива [0 => 'значение'] -> 'значение'
+                return is_array($value) ? reset($value) : $value;
+            }],
             [['alias', 'group', 'metakey'], 'string', 'max' => 255],
             [['metadesc'], 'string', 'max' => 2048],
 

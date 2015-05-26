@@ -19,29 +19,60 @@ use yii\bootstrap\ActiveForm;
 
     <?= $form->errorSummary($model) ?>
 
-    <?= $form->field($model, 'title')->textInput(['maxlength' => 100, 'placeholder' => isset($sourceModel) ? $sourceModel->title : null]) ?>
-
-    <?= $form->field($model, 'alias')->textInput(['maxlength' => 255, 'placeholder' => Yii::t('gromver.platform', 'Auto-generate')]) ?>
-
-    <ul class="nav nav-tabs">
-        <li class="active"><a href="#main-options" data-toggle="tab"><?= Yii::t('gromver.platform', 'Main') ?></a></li>
-        <li><a href="#meta-options" data-toggle="tab"><?= Yii::t('gromver.platform', 'Metadata') ?></a></li>
-    </ul>
-    <br/>
-    <div class="tab-content">
-        <div id="main-options" class="tab-pane active">
-            <?= $form->field($model, 'language')->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
-
-            <?= $form->field($model, 'status')->dropDownList(['' => Yii::t('gromver.platform', 'Select ...')] + $model->statusLabels()) ?>
-
-            <?= $form->field($model, 'group')->textInput(['maxlength' => 255, 'placeholder' => isset($sourceModel) ? $sourceModel->group : null]) ?>
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'title', ['wrapperOptions' => ['class' => 'col-sm-9']])->textInput(['maxlength' => 100, 'placeholder' => isset($sourceModel) ? $sourceModel->title : null]) ?>
         </div>
-        <div id="meta-options" class="tab-pane">
-            <?= $form->field($model, 'metakey')->textInput(['maxlength' => 255]) ?>
-
-            <?= $form->field($model, 'metadesc')->textarea(['maxlength' => 2048]) ?>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'alias', ['wrapperOptions' => ['class' => 'col-sm-9']])->textInput(['maxlength' => 255, 'placeholder' => Yii::t('gromver.platform', 'Auto-generate')]) ?>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'language', ['wrapperOptions' => ['class' => 'col-sm-9']])->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
+        </div>
+        <div class="col-sm-6">
+            <?=$form->field($model, 'group', ['wrapperOptions' => ['class' => 'col-sm-9']])->widget(\kartik\select2\Select2::className(), [
+                'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
+                'data' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->groupBy('group')->andWhere('[[group]] != "" AND [[group]] IS NOT NULL')->all(), 'group', 'group'),
+                'pluginOptions' => [
+                    'tags' => true,
+                    'allowClear' => true,
+                    'multiple' => false,
+                    'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                    /*'ajax' => [
+                        'url' => \yii\helpers\Url::to(['tag-group-list']),
+                    ],*/
+                ],
+            ]) ?>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <?= $form->field($model, 'status', ['wrapperOptions' => ['class' => 'col-sm-9']])->dropDownList(['' => Yii::t('gromver.platform', 'Select ...')] + $model->statusLabels()) ?>
+        </div>
+        <div class="col-sm-6">
+
+        </div>
+    </div>
+
+    <h3><?= Yii::t('platform.gromver', 'SEO') ?></h3>
+
+    <?= $form->field($model, 'metakey', [
+        'horizontalCssClasses' => [
+            'label' => 'col-xs-12',
+            'wrapper' => 'col-xs-12'
+        ],
+    ])->textInput(['maxlength' => 255]) ?>
+
+    <?= $form->field($model, 'metadesc', [
+        'horizontalCssClasses' => [
+            'label' => 'col-xs-12',
+            'wrapper' => 'col-xs-12'
+        ],
+    ])->textarea(['maxlength' => 2048]) ?>
 
     <?= Html::activeHiddenInput($model, 'lock') ?>
 

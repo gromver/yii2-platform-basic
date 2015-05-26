@@ -34,10 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => '\kartik\grid\CheckboxColumn'],
             [
-                'attribute'=>'id',
+                'attribute' => 'id',
                 'hAlign' => GridView::ALIGN_CENTER,
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'width'=>'60px'
+                'width' => '60px'
             ],
             [
                 'attribute' => 'language',
@@ -66,8 +66,21 @@ $this->params['breadcrumbs'][] = $this->title;
             ],*/
             [
                 'attribute' => 'group',
+                'width' =>'150px',
                 'vAlign' => GridView::ALIGN_MIDDLE,
-                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->groupBy('group')->andWhere('[[group]]!="" AND [[group]] IS NOT NULL')->all(), 'group', 'group')
+                'filterType' => GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'data' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->groupBy('group')->andWhere('[[group]] != "" AND [[group]] IS NOT NULL')->all(), 'group', 'group'),
+                    'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'multiple' => false,
+                        'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                        /*'ajax' => [
+                             'url' => \yii\helpers\Url::to(['tag-group-list']),
+                         ],*/
+                    ],
+                ]
             ],
             [
                 'attribute' => 'status',
@@ -79,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     },
                 'filter' => \gromver\platform\basic\modules\tag\models\Tag::statusLabels(),
                 'format' => 'raw',
-                'width'=>'80px'
+                'width' => '80px'
             ],
             [
                 'class' => 'kartik\grid\ActionColumn',
