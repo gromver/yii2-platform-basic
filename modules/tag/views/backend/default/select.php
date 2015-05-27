@@ -51,6 +51,24 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html'
             ],
             [
+                'attribute' => 'group',
+                'width' =>'150px',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'filterType' => GridView::FILTER_SELECT2,
+                'filterWidgetOptions' => [
+                    'data' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\tag\models\Tag::find()->groupBy('group')->andWhere('[[group]] != "" AND [[group]] IS NOT NULL')->all(), 'group', 'group'),
+                    'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
+                    'pluginOptions' => [
+                        'allowClear' => true,
+                        'multiple' => false,
+                        'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                        /*'ajax' => [
+                             'url' => \yii\helpers\Url::to(['tag-group-list']),
+                         ],*/
+                    ],
+                ]
+            ],
+            [
                 'attribute' => 'status',
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
