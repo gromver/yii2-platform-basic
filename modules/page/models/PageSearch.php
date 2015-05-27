@@ -40,7 +40,7 @@ class PageSearch extends Page
     public function rules()
     {
         return [
-            [['id', 'parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock', 'excludePage'], 'integer'],
+            [['id', 'parent_id', 'created_at', 'updated_at', 'status', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock', 'excludeRoots', 'excludePage'], 'integer'],
             [['language', 'title', 'alias', 'path', 'preview_text', 'detail_text', 'metakey', 'metadesc', 'tags', 'versionNote'], 'safe'],
         ];
     }
@@ -63,11 +63,6 @@ class PageSearch extends Page
     public function search($params)
     {
         $query = Page::find();
-
-        if ($this->excludeRoots) {
-            $query->excludeRoots();
-        }
-
         $query->with(['tags', 'translations', 'parent']);
 
         $dataProvider = new ActiveDataProvider([
@@ -80,6 +75,10 @@ class PageSearch extends Page
         ]);
 
         if (!($this->load($params) && $this->validate())) {
+            if ($this->excludeRoots) {
+                $query->excludeRoots();
+            }
+
             return $dataProvider;
         }
 
@@ -107,6 +106,10 @@ class PageSearch extends Page
             ->andFilterWhere(['like', '{{%grom_page}}.detail_text', $this->detail_text])
             ->andFilterWhere(['like', '{{%grom_page}}.metakey', $this->metakey])
             ->andFilterWhere(['like', '{{%grom_page}}.metadesc', $this->metadesc]);
+
+        if ($this->excludeRoots) {
+            $query->excludeRoots();
+        }
 
         if ($this->excludePage && $page = Page::findOne($this->excludePage)) {
             /** @var $page Page */

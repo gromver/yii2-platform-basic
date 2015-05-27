@@ -101,10 +101,6 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
                     $this->addError($attribute, Yii::t('gromver.platform', 'Language has to match with the parental.'));
                 }
             }],*/
-            [['parent_id'], 'integer'],
-            [['parent_id'], 'filter', 'filter' => 'intval'],
-            [['parent_id'], 'exist', 'targetAttribute' => 'id'],
-            [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator'=>'!='],
 
             [['alias'], 'filter', 'filter' => 'trim'],
             [['alias'], 'filter', 'filter' => function($value) {
@@ -330,15 +326,20 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
     public function saveNode($runValidation = true, $attributes = null)
     {
         if ($this->getIsNewRecord()) {
-            if($parent = self::findOne($this->parent_id)) {
+            // если parent_id не задан, то ищем корневой элемент
+            if($parent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+                $this->parent_id = $parent->id;
                 return $this->appendTo($parent, $runValidation, $attributes);
             } else {
-                return $this->makeRoot($parent, $runValidation, $attributes);
+                // если рутового элемента не существует, то сохраняем модель как корневую
+                return $this->makeRoot($runValidation, $attributes);
             }
         }
-        // категория перемещена в другую категорию
-        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
-            return $this->appendTo($parent, $runValidation, $attributes);
+
+        // модель перемещена в другую модель
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $newParent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+            $this->parent_id = $newParent->id;
+            return $this->appendTo($newParent, $runValidation, $attributes);
         }
         // просто апдейт
         return $this->save($runValidation, $attributes);
@@ -358,13 +359,13 @@ class Category extends \yii\db\ActiveRecord implements TranslatableInterface, Vi
             ]);
         }
 
-        // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        // нормализуем пути подэлементов для текущего элемента при его перемещении, либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
             $this->normalizePath();
         }
 
-        // ранжируем категории ели нужно
+        // ранжируем элементы если нужно
         if (array_key_exists('ordering', $changedAttributes)) {
             $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }

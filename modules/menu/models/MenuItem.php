@@ -93,7 +93,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
     public function rules()
     {
         return [
-            [['menu_type_id', 'status', 'link_type', 'link_weight', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['menu_type_id', 'parent_id', 'status', 'link_type', 'link_weight', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
             [['menu_type_id'], 'required'],
             [['menu_type_id'], 'exist', 'targetAttribute' => 'id', 'targetClass' => MenuType::className()],
             [['language'], 'required'],
@@ -112,13 +112,6 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
             [['metadesc'], 'string', 'max' => 2048],
             [['access_rule', 'robots'], 'string', 'max' => 50],
 
-            [['parent_id'], 'filter', 'filter' => function ($value) {
-                return $value ? $value : self::find()->select('id')->roots()->scalar();
-            }],
-            [['parent_id'], 'integer'],
-            [['parent_id'], 'filter', 'filter' => 'intval'],
-            [['parent_id'], 'exist', 'targetAttribute' => 'id'],
-            [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator' => '!='],
             [['parent_id'], function($attribute) {
                 if (($parent = self::findOne($this->parent_id)) && !$parent->isRoot() && $parent->menu_type_id != $this->menu_type_id) {
                     $this->addError($attribute, Yii::t('gromver.platform', 'Parental point of the menu doesn\'t correspond to the chosen menu type.'));
@@ -248,15 +241,20 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
 
     public function saveNode($runValidation = true, $attributes = null) {
         if ($this->getIsNewRecord()) {
-            if($parent = self::findOne($this->parent_id)) {
+            // если parent_id не задан, то ищем корневой элемент
+            if($parent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+                $this->parent_id = $parent->id;
                 return $this->appendTo($parent, $runValidation, $attributes);
             } else {
-                return $this->makeRoot($parent, $runValidation, $attributes);
+                // если рутового элемента не существует, то сохраняем модель как корневую
+                return $this->makeRoot($runValidation, $attributes);
             }
         }
-        // меню перемещено в другой пункт меню
-        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
-            return $this->appendTo($parent, $runValidation, $attributes);
+
+        // модель перемещена в другую модель
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $newParent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+            $this->parent_id = $newParent->id;
+            return $this->appendTo($newParent, $runValidation, $attributes);
         }
         // просто апдейт
         return $this->save($runValidation, $attributes);
@@ -276,7 +274,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
             ]);
         }
 
-        //Если изменен тип меню или язык, смена языка возможна только для корневых пунктов меню
+        //Если изменен тип меню или язык, смена языка возможна только для корневых элементов
         if (array_key_exists('menu_type_id', $changedAttributes) || array_key_exists('language', $changedAttributes)) {
             $this->normalizeLanguage();
         }
@@ -286,14 +284,14 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
         }
 
         $oldPath = $this->getOldAttribute('path');
-        // нормализуем контексты виджетов и пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        // нормализуем контексты виджетов и пути подэлементов для текущего элемента при его перемещении, либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
             $this->normalizePath();
             $this->normalizeWidgets($oldPath);
         }
 
-        // ранжируем категории если нужно
+        // ранжируем элементы если нужно
         if (array_key_exists('ordering', $changedAttributes)) {
             $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }

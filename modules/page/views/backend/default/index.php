@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function($model){
                     /** @var \gromver\platform\basic\modules\page\models\Page $model */
-                    return $model->parent->title;
+                    return $model->parent ? $model->parent->title : '';
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filterWidgetOptions' => [

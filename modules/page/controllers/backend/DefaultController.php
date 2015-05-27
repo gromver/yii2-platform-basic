@@ -160,7 +160,7 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         if($sourceId && $language) {
             $sourceModel = $this->findModel($sourceId);
             /** @var Page $parentItem */
-            // если локализуемая категория имеет родителя, то пытаемся найти релевантную локализацию для родителя создаваемой категории
+            // если локализуемая тсраница имеет родителя, то пытаемся найти релевантную локализацию для родителя создаваемой страницы
             if (!($sourceModel->level > 2 && $parentItem = @$sourceModel->parent->translations[$language])) {
                 $parentItem = Page::find()->roots()->one();
             }

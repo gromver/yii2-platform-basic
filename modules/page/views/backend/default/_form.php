@@ -55,11 +55,11 @@ JS
                         'actionHandler' => 'function(url) {return (new URI(url)).addSearch("PageSearch[language]", $("#' . $idLanguage . '").val())}'
                     ]) . '</div>',
             ])->widget(\kartik\select2\Select2::className(), [
-                'initValueText' => $model->parent ? $model->parent->title : null,
+                'initValueText' => $model->parent ? ($model->parent->isRoot() ? Yii::t('gromver.platform', 'Top level') : $model->parent->title) : null,
                 'theme' => \kartik\select2\Select2::THEME_BOOTSTRAP,
                 'pluginOptions' => [
                     'allowClear' => true,
-                    'placeholder' => Yii::t('gromver.platform', 'Select ...'),
+                    'placeholder' => Yii::t('gromver.platform', 'Top level'),
                     'ajax' => [
                         'url' => \yii\helpers\Url::to(['page-list', 'exclude' => $model->isNewRecord ? null : $model->id]),
                         'data' => new \yii\web\JsExpression('function(params) { return {q:params.term, language:$("#' . $idLanguage .'").val()}; }')

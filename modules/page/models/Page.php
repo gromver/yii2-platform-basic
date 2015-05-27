@@ -86,11 +86,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             [['alias', 'metakey'], 'string', 'max' => 255],
             [['metadesc'], 'string', 'max' => 2048],
 
-            [['parent_id'], 'integer'],
-            [['parent_id'], 'filter', 'filter' => 'intval'],
-            [['parent_id'], 'exist', 'targetAttribute' => 'id'],
-            [['parent_id'], 'compare', 'compareAttribute' => 'id', 'operator'=>'!='],
-
             [['alias'], 'filter', 'filter' => 'trim'],
             [['alias'], 'filter', 'filter' => function($value){
                     if (empty($value)) {
@@ -100,8 +95,6 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
                     }
                 }],
             [['alias'], 'unique', 'filter' => function($query){
-                /** @var $query \yii\db\ActiveQuery */
-                //$query->andWhere(['language' => $this->language]);
                 /** @var $query \yii\db\ActiveQuery */
                 if($parent = self::findOne($this->parent_id)){
                     $query->andWhere('lft>=:lft AND rgt<=:rgt AND level=:level AND language=:language', [
@@ -292,15 +285,20 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
     public function saveNode($runValidation = true, $attributes = null)
     {
         if ($this->getIsNewRecord()) {
-            if($parent = self::findOne($this->parent_id)) {
+            // если parent_id не задан, то ищем корневой элемент
+            if($parent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+                $this->parent_id = $parent->id;
                 return $this->appendTo($parent, $runValidation, $attributes);
             } else {
-                return $this->makeRoot($parent, $runValidation, $attributes);
+                // если рутового элемента не существует, то сохраняем модель как корневую
+                return $this->makeRoot($runValidation, $attributes);
             }
         }
-        // категория перемещена в другую категорию
-        if ($this->getOldAttribute('parent_id') != $this->parent_id && $parent = self::findOne($this->parent_id)) {
-            return $this->appendTo($parent, $runValidation, $attributes);
+
+        // модель перемещена в другую модель
+        if ($this->getOldAttribute('parent_id') != $this->parent_id && $newParent = $this->parent_id ? self::findOne($this->parent_id) : self::find()->roots()->one()) {
+            $this->parent_id = $newParent->id;
+            return $this->appendTo($newParent, $runValidation, $attributes);
         }
         // просто апдейт
         return $this->save($runValidation, $attributes);
@@ -320,13 +318,13 @@ class Page extends \yii\db\ActiveRecord implements TranslatableInterface, Viewab
             ]);
         }
 
-        // нормализуем пути подкатегорий для текущей категории при её перемещении либо изменении псевдонима
+        // нормализуем пути подэлементов для текущего элемента при его перемещении, либо изменении псевдонима
         if (array_key_exists('parent_id', $changedAttributes) || array_key_exists('alias', $changedAttributes)) {
             $this->refresh();
             $this->normalizePath();
         }
 
-        // ранжируем категории если нужно
+        // ранжируем элементы если нужно
         if (array_key_exists('ordering', $changedAttributes)) {
             $this->ordering ? $this->parent->reorderNode('ordering') : $this->parent->reorderNode('lft');
         }
