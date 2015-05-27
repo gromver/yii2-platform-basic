@@ -76,7 +76,7 @@ JS
         </div>
         <div class="col-sm-6">
             <?= $form->field($model, 'published_at', ['wrapperOptions' => ['class' => 'col-sm-9']])->widget(\kartik\widgets\DateTimePicker::className(), [
-                'options' => ['value' => date('d.m.Y H:i', is_int($model->published_at) ? $model->published_at : time())],
+                'options' => ['value' => Yii::$app->formatter->asDatetime(is_int($model->published_at) ? $model->published_at : time(), 'php:d.m.Y H:i')],
                 'pluginOptions' => [
                     'format' =>  'dd.mm.yyyy hh:ii',
                     'autoclose' => true,
