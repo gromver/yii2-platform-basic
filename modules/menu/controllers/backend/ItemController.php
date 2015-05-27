@@ -21,6 +21,7 @@ use yii\helpers\Json;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
+use yii\web\Response;
 
 /**
  * Class ItemController implements the CRUD actions for Menu model.
@@ -59,7 +60,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'type-items', 'routers', 'select', 'ckeditor-select', 'ckeditor-select-component', 'ckeditor-select-menu'],
+                        'actions' => ['index', 'view', 'type-items', 'routers', 'select', 'item-list', 'ckeditor-select', 'ckeditor-select-component', 'ckeditor-select-menu'],
                         'roles' => ['read'],
                     ],
                 ]
@@ -89,9 +90,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
     public function actionSelect()
     {
         $searchModel = new MenuItemSearch();
-        $params = Yii::$app->request->getQueryParams();
-        $params['MenuItemSearch']['link_type'] = MenuItem::LINK_ROUTE;
-        $dataProvider = $searchModel->search($params);
+        $dataProvider = $searchModel->search(Yii::$app->request->getQueryParams());
 
         Yii::$app->grom->applyModalLayout();
 
@@ -99,6 +98,27 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
         ]);
+    }
+
+    /**
+     * Отдает список пунктов меню для Select2 виджета
+     * @param string|null $q
+     * @param string|null $language
+     * @param integer|null $exclude
+     * @param integer|null $menu_type_id
+     * @return array
+     */
+    public function actionItemList($q = null, $language = null, $exclude = null, $menu_type_id = null) {
+        \Yii::$app->response->format = Response::FORMAT_JSON;
+        $query = MenuItem::find()->excludeRoots();
+        if ($exclude && $item = MenuItem::findOne($exclude)) {
+            /** @var $item MenuItem */
+            $query->excludeItem($item);
+        }
+
+        $results = $query->select('id, title AS text')->andFilterWhere(['like', 'title', urldecode($q)])->andFilterWhere(['language' => $language, 'menu_type_id' => $menu_type_id])->limit(20)->asArray()->all();
+
+        return ['results' => $results];
     }
 
     /**
@@ -386,7 +406,7 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
                         'id' => $value['id'],
                         'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
                     ];
-                }, MenuItem::find()->noRoots()->type($typeId)->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
+                }, MenuItem::find()->excludeRoots()->type($typeId)->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
                 /** @var MenuItem $root */
                 $root = MenuItem::find()->roots()->one();
                 array_unshift($out, [

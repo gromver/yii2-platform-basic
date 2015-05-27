@@ -93,7 +93,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
     public function rules()
     {
         return [
-            [['menu_type_id', 'parent_id', 'status', 'link_type', 'link_weight', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['menu_type_id', 'status', 'link_type', 'link_weight', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
             [['menu_type_id'], 'required'],
             [['menu_type_id'], 'exist', 'targetAttribute' => 'id', 'targetClass' => MenuType::className()],
             [['language'], 'required'],
@@ -103,11 +103,18 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
                     $this->addError($attribute, Yii::t('gromver.platform', 'Language has to match with the parental.'));
                 }
             }],
+            [['layout_path'], 'filter', 'filter' => function($value) {
+                // если во вьюхе используется select2, отфильтровываем значение из массива [0 => 'значение'] -> 'значение'
+                return is_array($value) ? reset($value) : $value;
+            }],
             [['title', 'link', 'layout_path'], 'string', 'max' => 1024],
             [['alias', 'note', 'metakey'], 'string', 'max' => 255],
             [['metadesc'], 'string', 'max' => 2048],
             [['access_rule', 'robots'], 'string', 'max' => 50],
 
+            [['parent_id'], 'filter', 'filter' => function ($value) {
+                return $value ? $value : self::find()->select('id')->roots()->scalar();
+            }],
             [['parent_id'], 'integer'],
             [['parent_id'], 'filter', 'filter' => 'intval'],
             [['parent_id'], 'exist', 'targetAttribute' => 'id'],
@@ -297,7 +304,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
      */
     private function calculatePath()
     {
-        $aliases = $this->parents()->noRoots()->select('alias')->column();
+        $aliases = $this->parents()->excludeRoots()->select('alias')->column();
         return empty($aliases) ? $this->alias : implode('/', $aliases) . '/' . $this->alias;
     }
 
@@ -557,7 +564,7 @@ class MenuItem extends \yii\db\ActiveRecord implements ViewableInterface, Transl
         if ($this->isRoot()) {
             return [];
         } else {
-            $path = $this->parents()->noRoots()->all();
+            $path = $this->parents()->excludeRoots()->all();
             if ($includeSelf) {
                 $path[] = $this;
             }

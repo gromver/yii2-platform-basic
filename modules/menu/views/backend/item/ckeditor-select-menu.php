@@ -26,4 +26,4 @@ $this->registerJs("yii.gromverIframe.dataHandler = function(data){
     }
 </style>
 
-<iframe src="<?= \yii\helpers\Url::toRoute(['select']) ?>" id="<?= $iframeId ?>" name="<?= $iframeId ?>" width="100%" height="100%" style="border: none; padding: 0; margin: 0;"></iframe>
+<iframe src="<?= \yii\helpers\Url::toRoute(['select', 'MenuItemSearch[link_type]' => \gromver\platform\basic\modules\menu\models\MenuItem::LINK_ROUTE]) ?>" id="<?= $iframeId ?>" name="<?= $iframeId ?>" width="100%" height="100%" style="border: none; padding: 0; margin: 0;"></iframe>

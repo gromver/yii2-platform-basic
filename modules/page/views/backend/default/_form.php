@@ -29,7 +29,7 @@ use yii\bootstrap\ActiveForm;
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'language', ['wrapperOptions' => ['class' => 'col-sm-9']])->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
+            <?= $form->field($model, 'language', ['horizontalCssClasses' => ['wrapper' => 'col-xs-8 col-sm-4', 'label' => 'col-xs-4 col-sm-3']])->dropDownList(Yii::$app->getAcceptedLanguagesList(), ['prompt' => Yii::t('gromver.platform', 'Select ...')]) ?>
         </div>
         <div class="col-sm-6">
             <?php
@@ -61,7 +61,7 @@ JS
                     'allowClear' => true,
                     'placeholder' => Yii::t('gromver.platform', 'Select ...'),
                     'ajax' => [
-                        'url' => \yii\helpers\Url::to(['page-list', 'exclude' => $model->isNewRecord ? null : $model->id, 'selected' => $model->parent_id]),
+                        'url' => \yii\helpers\Url::to(['page-list', 'exclude' => $model->isNewRecord ? null : $model->id]),
                         'data' => new \yii\web\JsExpression('function(params) { return {q:params.term, language:$("#' . $idLanguage .'").val()}; }')
                     ],
                 ],
@@ -146,8 +146,9 @@ JS;
         <div id="main-options" class="tab-pane active">
             <?= $form->field($model, 'detail_text', [
                 'horizontalCssClasses' => [
-                    'label' => 'col-xs-12',
-                    'wrapper' => 'col-xs-12'
+                    //'label' => 'col-xs-12',
+                    //'wrapper' => 'col-xs-12'
+                    'wrapper' => 'col-sm-9'
                 ],
                 'inputOptions' => ['class' => 'form-control']
             ])->widget(\gromver\platform\basic\modules\main\widgets\HtmlEditor::className(), [
@@ -159,28 +160,13 @@ JS;
         </div>
 
         <div id="advanced-options" class="tab-pane">
-            <?= $form->field($model, 'preview_text', [
-                'horizontalCssClasses' => [
-                    'label' => 'col-xs-12',
-                    'wrapper' => 'col-xs-12'
-                ],
-            ])->textarea(['rows' => 10]) ?>
+            <?= $form->field($model, 'preview_text')->textarea(['rows' => 10]) ?>
         </div>
 
         <div id="meta-options" class="tab-pane">
-            <?= $form->field($model, 'metakey', [
-                'horizontalCssClasses' => [
-                    'label' => 'col-xs-12',
-                    'wrapper' => 'col-xs-12'
-                ],
-            ])->textInput(['maxlength' => 255]) ?>
+            <?= $form->field($model, 'metakey')->textInput(['maxlength' => 255]) ?>
 
-            <?= $form->field($model, 'metadesc', [
-                'horizontalCssClasses' => [
-                    'label' => 'col-xs-12',
-                    'wrapper' => 'col-xs-12'
-                ],
-            ])->textarea(['maxlength' => 2048]) ?>
+            <?= $form->field($model, 'metadesc')->textarea(['maxlength' => 2048]) ?>
         </div>
     </div>
 

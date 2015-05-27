@@ -41,6 +41,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => Yii::$app->getAcceptedLanguagesList()
             ],
             [
+                'attribute' => 'menu_type_id',
+                'vAlign' => GridView::ALIGN_MIDDLE,
+                'width' => '120px',
+                'value' => function ($model) {
+                    /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
+                    return $model->menuType->title;
+                },
+                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\menu\models\MenuType::find()->all(), 'id', 'title')
+            ],
+            [
                 'attribute' => 'title',
                 'vAlign' => GridView::ALIGN_MIDDLE,
                 'value' => function ($model) {
@@ -58,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem */
                     return $model->getStatusLabel();
                 },
-                'width' => '100px',
+                'width' => '150px',
                 'filter' => \gromver\platform\basic\modules\menu\models\MenuItem::statusLabels()
             ],
             [
@@ -71,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'btn btn-primary btn-xs',
                         'onclick' => \gromver\widgets\ModalIFrame::postDataJs([
                             'id' => $model->id,
+                            'title' => $model->title,
                             'description' => Yii::t('gromver.platform', 'Menu Item: {title}', ['title' => $model->title]),
                             'route' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),
                             'link' => Yii::$app->urlManager->createUrl($model->getFrontendViewLink()),

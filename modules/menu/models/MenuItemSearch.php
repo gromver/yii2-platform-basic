@@ -21,12 +21,21 @@ use yii\data\ActiveDataProvider;
 class MenuItemSearch extends MenuItem
 {
     /**
+     * @var bool
+     */
+    public $excludeRoots = true;
+    /**
+     * @var integer
+     */
+    public $excludeItem;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'menu_type_id', 'parent_id', 'status', 'link_type', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock'], 'integer'],
+            [['id', 'menu_type_id', 'parent_id', 'status', 'link_type', 'secure', 'created_at', 'updated_at', 'created_by', 'updated_by', 'lft', 'rgt', 'level', 'ordering', 'hits', 'lock', 'excludeItem', 'excludeRoots'], 'integer'],
             [['language', 'title', 'alias', 'path', 'note', 'link', 'link_params', 'layout_path', 'access_rule', 'metakey', 'metadesc', 'robots'], 'safe'],
         ];
     }
@@ -35,13 +44,11 @@ class MenuItemSearch extends MenuItem
      * Creates data provider instance with search query applied
      *
      * @param array $params
-     * @param bool $excludeRoots
-     *
      * @return ActiveDataProvider
      */
-    public function search($params, $excludeRoots = true)
+    public function search($params)
     {
-        $query = $excludeRoots ? MenuItem::find()->noRoots() : MenuItem::find();
+        $query = MenuItem::find();
         $query->with(['menuType', 'translations']);
 
         $dataProvider = new ActiveDataProvider([
@@ -54,6 +61,10 @@ class MenuItemSearch extends MenuItem
         ]);
 
         if (!($this->load($params) && $this->validate())) {
+            if ($this->excludeRoots) {
+                $query->excludeRoots();
+            }
+
             return $dataProvider;
         }
 
@@ -88,6 +99,15 @@ class MenuItemSearch extends MenuItem
             ->andFilterWhere(['like', 'metakey', $this->metakey])
             ->andFilterWhere(['like', 'metadesc', $this->metadesc])
             ->andFilterWhere(['like', 'robots', $this->robots]);
+
+        if ($this->excludeRoots) {
+            $query->excludeRoots();
+        }
+
+        if ($this->excludeItem && $item = MenuItem::findOne($this->excludeItem)) {
+            /** @var $item MenuItem */
+            $query->excludeItem($item);
+        }
 
         return $dataProvider;
     }

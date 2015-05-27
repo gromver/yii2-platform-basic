@@ -58,21 +58,17 @@ use yii\bootstrap\ActiveForm;
         </div>
     </div>
 
-    <h3><?= Yii::t('platform.gromver', 'SEO') ?></h3>
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#meta-options" data-toggle="tab"><?= Yii::t('gromver.platform', 'SEO') ?></a></li>
+    </ul>
+    <br/>
+    <div class="tab-content">
+        <div id="meta-options" class="tab-pane active">
+            <?= $form->field($model, 'metakey')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'metakey', [
-        'horizontalCssClasses' => [
-            'label' => 'col-xs-12',
-            'wrapper' => 'col-xs-12'
-        ],
-    ])->textInput(['maxlength' => 255]) ?>
-
-    <?= $form->field($model, 'metadesc', [
-        'horizontalCssClasses' => [
-            'label' => 'col-xs-12',
-            'wrapper' => 'col-xs-12'
-        ],
-    ])->textarea(['maxlength' => 2048]) ?>
+            <?= $form->field($model, 'metadesc')->textarea(['maxlength' => 2048]) ?>
+        </div>
+    </div>
 
     <?= Html::activeHiddenInput($model, 'lock') ?>
 

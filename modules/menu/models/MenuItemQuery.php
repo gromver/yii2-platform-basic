@@ -64,8 +64,18 @@ class MenuItemQuery extends \yii\db\ActiveQuery
     /**
      * @return static
      */
-    public function noRoots()
+    public function excludeRoots()
     {
         return $this->andWhere('{{%grom_menu_item}}.lft!=1');
+    }
+
+    /**
+     * Исключает из выборки пункт меню $item и все его подпункты
+     * @param MenuItem $item
+     * @return static
+     */
+    public function excludeItem($item)
+    {
+        return $this->andWhere('{{%grom_menu_item}}.lft < :excludeLft OR {{%grom_menu_item}}.lft > :excludeRgt', [':excludeLft' => $item->lft, ':excludeRgt' => $item->rgt]);
     }
 }
