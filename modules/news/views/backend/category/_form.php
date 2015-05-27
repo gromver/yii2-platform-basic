@@ -63,7 +63,7 @@ JS
                     'allowClear' => true,
                     'placeholder' => Yii::t('gromver.platform', 'Select ...'),
                     'ajax' => [
-                        'url' => \yii\helpers\Url::to(['category-list', 'exclude' => $model->isNewRecord ? null : $model->id, 'selected' => $model->parent_id]),
+                        'url' => \yii\helpers\Url::to(['category-list', 'exclude' => $model->isNewRecord ? null : $model->id]),
                         'data' => new \yii\web\JsExpression('function(params) { return {q:params.term, language:$("#' . $idLanguage .'").val()}; }')
                     ],
                 ],
@@ -167,7 +167,7 @@ JS;
             <?= $form->field($model, 'detail_image')->widget(\kartik\file\FileInput::classname(), [
                 'options' => ['accept' => 'image/*'],
                 'pluginOptions' => [
-                    'initialPreview' => $model->getFileUrl('detail_image') ? [Html::img($model->getFileUrl('detail_image'), ['class' => 'file-preview-image'])] : []/*new \yii\web\JsExpression('undefined')*/,
+                    'initialPreview' => $model->getFileUrl('detail_image') ? [Html::img($model->getFileUrl('detail_image'), ['class' => 'file-preview-image'])] : [],
                     'initialPreviewConfig' => [[
                         'caption' => $model->getFileUrl('detail_image'),
                         'url' => \yii\helpers\Url::to(['delete-file', 'pk' => $model->id, 'attribute' => 'detail_image']),
@@ -190,7 +190,7 @@ JS;
             <?= $form->field($model, 'preview_image')->widget(\kartik\file\FileInput::classname(), [
                 'options' => ['accept' => 'image/*'],
                 'pluginOptions' => [
-                    'initialPreview' => $model->getFileUrl('preview_image') ? [Html::img($model->getFileUrl('preview_image'), ['class' => 'file-preview-image'])] : []/* new \yii\web\JsExpression('undefined')*/,
+                    'initialPreview' => $model->getFileUrl('preview_image') ? [Html::img($model->getFileUrl('preview_image'), ['class' => 'file-preview-image'])] : [],
                     'initialPreviewConfig' => [[
                         'caption' => $model->getFileUrl('preview_image'),
                         'url' => \yii\helpers\Url::to(['delete-file', 'pk' => $model->id, 'attribute' => 'preview_image']),

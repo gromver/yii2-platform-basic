@@ -43,7 +43,7 @@ use yii\bootstrap\ActiveForm;
                             'title' => \Yii::t('gromver.platform', 'Select Page'),
                         ],
                         'label' => '<i class="glyphicon glyphicon-folder-open"></i>',
-                        'url' => ['/grom/page/backend/default/select', 'modal' => true, 'PageSearch[excludePage]' => $model->isNewRecord ? null : $model->id],
+                        'url' => ['select', 'modal' => true, 'PageSearch[excludePage]' => $model->isNewRecord ? null : $model->id],
                         'handler' =>
 <<<JS
 function(data) {

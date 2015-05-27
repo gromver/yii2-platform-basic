@@ -90,8 +90,7 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
     {
         $searchModel = new CategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
-        $dataProvider->query->excludeRoots();
-var_dump(Yii::$app->request->queryParams);
+
         Yii::$app->grom->applyModalLayout();
 
         return $this->render('select', [
