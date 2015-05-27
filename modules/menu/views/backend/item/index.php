@@ -68,7 +68,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem * /
                     return $model->level > 2 ? $model->parent->title : '';
                 },
-                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\menu\models\MenuItem::find()->noRoots()->orderBy('lft')->all(), 'id', function($model){
+                'filter' => \yii\helpers\ArrayHelper::map(\gromver\platform\basic\modules\menu\models\MenuItem::find()->excludeRoots()->orderBy('lft')->all(), 'id', function($model){
                     /** @var $model \gromver\platform\basic\modules\menu\models\MenuItem * /
                     return str_repeat(" • ", max($model->level-2, 0)) . $model->title;
                 })

@@ -305,7 +305,7 @@ class MenuUrlRule extends Object implements UrlRuleInterface
             $chain[] = $this->menuManager->getMenuMap()->getMainMenu();
         }
 
-        $chain = array_merge($chain, $menu->parents()->noRoots()->all(), [$menu]);
+        $chain = array_merge($chain, $menu->parents()->excludeRoots()->all(), [$menu]);
         $metaDataChain = array_map(function ($value) {
             /** @var $value MenuItem */
             $metaData = [];
