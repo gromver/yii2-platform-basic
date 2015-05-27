@@ -48,6 +48,7 @@ return [
     'Description' => 'Описание',
     'Detail' => 'Детально',
     'Preview' => 'Превью',
+    'Top Level' => 'Верхний уровень',
     '<h3 class="col-sm-offset-3 col-sm-9">Metadata</h3>' => '<h3 class="col-sm-offset-3 col-sm-9">Мета данные</h3>',
     'Media Manager' => 'Медиа менеджер',
     'Global' => 'Общее',

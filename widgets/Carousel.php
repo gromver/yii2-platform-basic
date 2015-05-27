@@ -10,6 +10,8 @@
 namespace gromver\platform\basic\widgets;
 
 
+use gromver\platform\basic\modules\widget\widgets\Widget;
+
 /**
  * Class Carousel
  * @package yii2-platform-basic
