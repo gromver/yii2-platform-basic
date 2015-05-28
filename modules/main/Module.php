@@ -85,6 +85,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     {
         $app->set($this->id, $this);
 
+        $this->_moduleConfigDependency = new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()']);
+
         DbState::bootstrap();
 
         Yii::$container->set('gromver\models\fields\EditorField', [
@@ -97,7 +99,6 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
         Yii::$container->set('gromver\models\fields\MediaField', [
             'controller' => 'grom/media/manager'
         ]);
-        $this->_moduleConfigDependency = new ExpressionDependency(['expression' => '\Yii::$app->getModulesHash()']);
         Yii::$container->set('gromver\modulequery\ModuleQuery', [
             'cache' => $app->cache,
             'cacheDependency' => $this->_moduleConfigDependency

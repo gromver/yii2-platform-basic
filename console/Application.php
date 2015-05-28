@@ -31,6 +31,9 @@ class Application extends \yii\console\Application
     public function __construct($config = [])
     {
         $config = ArrayHelper::merge([
+            'controllerMap' => [
+                'migrate' => 'bariew\moduleMigration\ModuleMigrateController'
+            ],
             'components' => [
                 'authManager' => [
                     'class' => 'yii\rbac\DbManager',
@@ -49,16 +52,11 @@ class Application extends \yii\console\Application
                     ],
                 ],
                 // фэйк для обхода BlamableBehavior
-                // todo сделать фэйк компонент
-                'user' => [
-                    'class' => 'StdClass',
-                    'isGuest' => false,
-                    'id' => 1
-                ]
+                'user' => 'gromver\platform\basic\console\components\User'
             ],
             'modules' => [
                 'grom' => [
-                    'class' => 'gromver\platform\basic\console\modules\main\Module',
+                    'class' => 'gromver\platform\basic\modules\main\console\Module',
                     'modules' => [
                         'search' => [
                             'class' => 'gromver\platform\basic\modules\search\Module',

@@ -7,7 +7,7 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\console\modules\main;
+namespace gromver\platform\basic\modules\main\console;
 
 
 use gromver\modulequery\ModuleQuery;

@@ -4,7 +4,7 @@ namespace gromver\platform\modules\main\migrations;
 
 use yii\db\Schema;
 
-class m140811_143606_grom_create_tables extends \yii\db\Migration
+class m140811_143606_grom_main_create_tables extends \yii\db\Migration
 {
     public function up()
     {
