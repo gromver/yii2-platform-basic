@@ -58,12 +58,21 @@ class Application extends \yii\console\Application
                 'grom' => [
                     'class' => 'gromver\platform\basic\modules\main\console\Module',
                     'modules' => [
-                        'search' => [
+                        'user'      => ['class' => 'gromver\platform\basic\modules\user\Module'],
+                        'auth'      => ['class' => 'gromver\platform\basic\modules\auth\Module'],
+                        'menu'      => ['class' => 'gromver\platform\basic\modules\menu\Module'],
+                        'news'      => ['class' => 'gromver\platform\basic\modules\news\Module'],
+                        'page'      => ['class' => 'gromver\platform\basic\modules\page\Module'],
+                        'tag'       => ['class' => 'gromver\platform\basic\modules\tag\Module'],
+                        'version'   => ['class' => 'gromver\platform\basic\modules\version\Module'],
+                        'widget'    => ['class' => 'gromver\platform\basic\modules\widget\Module'],
+                        'media'     => ['class' => 'gromver\platform\basic\modules\media\Module'],
+                        'search'    => [
                             'class' => 'gromver\platform\basic\modules\search\Module',
                             'modules' => [
                                 'sql' => ['class' => 'gromver\platform\basic\modules\search\modules\sql\Module']
                             ]
-                        ]
+                        ],
                     ]
                 ]
             ]

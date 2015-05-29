@@ -1,14 +1,12 @@
 <?php
 
-namespace gromver\platform\modules\main\migrations;
-
 use yii\db\Schema;
 
-class m140811_143606_grom_main_create_tables extends \yii\db\Migration
+class m000002_000000_grom_main_create_tables extends \yii\db\Migration
 {
     public function up()
     {
-        //TABLE
+        // db state
         $this->createTable('{{%grom_db_state}}', [
             'id' => Schema::TYPE_STRING . ' NOT NULL',
             'timestamp' => Schema::TYPE_INTEGER . ' NOT NULL',
@@ -18,7 +16,6 @@ class m140811_143606_grom_main_create_tables extends \yii\db\Migration
 
     public function down()
     {
-        //TABLE
         $this->dropTable('{{%grom_db_state}}');
     }
 }
