@@ -17,6 +17,7 @@ use kartik\widgets\Alert;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -41,7 +42,6 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'ordering' => ['post'],
-                    'categories' => ['post'],
                 ],
             ],
             'access' => [
@@ -49,18 +49,23 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'ordering', 'delete-file', 'publish', 'unpublish'],
-                        'roles' => ['update'],
+                        'actions' => ['update', 'delete', 'delete-file', 'publish', 'unpublish', 'index', 'view', 'select', 'category-list'],
+                        'roles' => ['readCategory'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'actions' => ['create'],
+                        'roles' => ['createCategory'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'categories', 'category-list'],
-                        'roles' => ['read'],
+                        'actions' => ['ordering'],
+                        'roles' => ['updateCategory'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['bulk-delete'],
+                        'roles' => ['deleteCategory'],
                     ],
                 ]
             ]
@@ -193,12 +198,18 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
      * Updates an existing Category model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @param string|null $backUrl
-     * @return mixed
+     * @param null $backUrl
+     * @return string|Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id, $backUrl = null)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateCategory', ['category' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
@@ -213,11 +224,18 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
      * Deletes an existing Category model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('deleteCategory', ['category' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->children()->count()) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it subcategories so far.", ['id' => $model->id]));
@@ -234,6 +252,10 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
@@ -250,9 +272,19 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionPublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateCategory', ['category' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Category::STATUS_PUBLISHED;
         $model->save();
@@ -260,9 +292,19 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionUnpublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateCategory', ['category' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Category::STATUS_UNPUBLISHED;
         $model->save();
@@ -270,6 +312,9 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @return Response
+     */
     public function actionOrdering()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
@@ -286,9 +331,19 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $pk
+     * @param $attribute
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionDeleteFile($pk, $attribute)
     {
         $model = $this->findModel($pk);
+
+        if (!Yii::$app->user->can('deleteCategory', ['category' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if (Yii::$app->request->getIsAjax()) {
             $model->deleteFile($attribute, true);
@@ -297,45 +352,6 @@ class CategoryController extends \gromver\platform\basic\components\BackendContr
             $model->deleteFile($attribute);
             $this->redirect(['update', 'id' => $pk]);
         }
-    }
-
-    /**
-     * deprecated
-     * todo remove
-     * @param null $update_item_id
-     * @param string $selected
-     */
-    public function actionCategories($update_item_id = null, $selected = '')
-    {
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $language = $parents[0];
-                //исключаем редактируемый пункт и его подпункты из списка
-                if (!empty($update_item_id) && $updateItem = Category::findOne($update_item_id)) {
-                    $excludeIds = array_merge([$update_item_id], $updateItem->children()->select('id')->column());
-                } else {
-                    $excludeIds = [];
-                }
-
-                $out = array_map(function($value) {
-                    return [
-                        'id' => $value['id'],
-                        'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
-                    ];
-                }, Category::find()->excludeRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
-                /** @var Category $root */
-                $root = Category::find()->roots()->one();
-                array_unshift($out, [
-                    'id' => $root->id,
-                    'name' => Yii::t('gromver.platform', 'Root')
-                ]);
-
-                echo Json::encode(['output' => $out, 'selected' => $selected ? $selected : $root->id]);
-                return;
-            }
-        }
-        echo Json::encode(['output' => '', 'selected' => $selected]);
     }
 
     /**

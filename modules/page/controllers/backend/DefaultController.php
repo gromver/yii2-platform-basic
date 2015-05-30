@@ -16,7 +16,7 @@ use gromver\platform\basic\modules\page\models\PageSearch;
 use kartik\alert\Alert;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
-use yii\helpers\Json;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -49,18 +49,23 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'publish', 'unpublish', 'ordering'],
-                        'roles' => ['update'],
+                        'actions' => ['update', 'publish', 'unpublish', 'delete', 'index', 'view', 'select', 'pages', 'page-list'],
+                        'roles' => ['readPage'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'actions' => ['create'],
+                        'roles' => ['createPage'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'pages', 'page-list'],
-                        'roles' => ['read'],
+                        'actions' => ['ordering'],
+                        'roles' => ['updatePage'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['bulk-delete'],
+                        'roles' => ['deletePage'],
                     ],
                 ]
             ]
@@ -192,12 +197,18 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * Updates an existing Page model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @param string|null $backUrl
-     * @return mixed
+     * @param null $backUrl
+     * @return string|Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id, $backUrl = null)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePage', ['page' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->saveNode()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
@@ -212,11 +223,18 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * Deletes an existing Page model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('deletePage', ['page' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->children()->count()) {
             Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', "It's impossible to remove category ID:{id} to contain in it subcategories so far.", ['id' => $model->id]));
@@ -224,12 +242,17 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             $model->delete();
         }
 
-        if(Yii::$app->request->getIsDelete())
+        if(Yii::$app->request->getIsDelete()) {
             return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
 
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
@@ -246,9 +269,19 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionPublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePage', ['page' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Page::STATUS_PUBLISHED;
         $model->save();
@@ -256,9 +289,19 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionUnpublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePage', ['page' => $model])) {
+            throw new ForbiddenHttpException('You have no rights to update this page.');
+        }
 
         $model->status = Page::STATUS_UNPUBLISHED;
         $model->save();
@@ -266,6 +309,9 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @return Response
+     */
     public function actionOrdering()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
@@ -280,45 +326,6 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         DbState::updateState(Page::tableName());
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
-    }
-
-    /**
-     * deprecated
-     * todo remove
-     * @param null $update_item_id
-     * @param string $selected
-     */
-    public function actionPages($update_item_id = null, $selected = '')
-    {
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $language = $parents[0];
-                //исключаем редактируемый пункт и его подпункты из списка
-                if (!empty($update_item_id) && $updateItem = Page::findOne($update_item_id)) {
-                    $excludeIds = array_merge([$update_item_id], $updateItem->children()->select('id')->column());
-                } else {
-                    $excludeIds = [];
-                }
-
-                $out = array_map(function($value) {
-                    return [
-                        'id' => $value['id'],
-                        'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
-                    ];
-                }, Page::find()->excludeRoots()->language($language)->orderBy('lft')->andWhere(['not in', 'id', $excludeIds])->asArray()->all());
-                /** @var Page $root */
-                $root = Page::find()->roots()->one();
-                array_unshift($out, [
-                    'id' => $root->id,
-                    'name' => Yii::t('gromver.platform', 'Root')
-                ]);
-
-                echo Json::encode(['output' => $out, 'selected' => $selected ? $selected : $root->id]);
-                return;
-            }
-        }
-        echo Json::encode(['output' => '', 'selected' => $selected]);
     }
 
     /**

@@ -15,6 +15,7 @@ use gromver\platform\basic\modules\tag\models\TagSearch;
 use gromver\widgets\ModalIFrame;
 use yii\helpers\ArrayHelper;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -44,18 +45,23 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'publish', 'unpublish'],
-                        'roles' => ['update'],
+                        'actions' => ['update', 'publish', 'unpublish', 'delete', 'index', 'view', 'select', 'tag-list', 'tag-group-list'],
+                        'roles' => ['readTag'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'actions' => ['create'],
+                        'roles' => ['createTag'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'tag-list', 'tag-group-list'],
-                        'roles' => ['read'],
+                        'actions' => ['publish', 'unpublish'],
+                        'roles' => ['updateTag'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['bulk-delete'],
+                        'roles' => ['deleteTag'],
                     ],
                 ]
             ]
@@ -164,12 +170,18 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * Updates an existing Tag model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @param string|null $backUrl
-     * @return mixed
+     * @param null $backUrl
+     * @return string|Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id, $backUrl = null)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateTag', ['tag' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
@@ -184,33 +196,58 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
      * Deletes an existing Tag model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        if(Yii::$app->request->getIsDelete())
+        if (!Yii::$app->user->can('deleteTag', ['tag' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        $model->delete();
+
+        if(Yii::$app->request->getIsDelete()) {
             return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
 
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
 
         $models = Tag::findAll(['id'=>$data]);
 
-        foreach($models as $model)
+        foreach($models as $model) {
             $model->delete();
+        }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionPublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateTag', ['tag' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Tag::STATUS_PUBLISHED;
         $model->save();
@@ -218,9 +255,19 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionUnpublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updateTag', ['tag' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Tag::STATUS_UNPUBLISHED;
         $model->save();

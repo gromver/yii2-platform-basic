@@ -42,7 +42,7 @@ class m140820_085040_grom_rbac extends \yii\db\Migration
         $auth->add($versionsPermission);
 
         // add the rule
-        $authorizedRule = new \gromver\platform\basic\rules\AuthorizedRule();
+        $authorizedRule = new \gromver\platform\basic\modules\main\rules\AuthorizedRule();
         $auth->add($authorizedRule);
 
         //add "Authorized" role

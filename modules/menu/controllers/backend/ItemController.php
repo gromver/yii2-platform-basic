@@ -42,13 +42,13 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'status' => ['post'],
-                    'type-items' => ['post'],
+                    //'type-items' => ['post'],
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    [
+                    /*[
                         'allow' => true,
                         'actions' => ['create', 'update', 'ordering', 'publish', 'unpublish', 'status'],
                         'roles' => ['update'],
@@ -62,6 +62,28 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
                         'allow' => true,
                         'actions' => ['index', 'view', 'type-items', 'routers', 'select', 'item-list', 'ckeditor-select', 'ckeditor-select-component', 'ckeditor-select-menu'],
                         'roles' => ['read'],
+                    ],*/
+
+
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view', 'routers', 'select', 'item-list', 'ckeditor-select', 'ckeditor-select-component', 'ckeditor-select-menu'],
+                        'roles' => ['readMenuItem'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createMenuItem'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update', 'ordering', 'publish', 'unpublish', 'status'],
+                        'roles' => ['updateMenuItem'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['delete', 'bulk-delete'],
+                        'roles' => ['deleteMenuItem'],
                     ],
                 ]
             ]
@@ -318,6 +340,10 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
@@ -336,10 +362,12 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         }
     }
 
+    /**
+     * @return Response
+     */
     public function actionOrdering()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
-        //$roots = [];
 
         foreach ($data as $id => $order) {
             if ($target = MenuItem::findOne($id)) {
@@ -353,6 +381,11 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionPublish($id)
     {
         $model = $this->findModel($id);
@@ -363,6 +396,11 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionUnpublish($id)
     {
         $model = $this->findModel($id);
@@ -373,6 +411,12 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @param $status
+     * @return Response
+     * @throws NotFoundHttpException
+     */
     public function actionStatus($id, $status)
     {
         $model = $this->findModel($id);
@@ -385,6 +429,11 @@ class ItemController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * todo remove
+     * @param null $update_item_id
+     * @param string $selected
+     */
     public function actionTypeItems($update_item_id = null, $selected = '')
     {
         if (isset($_POST['depdrop_parents'])) {

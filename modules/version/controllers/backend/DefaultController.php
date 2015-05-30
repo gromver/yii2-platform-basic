@@ -46,19 +46,20 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['update', 'restore', 'publish', 'unpublish', 'keep-forever', 'bulk-keep-forever'],
-                        'roles' => ['versions'],
+                        'actions' => ['index', 'view', 'preview', 'compare', 'item'],
+                        'roles' => ['readVersion'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update', 'restore', 'keep-forever', 'bulk-keep-forever'],
+                        'roles' => ['updateVersion'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'roles' => ['deleteVersion'],
                     ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'view', 'preview', 'compare', 'item'],
-                        'roles' => ['read'],
-                    ],
+
                 ]
             ]
         ];
@@ -148,18 +149,29 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $ids = Yii::$app->request->getBodyParam('id', []);
 
         $models = Version::findAll(['id' => $ids]);
 
-        foreach($models as $model)
+        foreach($models as $model) {
             $model->delete();
+        }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @param null $modal
+     * @throws HttpException
+     * @throws NotFoundHttpException
+     */
     public function actionRestore($id, $modal = null)
     {
         $model = $this->findModel($id);
@@ -174,6 +186,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         throw new HttpException(409, Yii::t('gromver.platform', "Version restore is failed:\n{errors}", ['errors' => implode("\n", $model->getRestoreErrors())]));
     }
 
+    /**
+     * @param integer $id
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionPreview($id)
     {
         Yii::$app->grom->applyModalLayout();
@@ -183,6 +200,12 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         ]);
     }
 
+    /**
+     * @param integer $id1
+     * @param integer $id2
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionCompare($id1, $id2)
     {
         Yii::$app->grom->applyModalLayout();
@@ -193,6 +216,12 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         ]);
     }
 
+    /**
+     * @param integer $item_id
+     * @param string $item_class
+     * @return string
+     * @throws NotFoundHttpException
+     */
     public function actionItem($item_id, $item_class)
     {
         $item = $this->findItemModel($item_id, $item_class);
@@ -210,6 +239,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         ]);
     }
 
+    /**
+     * @param integer $id
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException
+     */
     public function actionKeepForever($id)
     {
         $model = $this->findModel($id);
@@ -220,6 +254,9 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['view', 'id' => $model->id]));
     }
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionBulkKeepForever()
     {
         $models = Version::find()->andWhere(['id' => Yii::$app->request->post('id', [])])->all();
@@ -249,8 +286,8 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     }
 
     /**
-     * @param $id
-     * @param $class
+     * @param integer $id
+     * @param string $class
      * @throws NotFoundHttpException
      * @return Version's item model
      */

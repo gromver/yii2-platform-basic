@@ -41,18 +41,23 @@ class TypeController extends \gromver\platform\basic\components\BackendControlle
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update'],
-                        'roles' => ['update'],
+                        'actions' => ['index', 'view', 'select'],
+                        'roles' => ['readMenuType'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createMenuType'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updateMenuType'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['delete'],
-                        'roles' => ['delete'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'view', 'select'],
-                        'roles' => ['read'],
+                        'roles' => ['deleteMenuType'],
                     ],
                 ]
             ]
@@ -74,6 +79,9 @@ class TypeController extends \gromver\platform\basic\components\BackendControlle
         ]);
     }
 
+    /**
+     * @return string
+     */
     public function actionSelect()
     {
         $searchModel = new MenuTypeSearch();

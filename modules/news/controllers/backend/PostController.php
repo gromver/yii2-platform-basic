@@ -16,6 +16,7 @@ use gromver\platform\basic\modules\news\models\PostSearch;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\filters\AccessControl;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Yii;
@@ -39,7 +40,6 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
                     'publish' => ['post'],
                     'unpublish' => ['post'],
                     'ordering' => ['post'],
-                    'categories' => ['post'],
                 ],
             ],
             'access' => [
@@ -47,18 +47,23 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'ordering', 'delete-file', 'publish', 'unpublish'],
-                        'roles' => ['update'],
+                        'actions' => ['update', 'delete', 'delete-file', 'publish', 'unpublish', 'index', 'view', 'select'],
+                        'roles' => ['readPost'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'actions' => ['create'],
+                        'roles' => ['createPost'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view', 'select', 'categories'],
-                        'roles' => ['read'],
+                        'actions' => ['ordering'],
+                        'roles' => ['updatePost'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['bulk-delete'],
+                        'roles' => ['deletePost'],
                     ],
                 ]
             ]
@@ -165,12 +170,18 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
      * Updates an existing Post model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
-     * @param string|null $backUrl
-     * @return mixed
+     * @param null $backUrl
+     * @return string|\yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
      */
     public function actionUpdate($id, $backUrl = null)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePost', ['post' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect($backUrl ? $backUrl : ['view', 'id' => $model->id]);
@@ -185,30 +196,54 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
      * Deletes an existing Post model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
-     * @return mixed
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('deletePost', ['post' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        $model->delete();
 
         return $this->redirect(['index']);
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws \Exception
+     */
     public function actionBulkDelete()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
 
         $models = Post::find()->where(['id'=>$data])->all();
 
-        foreach($models as $model)
+        foreach($models as $model) {
             $model->delete();
+        }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionPublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePost', ['post' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Post::STATUS_PUBLISHED;
         $model->save();
@@ -216,9 +251,19 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionUnpublish($id)
     {
         $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('updatePost', ['post' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         $model->status = Post::STATUS_UNPUBLISHED;
         $model->save();
@@ -226,21 +271,35 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @return \yii\web\Response
+     */
     public function actionOrdering()
     {
         $data = Yii::$app->request->getBodyParam('data', []);
 
         foreach($data as $id => $order){
-            if($target = Post::findOne($id))
+            if($target = Post::findOne($id)) {
                 $target->updateAttributes(['ordering'=>$order]);
+            }
         }
 
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $pk
+     * @param $attribute
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     */
     public function actionDeleteFile($pk, $attribute)
     {
         $model = $this->findModel($pk);
+
+        if (!Yii::$app->user->can('deletePost', ['post' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
 
         if (Yii::$app->request->getIsAjax()) {
             $model->deleteFile($attribute, true);
@@ -249,28 +308,6 @@ class PostController extends \gromver\platform\basic\components\BackendControlle
             $model->deleteFile($attribute);
             $this->redirect(['update', 'id' => $pk]);
         }
-    }
-
-
-    public function actionCategories($selected = '')
-    {
-        if (isset($_POST['depdrop_parents'])) {
-            $parents = $_POST['depdrop_parents'];
-            if ($parents != null) {
-                $language = $parents[0];
-
-                $out = array_map(function($value) {
-                    return [
-                        'id' => $value['id'],
-                        'name' => str_repeat(" • ", $value['level'] - 1) . $value['title']
-                    ];
-                }, Category::find()->excludeRoots()->language($language)->orderBy('lft')->asArray()->all());
-
-                echo Json::encode(['output' => $out, 'selected' => $selected ? $selected : '']);
-                return;
-            }
-        }
-        echo Json::encode(['output' => '', 'selected' => $selected]);
     }
 
     /**

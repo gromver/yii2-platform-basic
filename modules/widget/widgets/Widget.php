@@ -83,7 +83,7 @@ class Widget extends \yii\base\Widget implements SpecificationInterface
      * Право доступа к кнопке настроек виджета
      * @var string
      */
-    protected $_configureAccess = 'customize';
+    protected $_configureAccess = 'customizeWidget';
     /**
      * Компонент настройки виджетов, доступ к которому имеют пользователи с правом 'administrate'
      * Для настройки кастомных прав доступа к настройкам виджета нужно:

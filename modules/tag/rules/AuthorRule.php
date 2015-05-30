@@ -7,15 +7,20 @@
  * @version 1.0.0
  */
 
-namespace gromver\platform\basic\rules;
+namespace gromver\platform\basic\modules\tag\rules;
 
 
 use yii\rbac\Item;
 use Yii;
 
-class AuthorizedRule extends \yii\rbac\Rule
+/**
+ * Class AuthorRule
+ * @package yii2-platform-basic
+ * @author Gayazov Roman <gromver5@gmail.com>
+ */
+class AuthorRule extends \yii\rbac\Rule
 {
-    public $name = 'isAuthorized';
+    public $name = 'isTagAuthor';
 
     /**
      * @param string|integer $user the user ID.
@@ -25,6 +30,6 @@ class AuthorizedRule extends \yii\rbac\Rule
      */
     public function execute($user, $item, $params)
     {
-        return !Yii::$app->user->isGuest && Yii::$app->user->id == $user;
+        return isset($params['tag']) ? $params['tag']->created_by == $user : false;
     }
 } 

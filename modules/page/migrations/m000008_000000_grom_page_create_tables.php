@@ -2,7 +2,7 @@
 
 use yii\db\Schema;
 
-class m000005_000000_grom_page_create_tables extends \yii\db\Migration
+class m000008_000000_grom_page_create_tables extends \yii\db\Migration
 {
     public function up()
     {

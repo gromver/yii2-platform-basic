@@ -35,14 +35,14 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
 
         if (!isset($this->elFinderConfig)) {
             $this->elFinderConfig = [
-                'access' => ['read'],
+                'access' => ['readMedia'],
                 'roots' => [
                     [
                         'baseUrl' => '',
                         'basePath' => '@app/web',
                         'path' => 'files/global',
                         'name' => Yii::t('gromver.platform', 'Global'),
-                        'access' => ['write' => 'update']
+                        'access' => ['read' => 'readMedia', 'write' => 'updateMedia']
                     ],
                     [
                         'class' => 'mihaildev\elfinder\UserPath',
@@ -50,7 +50,7 @@ class Module extends \yii\base\Module implements ModuleEventsInterface
                         'basePath' => '@app/web',
                         'path' => 'files/user_{id}',
                         'name' => Yii::t('gromver.platform', 'My Documents'),
-                        'access' => ['read' => 'read', 'write' => 'update']
+                        'access' => ['write' => 'updateMedia']
                     ]
                 ]
             ];

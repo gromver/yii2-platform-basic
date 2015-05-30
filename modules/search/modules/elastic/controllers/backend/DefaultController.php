@@ -39,12 +39,12 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     [
                         'allow' => true,
                         'actions' => ['index'],
-                        'roles' => ['read'],
+                        'roles' => ['searchElastic'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['reindex'],
-                        'roles' => ['update'],
+                        'roles' => ['reindexElastic'],
                     ]
                 ]
             ]

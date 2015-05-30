@@ -41,18 +41,28 @@ class PersonalController extends \gromver\platform\basic\components\BackendContr
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['create', 'update', 'configure'],
-                        'roles' => ['customize'],
+                        'actions' => ['index', 'view'],
+                        'roles' => ['readWidget'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createWidget'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['update'],
+                        'roles' => ['updateWidget'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['delete', 'bulk-delete'],
-                        'roles' => ['delete'],
+                        'roles' => ['deleteWidget'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'view'],
-                        'roles' => ['read'],
+                        'actions' => ['configure'],
+                        'roles' => ['customizeWidget'],
                     ],
                 ]
             ]

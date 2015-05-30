@@ -36,17 +36,17 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     [
                         'allow' => true,
                         'actions' => ['params', 'flush-cache', 'flush-assets'],  //todo contact-gromver
-                        'roles' => ['update'],
+                        'roles' => ['administrator'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['index', 'error', 'contact', 'captcha', 'contact-gromver'],
-                        'roles' => ['read'],
+                        'roles' => ['administrate'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['mode'],
-                        'roles' => ['customize'],
+                        'roles' => ['administrator'],
                     ],
                 ]
             ]

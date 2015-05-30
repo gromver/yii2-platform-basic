@@ -42,6 +42,7 @@ use yii\web\IdentityInterface;
  *
  * @property \gromver\platform\basic\modules\news\models\Post[] $viewedPosts
  * @property string[] $roles
+ * @property bool $isSuperAdmin
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {

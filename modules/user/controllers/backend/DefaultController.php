@@ -45,32 +45,37 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    [
+                    /*[
                         'allow' => true,
                         'actions' => ['create', 'bulk-delete'],
                         'matchCallback' => function() {
                                 return Yii::$app->user->isSuperAdmin;
                             }
+                    ],*/
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'view'],
+                        'roles' => ['readUser'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['create'],
+                        'roles' => ['createUser'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['update', 'params'],
-                        'roles' => ['update'],
+                        'roles' => ['updateUser'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['delete'],
-                        'roles' => ['delete'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['index', 'view'],
-                        'roles' => ['read'],
+                        'actions' => ['delete', 'bulk-delete'],
+                        'roles' => ['trashUser'],
                     ],
                     [
                         'allow' => true,
                         'actions' => ['login-as'],
-                        'roles' => ['administrate'],
+                        'roles' => ['loginAsUser'],
                     ],
                 ]
             ]
@@ -135,8 +140,13 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if (!Yii::$app->user->isSuperAdmin && $model->id !== Yii::$app->user->id) {
+
+        if (!Yii::$app->user->can('updateUser') && $model->id !== Yii::$app->user->id) {
             throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can edit only your profile.'));
+        }
+
+        if ($model->getIsSuperAdmin() && $model->id !== Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can\'t edit superadmin\'s accounts.'));
         }
 
         $model->scenario = 'update';
@@ -162,18 +172,20 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-        if (!Yii::$app->user->isSuperAdmin && $model->id !== Yii::$app->user->id) {
+
+        if (!Yii::$app->user->can('updateUser') && $model->id !== Yii::$app->user->id) {
             throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can remove only your profile.'));
         }
 
         if ($model->status !== User::STATUS_DELETED) {
             $model->safeDelete();
-        } elseif ($this->module->allowDelete) {
+        } elseif ($this->module->allowDelete && Yii::$app->user->can('deleteUser')) {
             $model->delete();
         }
 
-        if(Yii::$app->request->getIsDelete())
+        if(Yii::$app->request->getIsDelete()) {
             return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
 
         return $this->redirect(['index']);
     }
