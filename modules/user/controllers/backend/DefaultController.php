@@ -39,19 +39,16 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'actions' => [
                     'delete' => ['post', 'delete'],
                     'bulk-delete' => ['post'],
+                    'trash' => ['post', 'delete'],
+                    'bulk-trash' => ['post'],
+                    'restore' => ['post', 'delete'],
+                    'bulk-restore' => ['post'],
                     'login-as' => ['post']
                 ],
             ],
             'access' => [
                 'class' => AccessControl::className(),
                 'rules' => [
-                    /*[
-                        'allow' => true,
-                        'actions' => ['create', 'bulk-delete'],
-                        'matchCallback' => function() {
-                                return Yii::$app->user->isSuperAdmin;
-                            }
-                    ],*/
                     [
                         'allow' => true,
                         'actions' => ['index', 'view'],
@@ -70,6 +67,11 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                     [
                         'allow' => true,
                         'actions' => ['delete', 'bulk-delete'],
+                        'roles' => ['deleteUser'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['trash', 'bulk-trash', 'index-trash', 'restore', 'bulk-restore'],
                         'roles' => ['trashUser'],
                     ],
                     [
@@ -92,6 +94,21 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all trashed User models.
+     * @return mixed
+     */
+    public function actionIndexTrash()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
+
+        return $this->render('indexTrash', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -141,12 +158,14 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     {
         $model = $this->findModel($id);
 
-        if (!Yii::$app->user->can('updateUser') && $model->id !== Yii::$app->user->id) {
-            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can edit only your profile.'));
+        // проверка на суперадминство
+        if ($model->getIsSuperAdmin() && $model->id != Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 
-        if ($model->getIsSuperAdmin() && $model->id !== Yii::$app->user->id) {
-            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can\'t edit superadmin\'s accounts.'));
+        // проверка на право админить данного пользователя
+        if (!Yii::$app->user->can('administrateUser', ['user' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 
         $model->scenario = 'update';
@@ -173,13 +192,22 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     {
         $model = $this->findModel($id);
 
-        if (!Yii::$app->user->can('updateUser') && $model->id !== Yii::$app->user->id) {
-            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can remove only your profile.'));
+        // нельзя удалять свой аккаунт
+        if ($model->id == Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 
-        if ($model->status !== User::STATUS_DELETED) {
-            $model->safeDelete();
-        } elseif ($this->module->allowDelete && Yii::$app->user->can('deleteUser')) {
+        // проверка на суперадминство
+        if ($model->getIsSuperAdmin()) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        // проверка на право админить данного пользователя
+        if (!Yii::$app->user->can('administrateUser', ['user' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        if ($model->getIsTrashed() && $this->module->allowDelete) {
             $model->delete();
         }
 
@@ -192,17 +220,23 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     /**
      * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws \Exception
      */
     public function actionBulkDelete()
     {
+        if (!$this->module->allowDelete) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
         $data = Yii::$app->request->getBodyParam('data', []);
 
-        $models = User::findAll(['id'=>$data]);
+        $models = User::find()->trashed()->andWhere(['id' => $data])->all();
 
         foreach ($models as $model) {
-            if ($model->status !== User::STATUS_DELETED) {
-                $model->safeDelete();
-            } elseif ($this->module->allowDelete) {
+            /** @var $model User */
+            if (!$model->getIsSuperAdmin() && $model->id != Yii::$app->user->id && Yii::$app->user->can('administrateUser', ['user' => $model])) {
+                // удаляем если пользователь не суперадмин, не является текущим пользователем и если текущий пользователь имеет право удалять
                 $model->delete();
             }
         }
@@ -210,6 +244,108 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
         return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
     }
 
+    /**
+     * @param integer $id
+     * @param string|null $backUrl
+     * @return mixed
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
+    public function actionTrash($id, $backUrl = null)
+    {
+        $model = $this->findModel($id);
+
+        // нельзя удалять свой аккаунт
+        if ($model->id == Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        // проверка на суперадминство
+        if ($model->getIsSuperAdmin()) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        // проверка на право админить данного пользователя
+        if (!Yii::$app->user->can('administrateUser', ['user' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        if (!$model->getIsTrashed()) {
+            $model->trash();
+        }
+
+        if (Yii::$app->request->getIsDelete()) {
+            return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
+
+        return $this->redirect($backUrl ? $backUrl : ['index']);
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws \Exception
+     */
+    public function actionBulkTrash()
+    {
+        $data = Yii::$app->request->getBodyParam('data', []);
+
+        $models = User::find()->published()->andWhere(['id' => $data])->all();
+
+        foreach ($models as $model) {
+            /** @var $model User */
+            if (!$model->getIsSuperAdmin() && $model->id != Yii::$app->user->id && Yii::$app->user->can('administrateUser', ['user' => $model])) {
+                $model->trash();
+            }
+        }
+
+        return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+    }
+
+    /**
+     * @param integer $id
+     * @return mixed
+     * @throws ForbiddenHttpException
+     * @throws NotFoundHttpException
+     * @throws \Exception
+     */
+    public function actionRestore($id)
+    {
+        $model = $this->findModel($id);
+
+        if (!Yii::$app->user->can('administrateUser', ['user' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        if ($model->getIsTrashed()) {
+            $model->untrash();
+        }
+
+        if (Yii::$app->request->getIsDelete()) {
+            return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+        }
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws ForbiddenHttpException
+     * @throws \Exception
+     */
+    public function actionBulkRestore()
+    {
+        $data = Yii::$app->request->getBodyParam('data', []);
+
+        $models = User::find()->trashed()->andWhere(['id' => $data])->all();
+
+        foreach ($models as $model) {
+            $model->untrash();
+        }
+
+        return $this->redirect(ArrayHelper::getValue(Yii::$app->request, 'referrer', ['index']));
+    }
     /**
      * @param $id integer User id
      * @return string
@@ -219,8 +355,20 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
     public function actionParams($id)
     {
         $user = $this->findModel($id);
-        if (!Yii::$app->user->isSuperAdmin && $user->id !== Yii::$app->user->id) {
-            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can edit only your profile.'));
+
+        // нельзя удалять свой аккаунт
+        if ($user->id == Yii::$app->user->id) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        // проверка на суперадминство
+        if ($user->getIsSuperAdmin()) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        // проверка на право админить данного пользователя
+        if (!Yii::$app->user->can('administrateUser', ['user' => $user])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
 
         $model = $this->extractParamsModel($user);
@@ -243,12 +391,20 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
 
     public function actionLoginAs($id)
     {
-        $user = $this->findModel($id);
-        if (!Yii::$app->user->getIsSuperAdmin() && $user->getIsSuperAdmin()) {
-            throw new ForbiddenHttpException(Yii::t('gromver.platform', 'You can\'t login as superadmin.'));
+        $model = $this->findModel($id);
+
+        // проверка на суперадминство
+        if ($model->getIsSuperAdmin()) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
         }
-        $user->login(3600);
-        $this->redirect(['index']);
+
+        // проверка на право админить данного пользователя
+        if (!Yii::$app->user->can('administrateUser', ['user' => $model])) {
+            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        }
+
+        $model->login(3600);
+        $this->redirect(['view', 'id' => $model->id]);
     }
 
     /**

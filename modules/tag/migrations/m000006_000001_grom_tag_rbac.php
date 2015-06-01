@@ -90,5 +90,6 @@ class m000006_000001_grom_tag_rbac extends \yii\db\Migration
         $auth->remove($createPermission);
         $auth->remove($updatePermission);
         $auth->remove($deletePermission);
+        $auth->remove($auth->getRule('isTagAuthor'));
     }
 }

@@ -18,7 +18,6 @@ use Yii;
 use yii\base\ModelEvent;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
-use yii\console\Application;
 use yii\helpers\Json;
 use yii\web\IdentityInterface;
 
@@ -39,10 +38,10 @@ use yii\web\IdentityInterface;
  * @property integer $updated_at
  * @property integer $deleted_at
  * @property integer $last_visit_at
- *
  * @property \gromver\platform\basic\modules\news\models\Post[] $viewedPosts
  * @property string[] $roles
  * @property bool $isSuperAdmin
+ * @property bool $isTrashed
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
@@ -54,6 +53,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     const EVENT_BEFORE_SAFE_DELETE = 'beforeSafeDelete';
     const EVENT_AFTER_SAFE_DELETE = 'afterSafeDelete';
     const EVENT_BEFORE_USER_ROLES_SAVE = 'beforeUserRolesSave';
+
+    const EVENT_BEFORE_TRASH = 'beforeSafeDelete';
+    const EVENT_AFTER_TRASH = 'afterSafeDelete';
 
     /**
      * @var string the raw password. Used to collect password input and isn't saved in database
@@ -72,7 +74,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         self::STATUS_SUSPENDED => 'Suspended',
         self::STATUS_ACTIVE => 'Active',
         self::STATUS_INACTIVE => 'Inactive',
-        self::STATUS_DELETED => 'Deleted',
     ];
 
     private $_isSuperAdmin = null;
@@ -173,6 +174,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @inheritdoc
+     * @return UserQuery
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    /**
      * @return \yii\db\ActiveQuery
      */
     public function getViewedPosts()
@@ -217,7 +227,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne($id);
+        return static::find()->active()->andWhere(['id' => $id])->one();
     }
 
     /**
@@ -228,7 +238,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username, 'status' => static::STATUS_ACTIVE]);
+        return static::find()->active()->andWhere(['username' => $username])->one();
     }
 
     /**
@@ -340,42 +350,43 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             $auth->revoke($auth->getRole($role), $this->id);
     }
 
-    public function beforeDelete()
+    public function trash()
     {
-        if (parent::beforeDelete()) {
-            return Yii::$app instanceof Application ? true : !$this->getIsSuperAdmin();
+        if ($this->beforeTrash()) {
+            //$this->status = self::STATUS_INACTIVE;
+            if ($this->save(false)) {
+                $this->afterTrash();
+            }
         } else {
             return false;
-        }
-    }
-
-    public function safeDelete()
-    {
-        if ($this->status !== self::STATUS_DELETED) {
-            $this->status = self::STATUS_DELETED;
-            if ($this->beforeSafeDelete() && $this->save(false)) {
-                $this->afterSafeDelete();
-            } else {
-                return false;
-            }
         }
 
         return true;
     }
 
-    public function beforeSafeDelete()
+    public function untrash()
+    {
+        $this->deleted_at = null;
+        return $this->save(false);
+    }
+
+    public function getIsTrashed()
+    {
+        return !is_null($this->deleted_at);
+    }
+
+    public function beforeTrash()
     {
         $event = new ModelEvent();
-        $this->trigger(self::EVENT_BEFORE_SAFE_DELETE, $event);
+        $this->trigger(self::EVENT_BEFORE_TRASH, $event);
 
         return $event->isValid;
     }
 
-    public function afterSafeDelete()
+    public function afterTrash()
     {
-        $this->trigger(self::EVENT_AFTER_SAFE_DELETE);
+        $this->trigger(self::EVENT_AFTER_TRASH);
     }
-
     /**
      * Returns whether the logged in user is an administrator.
      *

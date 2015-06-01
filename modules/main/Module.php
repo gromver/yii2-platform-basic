@@ -318,7 +318,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     public function events()
     {
         return [
-            User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave',
+            //User::EVENT_BEFORE_USER_ROLES_SAVE => 'beforeUserRolesSave',
             Desktop::EVENT_FETCH_ITEMS => 'addDesktopItem',
             MenuItemRoutes::EVENT_FETCH_ITEMS => 'addMenuItemRoutes',
             SearchResultsBackend::EVENT_FETCH_SEARCHABLE_MODELS => 'addSearchableModelsBackend',
@@ -333,8 +333,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleEvent
     public function beforeUserRolesSave($event)
     {
         $roles = $event->sender->getRoles();
-        if (!in_array('Authorized', $roles)) {
-            $roles[] = 'Authorized';
+        if (!in_array('authorized', $roles)) {
+            $roles[] = 'authorized';
             $event->sender->setRoles($roles);
         }
     }

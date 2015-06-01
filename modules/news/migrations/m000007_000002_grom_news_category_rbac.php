@@ -90,5 +90,6 @@ class m000007_000002_grom_news_category_rbac extends \yii\db\Migration
         $auth->remove($createPermission);
         $auth->remove($updatePermission);
         $auth->remove($deletePermission);
+        $auth->remove($auth->getRule('isCategoryAuthor'));
     }
 }

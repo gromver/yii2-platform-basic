@@ -68,6 +68,7 @@ return [
     'Tag Cloud' => 'Облако тегов',
     'Tag View' => 'Тег',
     'User Profile' => 'Профиль пользователя',
+    'Restore' => 'Восстановить',
     'Contact Form' => 'Форма обратной связи',
     'Signup' => 'Регистрация',
     'Request password reset token' => 'Запрос на смену пароля',
@@ -119,6 +120,7 @@ return [
     'Are you sure you want to delete this item?' => 'Вы действительно хотите удалить запись?',
     //user manager
     'Add User' => 'Добавить пользователя',
+    'User: {name} (ID: {id})' => 'Пользователь: {name} (ID: {id})',
     'Update User: {name} (ID: {id})' => 'Редактировать пользователя: {name} (ID: {id})',
     'Update User Params: {name} (ID: {id})' => 'Редактировать параметры пользователя: {name} (ID: {id})',
     'Roles' => 'Роли',
@@ -141,6 +143,9 @@ return [
     'Inactive' => 'Не активен',
     'Active' => 'Активен',
     'Suspended' => 'Не активирован',
+    'Trash' => 'Корзина',
+    'Trash It' => 'В корзину',
+    'Account' => 'Аккаунт',
     //page manager
     'Add Page' => 'Добавить страницу',
     'Update Page: {title}' => 'Редактировать страницу: {title}',

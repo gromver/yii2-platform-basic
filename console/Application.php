@@ -32,7 +32,7 @@ class Application extends \yii\console\Application
     {
         $config = ArrayHelper::merge([
             'controllerMap' => [
-                'migrate' => 'bariew\moduleMigration\ModuleMigrateController'
+                'migrate' => 'gromver\platform\basic\console\components\ModuleMigrateController'//'bariew\moduleMigration\ModuleMigrateController'
             ],
             'components' => [
                 'authManager' => [

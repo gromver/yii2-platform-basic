@@ -43,14 +43,19 @@ class UserSearch extends User
 
     /**
      * Creates data provider instance with search query applied
-     *
      * @param array $params
-     *
+     * @param bool $trashed
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params, $trashed = false)
     {
         $query = User::find();
+
+        if ($trashed) {
+            $query->trashed();
+        } else {
+            $query->published();
+        }
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -60,8 +65,6 @@ class UserSearch extends User
         ]);
 
         if (!($this->load($params) && $this->validate())) {
-            $query->andWhere('status!=:status', [':status' => User::STATUS_DELETED]);
-
             return $dataProvider;
         }
 
@@ -79,11 +82,6 @@ class UserSearch extends User
             ->andFilterWhere(['like', 'password_hash', $this->password_hash])
             ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
             ->andFilterWhere(['like', 'auth_key', $this->auth_key]);
-
-        //по умолчанию скрываем удаленыых пользователей
-        if (strlen($this->status) === 0) {
-            $query->andWhere('status!=:status', [':status' => User::STATUS_DELETED]);
-        }
 
         if (count($this->getRoles())) {
             /** @var \yii\rbac\DbManager $auth */

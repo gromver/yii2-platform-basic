@@ -54,11 +54,11 @@ $menuItems = [
         '<li class="divider"></li>',
         ['label' => Yii::t('gromver.platform', 'Media Manager'), 'url' => ['/grom/media/backend/default/index']],
     ]],
-    ['label' => Yii::t('gromver.platform', 'Components'), 'items' => [
+    /*['label' => Yii::t('gromver.platform', 'Components'), 'items' => [
         ['label' => Yii::t('gromver.platform', 'Version Manager'), 'url' => ['/grom/version/backend/default/index']],
         ['label' => Yii::t('gromver.platform', "Widget's Settings"), 'url' => ['/grom/widget/backend/default/index']],
         ['label' => Yii::t('gromver.platform', 'Search'), 'url' => ['/grom/sqlsearch/backend/default/index']],
-    ]],
+    ]],*/
 ];
 if (Yii::$app->user->isGuest) {
     $menuItems[] = ['label' => Yii::t('gromver.platform', 'Login'), 'url' => Yii::$app->user->loginUrl];
@@ -69,7 +69,7 @@ if (Yii::$app->user->isGuest) {
             ['label' => '<i class="glyphicon glyphicon-home"></i> ' . Yii::t('gromver.platform', 'Home'), 'url' => Yii::$app->homeUrl],
             ['label' => '<i class="glyphicon glyphicon-envelope"></i> ' . Yii::t('gromver.platform', 'Contact'), 'url' => ['/grom/backend/default/contact']],
             '<li class="divider"></li>',
-            ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Profile'), 'url' => ['/grom/user/backend/default/update', 'id' => Yii::$app->user->id]],
+            ['label' => '<i class="glyphicon glyphicon-cog"></i> ' . Yii::t('gromver.platform', 'Account'), 'url' => ['/grom/user/backend/account/index']],
             ['label' => '<i class="glyphicon glyphicon-log-out"></i> ' . Yii::t('gromver.platform', 'Logout'), 'url' => ['/grom/auth/default/logout']]
         ]
     ];
