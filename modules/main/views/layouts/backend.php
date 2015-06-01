@@ -35,7 +35,7 @@ AppAsset::register($this);
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?php foreach (Yii::$app->session->getAllFlashes() as $type => $body)
-                echo \kartik\widgets\Alert::widget([
+                echo \kartik\alert\Alert::widget([
                     'type' => $type,
                     'body' => $body
                 ]) ?>

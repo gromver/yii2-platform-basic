@@ -54,8 +54,8 @@ class Contact extends Widget
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->grom->params['adminEmail'])) {
-                Yii::$app->session->setFlash(Alert::TYPE_SUCCESS, Yii::t('gromver.platform', 'Email is sent.'));
-                return $this->render($this->successLayout);
+                echo $this->render($this->successLayout);
+                return;
             } else {
                 Yii::$app->session->setFlash(Alert::TYPE_DANGER, Yii::t('gromver.platform', 'There was an error.'));
             }

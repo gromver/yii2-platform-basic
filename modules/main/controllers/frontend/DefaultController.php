@@ -29,17 +29,10 @@ class DefaultController extends \yii\web\Controller
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['index', 'error', 'contact', 'captcha', 'page-not-found', 'dummy-page'],
+                        'actions' => ['index', 'contact', 'page-not-found', 'dummy-page'],
                     ],
                 ]
             ]
-        ];
-    }
-
-    public function actions()
-    {
-        return [
-            'captcha' => 'yii\captcha\CaptchaAction'
         ];
     }
 

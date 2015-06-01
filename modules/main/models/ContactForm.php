@@ -27,7 +27,7 @@ class ContactForm extends \yii\base\Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha', 'captchaAction' => 'grom/default/captcha', 'on' => 'withCaptcha'],
+            ['verifyCode', 'captcha', 'captchaAction' => 'grom/common/default/captcha', 'on' => 'withCaptcha'],
         ];
     }
 

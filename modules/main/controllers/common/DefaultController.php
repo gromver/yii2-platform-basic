@@ -19,12 +19,27 @@ use Yii;
  */
 class DefaultController extends \yii\web\Controller
 {
+    /**
+     * Можно менять настройки капчи через DI
+     * @var array
+     */
+    public $captchaActionConfig = [
+        'class' => 'yii\captcha\CaptchaAction'
+    ];
+
+    /**
+     * Можно менять настройки страницы ошибок через DI
+     * @var array
+     */
+    public $errorActionConfig = [
+        'class' => 'yii\web\ErrorAction'
+    ];
+
     public function actions()
     {
         return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
+            'error' => $this->errorActionConfig,
+            'captcha' => $this->captchaActionConfig
         ];
     }
 

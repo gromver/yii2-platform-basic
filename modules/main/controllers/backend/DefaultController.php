@@ -35,28 +35,16 @@ class DefaultController extends \gromver\platform\basic\components\BackendContro
                 'rules' => [
                     [
                         'allow' => true,
-                        'actions' => ['params', 'flush-cache', 'flush-assets'],  //todo contact-gromver
+                        'actions' => ['params', 'flush-cache', 'flush-assets', 'mode'],  //todo contact-gromver
                         'roles' => ['administrator'],
                     ],
                     [
                         'allow' => true,
-                        'actions' => ['index', 'error', 'contact', 'captcha', 'contact-gromver'],
+                        'actions' => ['index', 'contact', 'contact-gromver'],
                         'roles' => ['administrate'],
-                    ],
-                    [
-                        'allow' => true,
-                        'actions' => ['mode'],
-                        'roles' => ['administrator'],
                     ],
                 ]
             ]
-        ];
-    }
-
-    public function actions()
-    {
-        return [
-            'captcha' => 'yii\captcha\CaptchaAction'
         ];
     }
 
