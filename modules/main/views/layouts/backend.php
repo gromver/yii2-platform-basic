@@ -32,6 +32,10 @@ AppAsset::register($this);
 
         <div class="container">
             <?= Breadcrumbs::widget([
+                'homeLink' => [
+                    'label' => Yii::t('yii', 'Home'),
+                    'url' => \yii\helpers\Url::toRoute('/grom/backend/default/index')
+                ],
                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
             ]) ?>
             <?php foreach (Yii::$app->session->getAllFlashes() as $type => $body)
