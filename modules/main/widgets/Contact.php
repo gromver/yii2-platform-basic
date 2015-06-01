@@ -35,7 +35,15 @@ class Contact extends Widget
      * @translation gromver.platform
      */
     public $successLayout = 'contact/success';
-    // todo параметр емейла на который отсылать письма
+    /**
+     * @var string
+     * @field multiple
+     * @multyfield text
+     * @email
+     * @placeholder Default
+     * @translation gromver.platform
+     */
+    public $email;
 
     protected function launch()
     {
@@ -53,7 +61,7 @@ class Contact extends Widget
         }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail(Yii::$app->grom->params['adminEmail'])) {
+            if ($model->sendEmail(!empty($this->email) ? $this->email : Yii::$app->grom->params['adminEmail'])) {
                 echo $this->render($this->successLayout);
                 return;
             } else {
