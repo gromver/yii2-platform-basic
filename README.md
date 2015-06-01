@@ -59,7 +59,7 @@ php composer.phar require --prefer-dist gromver/yii2-platform-basic "*"
 ```
 #### Создание таблиц, папок и первоначальных настроек приложения
 
-    php yii migrate --migrationPath=@gromver/platform/basic/migrations
+    php yii migrate
 
 В результате применения миграций будут добавлены папки
  * /web/upload  - для хранения изображений прикрепляемых к статьям и категориям
@@ -105,5 +105,5 @@ php composer.phar require --prefer-dist gromver/yii2-platform-basic "*"
 ```
 * Применяем миграцию для Elasticsearch
 ```
-  php yii migrate --migrationPath=@gromver/platform/basic/migrations/elasticsearch
+  php yii migrate
 ```
