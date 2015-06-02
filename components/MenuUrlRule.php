@@ -326,6 +326,6 @@ class MenuUrlRule extends Object implements UrlRuleInterface
             return $metaData;
         }, $chain);
 
-        return call_user_func_array('yii\helpers\ArrayHelper::merge', $metaDataChain);
+        return count($metaDataChain) > 1 ? call_user_func_array('yii\helpers\ArrayHelper::merge', $metaDataChain) : $metaDataChain[0];
     }
 } 
