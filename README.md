@@ -58,6 +58,8 @@ php composer.phar require --prefer-dist gromver/yii2-platform-basic "*"
 ]
 ```
 #### Создание таблиц, папок и первоначальных настроек приложения
+Для начала нужно убедится, что в корне приложения создана папка migrations, иначе будет ошибка
+Error: Migration failed. Directory specified in migrationPath doesn't exist.
 
     php yii migrate
 
